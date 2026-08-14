@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Principles of Biophysical Chemistry — I MSc Microbiology</title>
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   Palette: white ground, "instrument blue" + "culture green"
+   Display face: Georgia (scientific-journal serif, no CDN)
+   Body face: system-ui sans
+   ============================================================ */
+:root{
+  --blue-900:#0b3d68;
+  --blue-700:#12588f;
+  --blue-600:#1976b8;
+  --blue-500:#2196d6;
+  --blue-100:#e8f4fb;
+  --blue-050:#f4faff;
+  --green-700:#256b3a;
+  --green-600:#2e8b4e;
+  --green-500:#3fa864;
+  --green-100:#e9f7ee;
+  --ink:#152634;
+  --ink-soft:#3c5568;
+  --paper:#ffffff;
+  --paper-2:#fbfdff;
+  --line:#dbe7ef;
+  --amber:#a8681a;
+  --amber-bg:#fef3e2;
+  --radius:14px;
+  --shadow:0 2px 14px rgba(11,61,104,.08);
+  --shadow-lg:0 12px 40px rgba(11,61,104,.14);
+  --serif:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --mono:'Courier New',Courier,monospace;
+}
+[data-theme="dark"]{
+  --ink:#e7eef4;
+  --ink-soft:#aebfcd;
+  --paper:#0e1b26;
+  --paper-2:#132734;
+  --line:#22394a;
+  --blue-050:#0f2536;
+  --blue-100:#123049;
+  --green-100:#0f2a1c;
+  --amber-bg:#2e2410;
+  --shadow:0 2px 14px rgba(0,0,0,.4);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.65;
+  transition:background .25s ease,color .25s ease;
+}
+h1,h2,h3,h4{font-family:var(--serif); color:var(--blue-900); line-height:1.25; margin:0 0 .5em;}
+[data-theme="dark"] h1,[data-theme="dark"] h2,[data-theme="dark"] h3,[data-theme="dark"] h4{color:#bfe0f7;}
+p{margin:0 0 1em;}
+a{color:var(--blue-600);}
+.container{max-width:980px;margin:0 auto;padding:0 20px;}
+button{font-family:var(--sans);cursor:pointer;}
+::selection{background:var(--blue-100);}
+
+/* ---------- Skip link / accessibility ---------- */
+.skip-link{position:absolute;left:-999px;top:0;background:var(--blue-700);color:#fff;padding:10px 16px;z-index:200;border-radius:0 0 8px 0;}
+.skip-link:focus{left:0;}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px;}
+
+/* ---------- Sticky nav ---------- */
+header.topbar{
+  position:sticky; top:0; z-index:100;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+[data-theme="dark"] header.topbar{background:rgba(14,27,38,.92);}
+.topbar-inner{display:flex;align-items:center;gap:14px;padding:10px 20px;max-width:1100px;margin:0 auto;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:700;color:var(--blue-900);}
+[data-theme="dark"] .brand{color:#bfe0f7;}
+.brand svg{flex-shrink:0;}
+nav.links{display:flex;gap:2px;flex-wrap:wrap;flex:1;justify-content:center;}
+nav.links a{
+  font-size:.86rem; padding:7px 10px; border-radius:8px; text-decoration:none;
+  color:var(--ink-soft); white-space:nowrap; transition:background .15s, color .15s;
+}
+nav.links a:hover, nav.links a:focus-visible{background:var(--blue-100); color:var(--blue-700);}
+.nav-controls{display:flex;gap:8px;align-items:center;}
+.icon-btn{
+  background:var(--paper-2); border:1px solid var(--line); border-radius:9px;
+  width:38px;height:38px; display:flex;align-items:center;justify-content:center; font-size:1rem;
+}
+.icon-btn:hover{border-color:var(--blue-500);}
+#progressWrap{height:3px;background:var(--line);}
+#progressBar{height:100%;width:0%;background:linear-gradient(90deg,var(--blue-600),var(--green-600));transition:width .15s;}
+
+/* ---------- Hero ---------- */
+.hero{
+  padding:64px 20px 48px; text-align:center;
+  background:
+    radial-gradient(1200px 400px at 50% -10%, var(--blue-050), transparent);
+}
+.hero .eyebrow{
+  display:inline-flex; align-items:center; gap:8px; font-size:.78rem; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--green-700); background:var(--green-100);
+  padding:6px 14px; border-radius:999px; margin-bottom:18px; font-weight:600;
+}
+.hero h1{font-size:clamp(1.7rem,4vw,2.6rem); max-width:760px; margin:0 auto .4em;}
+.hero p.lead{max-width:620px;margin:0 auto 24px;color:var(--ink-soft);font-size:1.05rem;}
+.hero-ph-strip{display:flex;justify-content:center;gap:3px;max-width:520px;margin:0 auto 22px;flex-wrap:wrap;}
+.hero-ph-strip .chip{
+  width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;color:#fff;font-weight:700;
+}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn{
+  border:none;border-radius:10px;padding:11px 20px;font-size:.92rem;font-weight:600;
+  display:inline-flex;align-items:center;gap:8px;transition:transform .12s,box-shadow .12s;
+}
+.btn:hover{transform:translateY(-1px);}
+.btn-primary{background:var(--blue-600);color:#fff;box-shadow:var(--shadow);}
+.btn-ghost{background:var(--paper-2);color:var(--blue-700);border:1px solid var(--line);}
+
+/* ---------- Section shell ---------- */
+section.topic{padding:56px 0; border-top:1px solid var(--line);}
+section.topic:first-of-type{border-top:none;}
+.section-head{display:flex;align-items:center;gap:14px;margin-bottom:8px;}
+.section-num{
+  font-family:var(--serif); font-size:1.6rem; color:var(--green-600); font-weight:700; opacity:.55;
+}
+.section-head h2{margin:0;font-size:clamp(1.35rem,2.6vw,1.9rem);}
+.section-sub{color:var(--ink-soft); margin-bottom:28px; max-width:700px;}
+
+/* ---------- Cards ---------- */
+.card{
+  background:var(--paper-2); border:1px solid var(--line); border-radius:var(--radius);
+  padding:22px 24px; margin-bottom:18px; box-shadow:var(--shadow);
+}
+.card h3{font-size:1.08rem;margin-bottom:.4em;}
+.card h4{font-size:.98rem; color:var(--green-700); margin-top:1em;}
+[data-theme="dark"] .card h4{color:#8fd6a8;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:760px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+
+/* callouts */
+.callout{border-radius:12px;padding:16px 18px;margin:16px 0;border-left:4px solid;}
+.callout .co-title{font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.callout.mistake{background:var(--amber-bg);border-color:var(--amber);}
+.callout.mistake .co-title{color:var(--amber);}
+.callout.tip{background:var(--blue-050);border-color:var(--blue-500);}
+.callout.tip .co-title{color:var(--blue-700);}
+.callout.remember{background:var(--green-100);border-color:var(--green-500);}
+.callout.remember .co-title{color:var(--green-700);}
+.callout.clinical{background:#fdeaf0;border-color:#c23368;}
+[data-theme="dark"] .callout.clinical{background:#3a1420;}
+.callout.clinical .co-title{color:#c23368;}
+.callout.micro{background:var(--green-100);border-color:var(--green-700);}
+.callout.micro .co-title{color:var(--green-700);}
+
+/* formula box */
+.formula-box{
+  background:var(--paper); border:1.5px dashed var(--blue-500); border-radius:12px;
+  padding:18px 20px; margin:14px 0; text-align:center;
+}
+.formula-box .eq{font-family:var(--mono); font-size:1.25rem; color:var(--blue-900); font-weight:700; letter-spacing:.5px;}
+[data-theme="dark"] .formula-box .eq{color:#8fd0f5;}
+.symbol-table{width:100%; border-collapse:collapse; margin-top:12px; font-size:.92rem;}
+.symbol-table th,.symbol-table td{text-align:left; padding:7px 10px; border-bottom:1px solid var(--line);}
+.symbol-table th{color:var(--ink-soft); font-weight:600; font-size:.8rem; text-transform:uppercase; letter-spacing:.03em;}
+.symbol-table td.sym{font-family:var(--mono); font-weight:700; color:var(--green-700);}
+
+/* worked example */
+.worked{background:var(--blue-050); border-radius:12px; padding:16px 20px; margin:14px 0;}
+.worked ol{margin:0; padding-left:22px;}
+.worked li{margin-bottom:8px;}
+.worked .step-eq{font-family:var(--mono); background:var(--paper); border-radius:6px; padding:4px 8px; display:inline-block;}
+
+/* expand/collapse notes */
+details.note{border:1px solid var(--line); border-radius:10px; margin:12px 0; background:var(--paper);overflow:hidden;}
+details.note summary{
+  cursor:pointer; padding:12px 16px; font-weight:600; color:var(--blue-700); list-style:none;
+  display:flex; align-items:center; justify-content:space-between;
+}
+[data-theme="dark"] details.note summary{color:#8fd0f5;}
+details.note summary::-webkit-details-marker{display:none;}
+details.note summary::after{content:"+"; font-size:1.2rem; color:var(--ink-soft);}
+details.note[open] summary::after{content:"–";}
+details.note .note-body{padding:0 16px 16px; color:var(--ink-soft);}
+
+/* hover definitions */
+.term{border-bottom:1.5px dotted var(--blue-500); cursor:help; position:relative; font-weight:600; color:var(--blue-700);}
+[data-theme="dark"] .term{color:#8fd0f5;}
+.term .tip-box{
+  visibility:hidden; opacity:0; position:absolute; bottom:135%; left:50%; transform:translateX(-50%);
+  background:var(--ink); color:#fff; padding:9px 12px; border-radius:8px; font-size:.82rem; font-weight:400;
+  width:230px; box-shadow:var(--shadow-lg); transition:opacity .15s; z-index:20; line-height:1.4;
+}
+[data-theme="dark"] .term .tip-box{background:#f4faff;color:#0e1b26;}
+.term:hover .tip-box, .term:focus .tip-box{visibility:visible; opacity:1;}
+
+/* interactive panels */
+.panel{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:20px; margin:16px 0; box-shadow:var(--shadow);}
+.panel-title{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--green-700);margin-bottom:12px;font-size:.95rem;text-transform:uppercase;letter-spacing:.03em;}
+[data-theme="dark"] .panel-title{color:#8fd6a8;}
+label.field-label{display:block;font-size:.85rem;color:var(--ink-soft);margin-bottom:5px;font-weight:600;}
+input[type=range]{width:100%;accent-color:var(--blue-600);}
+input[type=number],select{
+  width:100%; padding:9px 11px; border:1px solid var(--line); border-radius:8px;
+  background:var(--paper); color:var(--ink); font-size:.95rem;
+}
+.result-readout{
+  margin-top:12px; background:var(--blue-050); border-radius:10px; padding:12px 16px;
+  font-family:var(--mono); font-size:1rem; color:var(--blue-900); font-weight:700;
+}
+[data-theme="dark"] .result-readout{color:#8fd0f5;}
+.control-row{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:10px;}
+@media(max-width:600px){.control-row{grid-template-columns:1fr;}}
+
+svg text{font-family:var(--sans);}
+
+/* quiz */
+.quiz-q{margin-bottom:16px;}
+.quiz-q p.qtext{font-weight:600;margin-bottom:8px;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{
+  text-align:left; background:var(--paper); border:1.5px solid var(--line); border-radius:9px;
+  padding:10px 14px; font-size:.94rem; color:var(--ink);
+}
+.quiz-opt:hover{border-color:var(--blue-500);}
+.quiz-opt.correct{background:var(--green-100); border-color:var(--green-600); font-weight:600;}
+.quiz-opt.wrong{background:#fdeaea; border-color:#c23333;}
+[data-theme="dark"] .quiz-opt.wrong{background:#3a1414;}
+.quiz-feedback{margin-top:8px; font-size:.88rem; padding:9px 12px; border-radius:8px;}
+.quiz-feedback.ok{background:var(--green-100); color:var(--green-700);}
+.quiz-feedback.bad{background:#fdeaea; color:#a02020;}
+[data-theme="dark"] .quiz-feedback.bad{background:#3a1414;color:#e08080;}
+.quiz-score-badge{
+  display:inline-flex; align-items:center; gap:6px; background:var(--blue-100); color:var(--blue-700);
+  padding:5px 12px; border-radius:999px; font-weight:700; font-size:.85rem;
+}
+
+/* flashcards */
+.flash-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.flashcard{
+  width:100%; max-width:420px; height:190px; perspective:1200px; cursor:pointer;
+}
+.flashcard-inner{
+  position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;
+}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+.flash-face{
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:14px;
+  display:flex; align-items:center; justify-content:center; text-align:center; padding:22px;
+  box-shadow:var(--shadow-lg); font-weight:600;
+}
+.flash-front{background:linear-gradient(135deg,var(--blue-600),var(--blue-900)); color:#fff; font-size:1.15rem;}
+.flash-back{background:linear-gradient(135deg,var(--green-600),var(--green-700)); color:#fff; transform:rotateY(180deg); font-size:.98rem;}
+.flash-nav{display:flex;gap:10px;align-items:center;}
+
+/* final quiz progress tracker */
+#trackerBar{position:fixed; right:14px; bottom:14px; z-index:90; background:var(--paper); border:1px solid var(--line);
+  border-radius:12px; padding:10px 14px; box-shadow:var(--shadow-lg); font-size:.78rem; max-width:150px;}
+#trackerBar strong{display:block; color:var(--blue-700); font-family:var(--serif); font-size:1rem;}
+[data-theme="dark"] #trackerBar strong{color:#8fd0f5;}
+
+/* footer */
+footer{padding:40px 20px; text-align:center; color:var(--ink-soft); font-size:.85rem; border-top:1px solid var(--line);}
+
+/* print */
+@media print{
+  header.topbar,#trackerBar,.no-print,.icon-btn,.hero-actions{display:none !important;}
+  body{background:#fff;color:#000;}
+  section.topic{break-inside:avoid; padding:14px 0;}
+  details.note{display:block;}
+  details.note .note-body{display:block !important;}
+  .card{box-shadow:none;border:1px solid #999;}
+}
+
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+</style>
+</head>
+<body>
+<a href="#intro" class="skip-link">Skip to content</a>
+
+<header class="topbar">
+  <div id="progressWrap"><div id="progressBar"></div></div>
+  <div class="topbar-inner">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 5 v8 l6 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      <span>Biophysical Chemistry</span>
+    </div>
+    <nav class="links" aria-label="Section navigation">
+      <a href="#intro">Intro</a>
+      <a href="#math">Math Refresher</a>
+      <a href="#ph">pH</a>
+      <a href="#buffers">Buffers</a>
+      <a href="#kinetics">Kinetics</a>
+      <a href="#thermo">Thermodynamics</a>
+      <a href="#colligative">Colligative</a>
+      <a href="#finalquiz">Final Quiz</a>
+    </nav>
+    <div class="nav-controls">
+      <button class="icon-btn" id="darkToggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
+      <button class="icon-btn" id="printBtn" title="Print" aria-label="Print this page">🖨️</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <span class="eyebrow">I MSc Microbiology · Unit Session</span>
+  <h1>Principles of Biophysical Chemistry</h1>
+  <p class="lead">The physics and chemistry that quietly runs every microbe: how acidic its cytoplasm is, how it buffers shock, how fast its reactions run, why some processes happen on their own, and how it fights to keep water where it needs it.</p>
+  <div class="hero-ph-strip" aria-hidden="true"></div>
+  <div class="hero-actions">
+    <button class="btn btn-primary" onclick="document.getElementById('intro').scrollIntoView()">Start the class ↓</button>
+    <button class="btn btn-ghost" onclick="document.getElementById('finalquiz').scrollIntoView()">Jump to final quiz</button>
+  </div>
+</div>
+
+<main id="main">
+<div class="container">
+
+<!-- ============ 1. INTRO ============ -->
+<section class="topic" id="intro">
+  <div class="section-head"><span class="section-num">01</span><h2>Why microbiologists need biophysical chemistry</h2></div>
+  <p class="section-sub">Every organism you study under the microscope is, underneath, a bag of chemistry obeying physical rules. This session gives you the four rules that matter most in the lab and the clinic.</p>
+
+  <div class="card">
+    <p><span class="term" tabindex="0">Biophysical chemistry<span class="tip-box">The branch of chemistry that uses the tools of physics — energy, rates, equilibrium, concentration — to explain how biological molecules and cells behave.</span></span> is not a separate subject from microbiology; it is the reason microbiology works the way it does.</p>
+    <div class="grid-2">
+      <div>
+        <h4>Where you already use it without naming it</h4>
+        <p>Every time you check a culture medium's pH before autoclaving, dilute an antibiotic stock, watch a growth curve, or explain why a cell shrivels in strong saline — you are doing biophysical chemistry.</p>
+      </div>
+      <div>
+        <h4>What this class covers</h4>
+        <p>Four pillars: <strong>pH &amp; buffers</strong> (keeping the internal environment stable), <strong>kinetics</strong> (how fast reactions and drug action occur), <strong>thermodynamics</strong> (why reactions happen at all), and <strong>colligative properties</strong> (how cells manage water and solutes).</p>
+      </div>
+    </div>
+    <div class="callout tip"><div class="co-title">🎯 Exam Tip</div>Examiners love asking "explain in one line why this matters to a microbiologist." Each section below ends with exactly that kind of one-liner — memorise those first, formulas second.</div>
+  </div>
+</section>
+
+<!-- ============ MATH REFRESHER ============ -->
+<section class="topic" id="math">
+  <div class="section-head"><span class="section-num">—</span><h2>Mathematics Refresher (read this before the formulas)</h2></div>
+  <p class="section-sub">Nothing below needs anything beyond what you learned before Class 10. We are simply going to use it in a chemistry sentence instead of a maths sentence.</p>
+
+  <details class="note" open>
+    <summary>Scientific notation — writing very small / very large numbers</summary>
+    <div class="note-body">
+      <p>A bacterial cell's hydrogen ion concentration is often written as <strong>0.0000001</strong> mol/L. That's clumsy. Scientific notation just counts how many places the decimal moved: <strong>1 × 10⁻⁷</strong>. The small raised number (exponent) after the 10 tells you the direction and count of the shift. Negative exponent = a small number (decimal moved right); positive exponent = a large number (decimal moved left).</p>
+    </div>
+  </details>
+  <details class="note">
+    <summary>Powers — what the small raised number means</summary>
+    <div class="note-body">
+      <p>10² means "10 multiplied by itself twice" = 100. 10⁻² means "1 divided by 10 twice" = 0.01. That's all a power is: repeated multiplication (positive exponent) or repeated division (negative exponent).</p>
+    </div>
+  </details>
+  <details class="note">
+    <summary>Logarithms from zero — the only thing you need for pH</summary>
+    <div class="note-body">
+      <p>A logarithm answers one question: <em>"10 raised to what power gives me this number?"</em> If a number is 10⁻⁷, its log is simply −7 (the exponent, unchanged). If a number is 0.001 (=10⁻³), its log is −3. That is the entire operation used to calculate pH — you are not "doing calculus," you are just reading off the exponent.</p>
+      <p><strong>Why chemists bother with logs at all:</strong> hydrogen ion concentration in living systems ranges from 1 to 0.0000000000001 mol/L — fourteen decimal places. No one can compare numbers like that at a glance. Taking the log compresses that huge range into a simple, friendly scale of 0 to 14.</p>
+    </div>
+  </details>
+  <details class="note">
+    <summary>Negative signs — why pH has a minus in front</summary>
+    <div class="note-body">
+      <p>Because H⁺ concentrations are always fractions less than 1, their logarithm is always negative (e.g. log of 10⁻⁷ = −7). Chemists find negative numbers annoying to talk about ("the pH is minus seven"?), so they simply flip the sign in the definition: pH = −log[H⁺]. The minus sign in the formula exists purely to cancel the minus sign that the log naturally produces, giving you a clean positive number.</p>
+    </div>
+  </details>
+  <details class="note">
+    <summary>Fractions and ratios — what "[base]/[acid]" means</summary>
+    <div class="note-body">
+      <p>A fraction such as [A⁻]/[HA] is just "how much of the base form exists for every unit of the acid form." If it equals 1, there's exactly equal amounts of both. If it's greater than 1, base dominates; less than 1, acid dominates. That single ratio is the heart of the buffer equation you'll meet shortly.</p>
+    </div>
+  </details>
+  <details class="note">
+    <summary>Rearranging an equation — moving terms across the "=" sign</summary>
+    <div class="note-body">
+      <p>Whatever you do to one side of "=", you must do to the other, to keep both sides equal. If C = A × B, and you want B alone, divide both sides by A: B = C/A. Every "rearranged" formula in this class is produced by this one rule, applied patiently, one step at a time.</p>
+    </div>
+  </details>
+  <details class="note">
+    <summary>Unit conversions — keeping your numbers honest</summary>
+    <div class="note-body">
+      <p>1 mol/L = 1000 mmol/L. 1 L = 1000 mL. Before plugging a number into any formula, check that every quantity is in the unit the formula expects — this single habit prevents most numerical mistakes in exams.</p>
+    </div>
+  </details>
+
+  <div class="callout remember"><div class="co-title">✅ Remember This</div>"If concentration doubles…", "if pH becomes smaller…", "if ΔG is negative…" — every formula in this class will be explained in this plain, directional language before you ever see the symbols.</div>
+</section>
+
+<!-- ============ 2. pH ============ -->
+<section class="topic" id="ph">
+  <div class="section-head"><span class="section-num">02</span><h2>pH</h2></div>
+  <p class="section-sub">The single number that tells you how acidic or alkaline a solution is — and one of the tightest-controlled variables inside any living cell.</p>
+
+  <div class="card">
+    <h3>Definition</h3>
+    <p><span class="term" tabindex="0">pH<span class="tip-box">"Power of Hydrogen" — a scale that expresses the concentration of hydrogen ions (H⁺) in a solution.</span></span> measures the concentration of free hydrogen ions (H⁺) in a solution. More free H⁺ = more acidic = lower pH. Fewer free H⁺ = more alkaline (basic) = higher pH.</p>
+
+    <h3>The pH scale</h3>
+    <svg viewBox="0 0 700 110" style="width:100%;height:auto;max-width:700px;display:block;margin:14px auto;" role="img" aria-label="pH scale from 0 to 14">
+      <defs>
+        <linearGradient id="phGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#c0392b"/>
+          <stop offset="35%" stop-color="#e67e22"/>
+          <stop offset="50%" stop-color="#2ecc71"/>
+          <stop offset="65%" stop-color="#2196d6"/>
+          <stop offset="100%" stop-color="#12305e"/>
+        </linearGradient>
+      </defs>
+      <rect x="20" y="30" width="660" height="26" rx="6" fill="url(#phGrad)"/>
+      <g font-size="11" fill="var(--ink-soft)">
+        <text x="20" y="80">0</text><text x="140" y="80">3.5</text><text x="255" y="80">7 (neutral)</text><text x="440" y="80">10.5</text><text x="655" y="80">14</text>
+      </g>
+      <g font-size="12" fill="var(--ink)" font-weight="700">
+        <text x="55" y="20">Gastric acid ~1.5</text>
+        <text x="230" y="20">Blood ~7.4</text>
+        <text x="560" y="20">Household ammonia ~11.5</text>
+      </g>
+      <line x1="87" y1="30" x2="87" y2="56" stroke="#fff" stroke-width="2"/>
+      <line x1="330" y1="30" x2="330" y2="56" stroke="#fff" stroke-width="2"/>
+      <line x1="613" y1="30" x2="613" y2="56" stroke="#fff" stroke-width="2"/>
+    </svg>
+
+    <div class="formula-box">
+      <div class="eq">pH = −log₁₀ [H⁺]</div>
+    </div>
+    <table class="symbol-table">
+      <tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr>
+      <tr><td class="sym">pH</td><td>Acidity/alkalinity value read on the 0–14 scale</td><td>none (it's a log ratio)</td></tr>
+      <tr><td class="sym">[H⁺]</td><td>Molar concentration of hydrogen ions ("square brackets" always mean "concentration of")</td><td>mol/L</td></tr>
+      <tr><td class="sym">log₁₀</td><td>"What power of 10 gives this number" — see Math Refresher</td><td>—</td></tr>
+    </table>
+
+    <h4>Why logarithms, specifically, are used here</h4>
+    <p>[H⁺] in biological fluids spans from about 1 mol/L (strong stomach acid) down to 0.0000000000001 mol/L (strong alkali) — a range of 14 orders of magnitude. A log scale converts that unmanageable spread into simple whole numbers, and it also matches how our instruments (and our biology) actually respond: each one-unit change in pH is a <em>tenfold</em> change in acidity, not a small step.</p>
+
+    <div class="callout mistake"><div class="co-title">⚠️ Common Mistake</div>Students think pH 4 is "twice as acidic" as pH 8. It is not — it is <strong>10,000 times</strong> more acidic (four steps of ×10 each), because the scale is logarithmic, not linear.</div>
+
+    <h4>Worked example</h4>
+    <div class="worked">
+      <p>A fermenting <em>Lactobacillus</em> culture has [H⁺] = 0.0001 mol/L. Find its pH.</p>
+      <ol>
+        <li>Write in scientific notation: <span class="step-eq">0.0001 = 1 × 10⁻⁴ mol/L</span></li>
+        <li>Take log₁₀ of this number — by the rule in the Math Refresher, the log of 10⁻⁴ is simply its exponent: <span class="step-eq">log₁₀(10⁻⁴) = −4</span></li>
+        <li>Apply the formula: <span class="step-eq">pH = −(−4) = 4</span></li>
+      </ol>
+      <p><strong>Answer: pH 4</strong> — clearly acidic, consistent with lactic acid fermentation.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="callout micro"><div class="co-title">🧫 Microbiology Connection</div><em>Lactobacillus</em> fermented foods (yogurt, sauerkorn) drop to pH ~4, which is exactly what suppresses spoilage organisms.</div>
+      <div class="callout clinical"><div class="co-title">🩺 Clinical Connection</div>Human blood is tightly held at pH 7.35–7.45; a shift of even 0.3 units (acidosis/alkalosis) can be life-threatening.</div>
+      <div class="callout tip"><div class="co-title">🎯 Exam Tip</div>If asked "why is pH logarithmic," always mention both reasons: the huge concentration range, AND the tenfold-per-unit relationship.</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🧮 Interactive pH Calculator</div>
+    <label class="field-label" for="phInput">Move the slider to set [H⁺] (mol/L), or type it directly</label>
+    <input type="range" id="phSlider" min="0" max="14" step="0.1" value="7">
+    <div class="control-row" style="margin-top:10px;">
+      <div>
+        <label class="field-label" for="hConcOut">[H⁺] (mol/L)</label>
+        <input type="text" id="hConcOut" readonly>
+      </div>
+      <div>
+        <label class="field-label" for="phOut">Calculated pH</label>
+        <input type="text" id="phOut" readonly>
+      </div>
+    </div>
+    <div class="result-readout" id="phVerdict">Neutral — equal H⁺ and OH⁻</div>
+  </div>
+</section>
+
+<!-- ============ 3. BUFFERS ============ -->
+<section class="topic" id="buffers">
+  <div class="section-head"><span class="section-num">03</span><h2>Buffer Systems</h2></div>
+  <p class="section-sub">How a cell keeps its internal pH nearly constant even when acid or base is added or produced.</p>
+
+  <div class="card">
+    <h3>The building blocks</h3>
+    <div class="grid-2">
+      <div>
+        <p><span class="term" tabindex="0">Weak acid<span class="tip-box">An acid that only partially releases its H⁺ into solution, leaving an equilibrium between the intact acid and its ions.</span></span> — does not fully release its H⁺; some stays bound, some is free. This partial, reversible release is exactly what makes it useful as a buffer component.</p>
+        <p><span class="term" tabindex="0">Conjugate base<span class="tip-box">What remains of a weak acid after it has donated its H⁺.</span></span> — the leftover part of the weak acid after it has given up H⁺. Together, the weak acid and its conjugate base form a "buffer pair."</p>
+      </div>
+      <div>
+        <p><span class="term" tabindex="0">Weak base<span class="tip-box">A base that only partially accepts H⁺ from solution.</span></span> — only partially grabs H⁺ from solution, leaving room for it to grab more if acid is added.</p>
+        <p><span class="term" tabindex="0">Conjugate acid<span class="tip-box">What a weak base becomes after accepting an H⁺.</span></span> — what the weak base becomes once it has accepted H⁺.</p>
+      </div>
+    </div>
+
+    <h4>How a buffer actually works (the mechanism, in words)</h4>
+    <p>A buffer solution contains <em>both</em> members of a weak-acid/conjugate-base pair at the same time. If acid (extra H⁺) is added, the conjugate base soaks it up, converting into the weak acid form. If base (or something that removes H⁺) is added, the weak acid donates H⁺ to replace what was lost. Either way, the pool of free H⁺ barely changes — the pH holds steady.</p>
+
+    <svg viewBox="0 0 640 170" style="width:100%;height:auto;max-width:640px;display:block;margin:10px auto;" role="img" aria-label="Diagram of buffer action absorbing added acid or base">
+      <rect x="10" y="10" width="290" height="150" rx="12" fill="var(--blue-050)" stroke="var(--blue-500)"/>
+      <text x="155" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="var(--blue-900)">Acid added (H⁺ ↑)</text>
+      <text x="155" y="60" text-anchor="middle" font-size="12" fill="var(--ink-soft)">A⁻  +  H⁺  →  HA</text>
+      <text x="155" y="90" text-anchor="middle" font-size="11" fill="var(--ink-soft)">Conjugate base captures the extra H⁺</text>
+      <circle cx="70" cy="125" r="10" fill="var(--blue-600)"/><text x="70" y="129" text-anchor="middle" font-size="9" fill="#fff">H⁺</text>
+      <path d="M85 125 L140 125" stroke="var(--blue-600)" stroke-width="2" marker-end="url(#arrow1)"/>
+      <circle cx="180" cy="125" r="14" fill="var(--green-600)"/><text x="180" y="129" text-anchor="middle" font-size="9" fill="#fff">A⁻</text>
+      <text x="240" y="129" text-anchor="middle" font-size="16" fill="var(--ink-soft)">→ HA</text>
+
+      <rect x="330" y="10" width="300" height="150" rx="12" fill="var(--green-100)" stroke="var(--green-500)"/>
+      <text x="480" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="var(--green-700)">Base added (H⁺ ↓)</text>
+      <text x="480" y="60" text-anchor="middle" font-size="12" fill="var(--ink-soft)">HA  →  A⁻  +  H⁺</text>
+      <text x="480" y="90" text-anchor="middle" font-size="11" fill="var(--ink-soft)">Weak acid donates H⁺ to replace what was lost</text>
+      <circle cx="400" cy="125" r="14" fill="var(--blue-600)"/><text x="400" y="129" text-anchor="middle" font-size="9" fill="#fff">HA</text>
+      <text x="470" y="129" text-anchor="middle" font-size="16" fill="var(--ink-soft)">→ A⁻ + H⁺</text>
+      <defs><marker id="arrow1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--blue-600)"/></marker></defs>
+    </svg>
+
+    <h3>Henderson–Hasselbalch equation</h3>
+    <div class="formula-box"><div class="eq">pH = pKa + log₁₀ ( [A⁻] / [HA] )</div></div>
+    <table class="symbol-table">
+      <tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr>
+      <tr><td class="sym">pH</td><td>Resulting acidity of the buffer mixture</td><td>none</td></tr>
+      <tr><td class="sym">pKa</td><td>The pH at which the acid is exactly half-dissociated — a fixed property of each weak acid (like a fingerprint)</td><td>none</td></tr>
+      <tr><td class="sym">[A⁻]</td><td>Concentration of the conjugate base form</td><td>mol/L</td></tr>
+      <tr><td class="sym">[HA]</td><td>Concentration of the undissociated weak acid form</td><td>mol/L</td></tr>
+    </table>
+    <p><strong>What changes if [A⁻] increases</strong> (more base form): the ratio [A⁻]/[HA] rises, its log becomes more positive, so pH rises (more alkaline). <strong>What changes if [HA] increases</strong> (more acid form): the ratio falls, its log becomes more negative, so pH falls (more acidic). <strong>When [A⁻] = [HA]</strong>, the ratio is 1, log(1) = 0, so pH = pKa exactly — this is the buffer's most effective point.</p>
+
+    <h4>Worked example</h4>
+    <div class="worked">
+      <p>A phosphate buffer has pKa = 6.8, with [A⁻] = 0.02 M and [HA] = 0.01 M. Find the pH.</p>
+      <ol>
+        <li>Form the ratio: <span class="step-eq">[A⁻]/[HA] = 0.02/0.01 = 2</span></li>
+        <li>Take log₁₀(2) ≈ <span class="step-eq">0.30</span></li>
+        <li>Add to pKa: <span class="step-eq">pH = 6.8 + 0.30 = 7.1</span></li>
+      </ol>
+      <p><strong>Answer: pH ≈ 7.1</strong> — right in the physiological range, which is exactly why phosphate is a key intracellular buffer.</p>
+    </div>
+
+    <h3>Three biological buffers you must know</h3>
+    <div class="grid-3">
+      <div class="card"><h4>Bicarbonate</h4><p>CO₂ + H₂O ⇌ H₂CO₃ ⇌ H⁺ + HCO₃⁻. Dominant buffer of blood plasma; the lungs adjust CO₂ to fine-tune it breath by breath.</p></div>
+      <div class="card"><h4>Phosphate</h4><p>H₂PO₄⁻ ⇌ H⁺ + HPO₄²⁻. pKa ~6.8, close to intracellular pH — the main buffer inside cells and in urine.</p></div>
+      <div class="card"><h4>Proteins</h4><p>Side chains of amino acids (e.g. histidine) can accept or donate H⁺, giving proteins their own built-in buffering capacity, including in blood via hemoglobin.</p></div>
+    </div>
+    <div class="callout micro"><div class="co-title">🧫 Microbiology Connection</div>Culture media are pre-buffered (often with phosphate) precisely so that microbial acid waste products don't crash the pH and kill the very organisms you're trying to grow.</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🧮 Interactive Buffer Calculator</div>
+    <div class="control-row">
+      <div>
+        <label class="field-label" for="pkaInput">pKa of the weak acid</label>
+        <input type="number" id="pkaInput" value="6.8" step="0.1">
+      </div>
+      <div>
+        <label class="field-label" for="ratioSlider">[A⁻] : [HA] ratio — drag to change</label>
+        <input type="range" id="ratioSlider" min="-2" max="2" step="0.05" value="0">
+      </div>
+    </div>
+    <div class="result-readout" id="bufferResult">pH = pKa (equal amounts of acid and base form)</div>
+  </div>
+</section>
+
+<!-- ============ 4. KINETICS ============ -->
+<section class="topic" id="kinetics">
+  <div class="section-head"><span class="section-num">04</span><h2>Reaction Kinetics</h2></div>
+  <p class="section-sub">How fast a reaction happens — and why that speed matters just as much as whether it happens at all.</p>
+
+  <div class="card">
+    <h3>What "reaction rate" means</h3>
+    <p><span class="term" tabindex="0">Reaction rate<span class="tip-box">How quickly the concentration of a reactant falls, or a product rises, per unit time.</span></span> is simply: how much concentration changes, divided by how much time passed. A fast rate means the graph of concentration vs. time drops (or rises) steeply; a slow rate means it's nearly flat.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h4>Zero-order</h4>
+        <div class="formula-box"><div class="eq">Rate = k</div></div>
+        <p>Rate stays constant — independent of how much substrate is left. Concentration falls in a straight line. Occurs when an enzyme is fully saturated with substrate.</p>
+      </div>
+      <div class="card">
+        <h4>First-order</h4>
+        <div class="formula-box"><div class="eq">Rate = k[A]</div></div>
+        <p>Rate is directly proportional to the amount of substrate remaining — as substrate drops, rate slows. Concentration falls in a smooth curve. Most drug elimination follows this pattern.</p>
+      </div>
+      <div class="card">
+        <h4>Second-order</h4>
+        <div class="formula-box"><div class="eq">Rate = k[A]²</div></div>
+        <p>Rate depends on the square of concentration (or the product of two reactant concentrations) — doubling concentration quadruples the rate. Falls even more steeply at first, then levels off.</p>
+      </div>
+    </div>
+
+    <h4>The rate constant, k</h4>
+    <p>k is a fixed number for a given reaction under given conditions (temperature, catalyst) that tells you how intrinsically fast that reaction is, independent of how much reactant you started with. Its <strong>unit changes with order</strong>: zero-order → mol L⁻¹ s⁻¹ (concentration per time); first-order → s⁻¹ (per time only); second-order → L mol⁻¹ s⁻¹.</p>
+
+    <h4>Half-life (t½)</h4>
+    <p><span class="term" tabindex="0">Half-life<span class="tip-box">The time needed for a reactant's concentration to fall to half of its starting value.</span></span> tells you, in one simple number, how long a process takes — useful for drug dosing intervals and for predicting how long a disinfectant stays effective. For a first-order process, t½ = 0.693/k, and — importantly — it is <strong>constant</strong>, the same no matter what the starting concentration is. For zero-order, t½ depends on the starting concentration (it's not constant).</p>
+
+    <div class="callout clinical"><div class="co-title">🩺 Clinical Connection</div>Most drugs are eliminated from the body by first-order kinetics — this is why a drug's half-life (e.g. "8 hours") is quoted as a single fixed number regardless of dose.</div>
+    <div class="callout micro"><div class="co-title">🧫 Microbiology Connection</div>Enzyme-catalysed reactions (e.g. penicillinase breaking down penicillin) shift from first-order at low substrate to zero-order once the enzyme is saturated — this transition is the basis of Michaelis–Menten kinetics you'll meet later.</div>
+
+    <h4>Worked example</h4>
+    <div class="worked">
+      <p>A drug is eliminated by first-order kinetics with k = 0.0693 hr⁻¹. Find its half-life.</p>
+      <ol>
+        <li>Use the formula: <span class="step-eq">t½ = 0.693 / k</span></li>
+        <li>Substitute: <span class="step-eq">t½ = 0.693 / 0.0693</span></li>
+        <li>Divide: <span class="step-eq">t½ = 10 hours</span></li>
+      </ol>
+      <p><strong>Answer: 10 hours</strong> — the drug's concentration halves every 10 hours, regardless of the starting dose.</p>
+    </div>
+    <div class="callout mistake"><div class="co-title">⚠️ Common Mistake</div>Students assume half-life is always constant. It is only constant for first-order processes — for zero-order, a bigger starting dose takes a proportionally longer time to halve.</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📈 Interactive Concentration-vs-Time Graph</div>
+    <div class="control-row">
+      <div>
+        <label class="field-label" for="orderSelect">Reaction order</label>
+        <select id="orderSelect">
+          <option value="0">Zero-order</option>
+          <option value="1" selected>First-order</option>
+          <option value="2">Second-order</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label" for="kSlider">Rate constant, k — drag to change</label>
+        <input type="range" id="kSlider" min="0.05" max="1" step="0.01" value="0.3">
+      </div>
+    </div>
+    <canvas id="kineticsCanvas" width="640" height="260" style="width:100%;height:auto;border-radius:10px;background:var(--paper);border:1px solid var(--line);"></canvas>
+    <div class="result-readout" id="kineticsReadout">k = 0.30</div>
+  </div>
+</section>
+
+<!-- ============ 5. THERMODYNAMICS ============ -->
+<section class="topic" id="thermo">
+  <div class="section-head"><span class="section-num">05</span><h2>Thermodynamics</h2></div>
+  <p class="section-sub">The rules that decide whether a reaction can happen on its own — and how much usable energy it releases or requires.</p>
+
+  <div class="card">
+    <h3>The vocabulary, one term at a time</h3>
+    <div class="grid-2">
+      <div>
+        <p><span class="term" tabindex="0">System<span class="tip-box">The specific reaction or process you are studying — e.g., one enzyme reaction inside a cell.</span></span> — the part of the universe you are actually studying (e.g., a single reaction inside a cell).</p>
+        <p><span class="term" tabindex="0">Surroundings<span class="tip-box">Everything outside the system that can exchange energy with it.</span></span> — literally everything else, which can exchange heat or energy with the system.</p>
+        <p><span class="term" tabindex="0">Enthalpy (H)<span class="tip-box">The total heat content of a system at constant pressure.</span></span> — a bookkeeping measure of the heat content of a system.</p>
+      </div>
+      <div>
+        <p><span class="term" tabindex="0">Entropy (S)<span class="tip-box">A measure of disorder or the number of ways energy/matter can be arranged.</span></span> — a measure of disorder/randomness; nature tends to move toward higher entropy.</p>
+        <p><span class="term" tabindex="0">Equilibrium<span class="tip-box">The state where forward and reverse reaction rates are equal, so no further net change occurs.</span></span> — the point where a reaction's forward and backward rates are equal, so nothing net changes anymore.</p>
+      </div>
+    </div>
+
+    <h3>Gibbs Free Energy — the master decision-maker</h3>
+    <div class="formula-box"><div class="eq">ΔG = ΔH − TΔS</div></div>
+    <table class="symbol-table">
+      <tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr>
+      <tr><td class="sym">ΔG</td><td>Change in free (usable) energy — the deciding number for spontaneity</td><td>kJ/mol</td></tr>
+      <tr><td class="sym">ΔH</td><td>Change in heat content (negative = heat released)</td><td>kJ/mol</td></tr>
+      <tr><td class="sym">T</td><td>Absolute temperature</td><td>Kelvin (K)</td></tr>
+      <tr><td class="sym">ΔS</td><td>Change in disorder (positive = more disordered products)</td><td>kJ/mol·K</td></tr>
+    </table>
+    <p><strong>Line by line:</strong> ΔH tells you the heat side of the story; TΔS tells you the "disorder x temperature" side; ΔG combines both into one verdict. <strong>If ΔG is negative</strong>, the reaction releases usable energy and proceeds on its own — this is called <span class="term" tabindex="0">spontaneous<span class="tip-box">Happens on its own, without a continuous outside energy input — says nothing about speed.</span></span>. <strong>If ΔG is positive</strong>, the reaction needs an external energy input to proceed. <strong>If ΔG is zero</strong>, the system is at equilibrium.</p>
+    <div class="callout mistake"><div class="co-title">⚠️ Common Mistake</div>"Spontaneous" does NOT mean "instant" or "fast." A spontaneous reaction can still be extremely slow (that's kinetics, a separate question) — ΔG only tells you it *can* happen without outside energy, not *how quickly*.</div>
+
+    <h3>Reaction energy landscape</h3>
+    <svg viewBox="0 0 600 220" style="width:100%;max-width:600px;display:block;margin:10px auto;" role="img" aria-label="Energy landscape diagram showing reaction coordinate, activation energy and Gibbs free energy change">
+      <path d="M20 160 C 120 160, 160 40, 230 40 C 280 40, 300 190, 420 190 C 480 190, 520 190, 580 190" fill="none" stroke="var(--blue-600)" stroke-width="3"/>
+      <line x1="20" y1="160" x2="20" y2="20" stroke="var(--line)"/>
+      <line x1="20" y1="200" x2="590" y2="200" stroke="var(--line)"/>
+      <text x="300" y="216" text-anchor="middle" font-size="12" fill="var(--ink-soft)">Reaction coordinate →</text>
+      <text x="14" y="15" text-anchor="end" font-size="12" fill="var(--ink-soft)" transform="rotate(-90 14 15)"></text>
+      <text x="10" y="110" font-size="12" fill="var(--ink-soft)" transform="rotate(-90 10 110)">Free energy →</text>
+      <line x1="20" y1="160" x2="20" y2="40" stroke="var(--amber)" stroke-dasharray="4"/>
+      <text x="26" y="90" font-size="11" fill="var(--amber)" font-weight="700">Activation energy (Ea)</text>
+      <text x="35" y="175" font-size="12" fill="var(--ink)">Reactants</text>
+      <text x="470" y="185" font-size="12" fill="var(--ink)">Products (lower energy)</text>
+      <line x1="20" y1="160" x2="420" y2="190" stroke="var(--green-600)" stroke-dasharray="3"/>
+      <text x="330" y="150" font-size="11" fill="var(--green-700)" font-weight="700">ΔG (negative here)</text>
+    </svg>
+    <p>The hump is the <span class="term" tabindex="0">activation energy<span class="tip-box">The energy barrier that must be crossed before a reaction can proceed, regardless of whether it is overall spontaneous.</span></span> — every reaction, spontaneous or not, must cross this barrier, which is why enzymes (which lower this hump) matter so much biologically. The overall drop in height from start to finish is ΔG.</p>
+
+    <h3>Endothermic vs exothermic</h3>
+    <p><strong>Exothermic</strong> (ΔH negative): releases heat to surroundings — e.g. glucose oxidation during respiration. <strong>Endothermic</strong> (ΔH positive): absorbs heat from surroundings — e.g. many biosynthesis steps that require ATP energy input to proceed.</p>
+
+    <div class="grid-2">
+      <div class="callout micro"><div class="co-title">🧫 Microbiology Connection — ATP hydrolysis</div>ATP → ADP + Pi has a strongly negative ΔG (~ −30.5 kJ/mol). Cells "spend" this favorable, energy-releasing reaction to drive their own unfavorable (positive ΔG) reactions, such as active transport or biosynthesis, by coupling the two together.</div>
+      <div class="callout micro"><div class="co-title">🧫 Microbiology Connection — Protein folding</div>A folded protein has lower entropy than an unfolded chain (more ordered), yet folding is still spontaneous overall because it releases enough favorable ΔH (from bond formation and burying hydrophobic residues) to outweigh that entropy cost.</div>
+    </div>
+
+    <h4>Worked example</h4>
+    <div class="worked">
+      <p>A reaction has ΔH = −40 kJ/mol and ΔS = −0.05 kJ/mol·K at T = 310 K (body temperature). Is it spontaneous?</p>
+      <ol>
+        <li>Compute TΔS: <span class="step-eq">310 × (−0.05) = −15.5 kJ/mol</span></li>
+        <li>Apply ΔG = ΔH − TΔS: <span class="step-eq">ΔG = −40 − (−15.5)</span></li>
+        <li>Subtracting a negative means adding: <span class="step-eq">ΔG = −40 + 15.5 = −24.5 kJ/mol</span></li>
+      </ol>
+      <p><strong>Answer: ΔG = −24.5 kJ/mol → negative → spontaneous</strong> at body temperature.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. COLLIGATIVE PROPERTIES ============ -->
+<section class="topic" id="colligative">
+  <div class="section-head"><span class="section-num">06</span><h2>Colligative Properties</h2></div>
+  <p class="section-sub">Properties of a solution that depend only on how many dissolved particles are present — not what those particles chemically are.</p>
+
+  <div class="card">
+    <h3>Why only particle number matters</h3>
+    <p>Colligative properties (osmotic pressure among them) arise because dissolved particles physically get in the way of solvent molecules — diluting them, slowing their escape, disrupting their organisation. One particle causes one unit of this crowding effect, whether that particle is a sugar molecule, a salt ion, or a protein. So what determines the effect is simply <strong>how many separate particles</strong> are dissolved, not their chemical identity.</p>
+
+    <h3>Osmosis and osmotic pressure</h3>
+    <p><span class="term" tabindex="0">Osmosis<span class="tip-box">The net movement of solvent (water) across a semipermeable membrane, from a region of lower solute concentration to higher solute concentration.</span></span> is water moving across a membrane toward the side with more dissolved particles, trying to equalise concentration on both sides. <span class="term" tabindex="0">Osmotic pressure<span class="tip-box">The pressure that would need to be applied to stop osmotic water flow.</span></span> is the pressure you would need to apply to the concentrated side to stop that water movement.</p>
+    <div class="formula-box"><div class="eq">π = M R T</div></div>
+    <table class="symbol-table">
+      <tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr>
+      <tr><td class="sym">π</td><td>Osmotic pressure</td><td>atm</td></tr>
+      <tr><td class="sym">M</td><td><span class="term" tabindex="0">Osmolarity<span class="tip-box">Total concentration of all dissolved particles, in osmoles per litre of solution.</span></span> — total particle concentration (not just molecule concentration; a salt that splits into 2 ions counts as 2)</td><td>osmol/L</td></tr>
+      <tr><td class="sym">R</td><td>The gas constant — a fixed conversion number</td><td>0.0821 L·atm/mol·K</td></tr>
+      <tr><td class="sym">T</td><td>Absolute temperature</td><td>Kelvin</td></tr>
+    </table>
+    <p><strong>If particle concentration (M) increases</strong>, osmotic pressure rises proportionally — a more concentrated solution pulls water in harder. <strong>If temperature rises</strong>, osmotic pressure also rises, because warmer particles move and collide more vigorously.</p>
+    <p>Note: <span class="term" tabindex="0">Osmolality<span class="tip-box">Same idea as osmolarity, but measured per kilogram of solvent rather than per litre of solution — used when precision matters, e.g. in clinical lab reporting.</span></span> is a closely related term used when measuring per kilogram of solvent instead of per litre of solution — the concept is identical.</p>
+
+    <h3>Tonicity and the cell</h3>
+    <svg viewBox="0 0 640 200" style="width:100%;max-width:640px;display:block;margin:10px auto;" role="img" aria-label="Diagram of a cell in hypotonic, isotonic, and hypertonic solutions">
+      <g>
+        <circle cx="100" cy="100" r="55" fill="var(--blue-100)" stroke="var(--blue-600)" stroke-width="2"/>
+        <circle cx="100" cy="100" r="65" fill="none" stroke="var(--green-500)" stroke-width="2" stroke-dasharray="3 3"/>
+        <text x="100" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">Hypotonic — cell swells</text>
+        <text x="100" y="30" text-anchor="middle" font-size="10" fill="var(--ink-soft)">low outside solute</text>
+      </g>
+      <g>
+        <circle cx="320" cy="100" r="50" fill="var(--blue-100)" stroke="var(--blue-600)" stroke-width="2"/>
+        <circle cx="320" cy="100" r="50" fill="none" stroke="var(--green-500)" stroke-width="2" stroke-dasharray="3 3"/>
+        <text x="320" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">Isotonic — no change</text>
+        <text x="320" y="30" text-anchor="middle" font-size="10" fill="var(--ink-soft)">equal solute both sides</text>
+      </g>
+      <g>
+        <circle cx="530" cy="100" r="35" fill="var(--blue-100)" stroke="var(--blue-600)" stroke-width="2"/>
+        <path d="M530 65 L560 100 L530 135 L500 100 Z" fill="none" stroke="var(--green-500)" stroke-width="2" stroke-dasharray="3 3"/>
+        <text x="530" y="185" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">Hypertonic — cell shrinks</text>
+        <text x="530" y="30" text-anchor="middle" font-size="10" fill="var(--ink-soft)">high outside solute</text>
+      </g>
+    </svg>
+    <div class="grid-3">
+      <div class="callout clinical"><div class="co-title">🩺 Clinical Connection — RBC / IV fluids</div>Normal saline (0.9%) is isotonic with blood, so it is safe to infuse. Pure water infused IV is hypotonic and would cause red blood cells to swell and burst (haemolysis).</div>
+      <div class="callout clinical"><div class="co-title">🩺 Clinical Connection — Kidney</div>The kidney's loop of Henle deliberately builds a hypertonic environment in the medulla to draw water out of urine by osmosis, concentrating it.</div>
+      <div class="callout micro"><div class="co-title">🧫 Microbiology Connection</div>Bacteria placed in a strongly hypertonic environment (e.g. high-salt curing, honey) undergo <span class="term" tabindex="0">plasmolysis<span class="tip-box">Shrinking of the bacterial cytoplasm away from the cell wall due to osmotic water loss.</span></span> — this is precisely why salting and sugaring are ancient methods of food preservation.</div>
+    </div>
+
+    <h4>Worked example</h4>
+    <div class="worked">
+      <p>Find the osmotic pressure of a 0.10 osmol/L NaCl solution at body temperature (310 K).</p>
+      <ol>
+        <li>Write the formula: <span class="step-eq">π = M R T</span></li>
+        <li>Substitute values: <span class="step-eq">π = 0.10 × 0.0821 × 310</span></li>
+        <li>Multiply step by step: 0.10 × 0.0821 = 0.00821; then <span class="step-eq">0.00821 × 310 ≈ 2.55</span></li>
+      </ol>
+      <p><strong>Answer: π ≈ 2.55 atm</strong> — this is the pressure the cell membrane must resist to prevent water rushing in.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🔬 Interactive Osmosis Simulation</div>
+    <label class="field-label" for="soluteSlider">Outside solute concentration (relative to cell interior)</label>
+    <input type="range" id="soluteSlider" min="-10" max="10" step="1" value="0">
+    <svg id="osmosisSVG" viewBox="0 0 300 200" style="width:100%;max-width:320px;display:block;margin:14px auto;">
+      <rect x="0" y="0" width="300" height="200" fill="var(--blue-050)" rx="10"/>
+      <circle id="osmoCell" cx="150" cy="100" r="60" fill="var(--blue-100)" stroke="var(--blue-600)" stroke-width="3"/>
+      <text x="150" y="105" text-anchor="middle" font-size="12" fill="var(--ink)">Cell</text>
+    </svg>
+    <div class="result-readout" id="osmoReadout">Isotonic — cell stable</div>
+  </div>
+</section>
+
+<!-- ============ FLASHCARDS ============ -->
+<section class="topic" id="flashcards">
+  <div class="section-head"><span class="section-num">—</span><h2>Formula Memory Cards</h2></div>
+  <p class="section-sub">Tap a card to flip it. Use ← → to move between cards.</p>
+  <div class="flash-wrap">
+    <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Flip flashcard">
+      <div class="flashcard-inner">
+        <div class="flash-face flash-front" id="flashFront"></div>
+        <div class="flash-face flash-back" id="flashBack"></div>
+      </div>
+    </div>
+    <div class="flash-nav">
+      <button class="btn btn-ghost" id="flashPrev">← Prev</button>
+      <span id="flashCounter" style="color:var(--ink-soft);font-size:.85rem;">1 / 6</span>
+      <button class="btn btn-ghost" id="flashNext">Next →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL QUIZ ============ -->
+<section class="topic" id="finalquiz">
+  <div class="section-head"><span class="section-num">—</span><h2>Final Quiz</h2></div>
+  <p class="section-sub">10 questions across all five topics. Your score updates as you answer.</p>
+  <div class="panel">
+    <div class="panel-title">📝 Test Yourself <span class="quiz-score-badge" id="finalScoreBadge">Score: 0 / 10</span></div>
+    <div id="finalQuizHost"></div>
+  </div>
+</section>
+
+</div>
+</main>
+
+<div id="trackerBar" aria-live="polite">Progress
+  <strong id="trackerPct">0%</strong>
+</div>
+
+<footer>
+  Principles of Biophysical Chemistry — teaching resource for I MSc Microbiology · Self-contained, offline, no external dependencies.
+</footer>
+
+<script>
+/* ============================================================
+   DATA-DRIVEN ENGINES (quiz, flashcards) — single source of
+   truth per feature so content can be edited without touching
+   rendering logic.
+   ============================================================ */
+
+// ---------- Dark mode ----------
+const darkBtn = document.getElementById('darkToggle');
+darkBtn.addEventListener('click', ()=>{
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  darkBtn.textContent = isDark ? '🌙' : '☀️';
+});
+document.getElementById('printBtn').addEventListener('click', ()=>window.print());
+
+// ---------- Hero pH strip ----------
+(function(){
+  const strip = document.querySelector('.hero-ph-strip');
+  const colors = ['#c0392b','#d35400','#e67e22','#e8a33d','#f1c40f','#c8d84a','#8fce4a','#3fa864','#2e8b4e','#2ecc71','#27ae94','#2196d6','#1976b8','#12588f','#0b3d68'];
+  for(let i=0;i<15;i++){
+    const c = document.createElement('div');
+    c.className='chip'; c.style.background=colors[i]; c.textContent=i;
+    strip.appendChild(c);
+  }
+})();
+
+// ---------- Scroll progress + tracker ----------
+const progressBar = document.getElementById('progressBar');
+const trackerPct = document.getElementById('trackerPct');
+window.addEventListener('scroll', ()=>{
+  const h = document.documentElement;
+  const pct = (h.scrollTop)/(h.scrollHeight - h.clientHeight) * 100;
+  progressBar.style.width = pct + '%';
+  trackerPct.textContent = Math.round(pct) + '%';
+});
+
+// ============================================================
+// pH CALCULATOR
+// ============================================================
+const phSlider = document.getElementById('phSlider');
+const hConcOut = document.getElementById('hConcOut');
+const phOut = document.getElementById('phOut');
+const phVerdict = document.getElementById('phVerdict');
+function updatePH(){
+  const ph = parseFloat(phSlider.value);
+  const hConc = Math.pow(10, -ph);
+  hConcOut.value = hConc.toExponential(2) + ' mol/L';
+  phOut.value = ph.toFixed(1);
+  let verdict;
+  if(ph < 6.5) verdict = 'Acidic — like gastric acid or fermenting Lactobacillus broth';
+  else if(ph > 7.5) verdict = 'Alkaline — like household ammonia or a Vibrio-favouring alkaline medium';
+  else verdict = 'Near-neutral — the zone blood and most cytoplasm sit in';
+  phVerdict.textContent = 'pH ' + ph.toFixed(1) + ' — ' + verdict;
+}
+phSlider.addEventListener('input', updatePH);
+updatePH();
+
+// ============================================================
+// BUFFER CALCULATOR
+// ============================================================
+const pkaInput = document.getElementById('pkaInput');
+const ratioSlider = document.getElementById('ratioSlider');
+const bufferResult = document.getElementById('bufferResult');
+function updateBuffer(){
+  const pka = parseFloat(pkaInput.value) || 0;
+  const logRatio = parseFloat(ratioSlider.value);
+  const ratio = Math.pow(10, logRatio);
+  const ph = pka + logRatio;
+  bufferResult.textContent = `[A⁻]/[HA] = ${ratio.toFixed(2)}  →  pH = ${pka.toFixed(2)} + log(${ratio.toFixed(2)}) = ${ph.toFixed(2)}`;
+}
+pkaInput.addEventListener('input', updateBuffer);
+ratioSlider.addEventListener('input', updateBuffer);
+updateBuffer();
+
+// ============================================================
+// KINETICS GRAPH
+// ============================================================
+const orderSelect = document.getElementById('orderSelect');
+const kSlider = document.getElementById('kSlider');
+const kineticsReadout = document.getElementById('kineticsReadout');
+const canvas = document.getElementById('kineticsCanvas');
+const ctx = canvas.getContext('2d');
+function drawKinetics(){
+  const order = parseInt(orderSelect.value);
+  const k = parseFloat(kSlider.value);
+  const A0 = 1.0;
+  const W = canvas.width, H = canvas.height;
+  const pad = 46;
+  ctx.clearRect(0,0,W,H);
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  ctx.strokeStyle = isDark ? '#22394a' : '#dbe7ef';
+  ctx.fillStyle = isDark ? '#aebfcd' : '#3c5568';
+  ctx.font = '12px sans-serif';
+  // axes
+  ctx.beginPath();
+  ctx.moveTo(pad, 10); ctx.lineTo(pad, H-pad); ctx.lineTo(W-10, H-pad);
+  ctx.stroke();
+  ctx.fillText('Concentration [A]', 6, 18);
+  ctx.fillText('Time →', W-55, H-14);
+
+  const tMax = 20;
+  const pts = [];
+  for(let t=0; t<=tMax; t+=0.1){
+    let conc;
+    if(order===0){ conc = Math.max(A0 - k*t, 0); }
+    else if(order===1){ conc = A0*Math.exp(-k*t); }
+    else { conc = A0/(1+A0*k*t); }
+    pts.push({t, conc});
+  }
+  ctx.strokeStyle = '#1976b8';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  pts.forEach((p,i)=>{
+    const x = pad + (p.t/tMax)*(W-pad-20);
+    const y = (H-pad) - p.conc*(H-pad-20);
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  // half-life marker for first order
+  if(order===1){
+    const halfLife = 0.693/k;
+    if(halfLife <= tMax){
+      const x = pad + (halfLife/tMax)*(W-pad-20);
+      ctx.strokeStyle = '#3fa864';
+      ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.moveTo(x,10); ctx.lineTo(x,H-pad); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#2e8b4e';
+      ctx.fillText('t½ ≈ ' + halfLife.toFixed(1), x+4, 24);
+    }
+  }
+  const labels = ['Zero-order (straight-line decay)','First-order (exponential decay, constant half-life)','Second-order (steep initial drop, long tail)'];
+  kineticsReadout.textContent = `k = ${k.toFixed(2)}  —  ${labels[order]}`;
+}
+orderSelect.addEventListener('change', drawKinetics);
+kSlider.addEventListener('input', drawKinetics);
+drawKinetics();
+darkBtn.addEventListener('click', ()=>setTimeout(drawKinetics,50));
+
+// ============================================================
+// OSMOSIS SIMULATION
+// ============================================================
+const soluteSlider = document.getElementById('soluteSlider');
+const osmoCell = document.getElementById('osmoCell');
+const osmoReadout = document.getElementById('osmoReadout');
+function updateOsmosis(){
+  const v = parseInt(soluteSlider.value); // -10 hypotonic outside .. +10 hypertonic outside
+  const r = 60 - v*2.2; // outside solute high -> cell shrinks
+  osmoCell.setAttribute('r', Math.max(20, Math.min(85,r)));
+  let txt;
+  if(v < -2) txt = 'Hypotonic outside — water enters, cell swells (risk of lysis)';
+  else if(v > 2) txt = 'Hypertonic outside — water leaves, cell shrinks (plasmolysis)';
+  else txt = 'Isotonic — no net water movement, cell stable';
+  osmoReadout.textContent = txt;
+}
+soluteSlider.addEventListener('input', updateOsmosis);
+updateOsmosis();
+
+// ============================================================
+// SECTION QUIZZES (data-driven engine)
+// ============================================================
+const sectionQuizData = {
+  ph: [
+    {q:"If pH decreases by 2 units, [H⁺] has:", opts:["Doubled","Increased 100-fold","Increased 10-fold","Halved"], correct:1, explain:"Each pH unit is a 10× change; 2 units = 10×10 = 100-fold."},
+    {q:"A fermenting culture at pH 4 is compared to distilled water at pH 7. How much more acidic is it?", opts:["3 times","30 times","300 times","1000 times"], correct:3, explain:"3 pH units apart = 10³ = 1000-fold difference in [H⁺]."}
+  ],
+  buffers: [
+    {q:"In the Henderson–Hasselbalch equation, when [A⁻] = [HA], pH equals:", opts:["0","pKa","1","2 × pKa"], correct:1, explain:"log(1) = 0, so pH = pKa + 0 = pKa."},
+    {q:"Which biological buffer has a pKa closest to intracellular pH, making it a key intracellular buffer?", opts:["Bicarbonate","Phosphate","Hemoglobin","Ammonia"], correct:1, explain:"Phosphate's pKa (~6.8) sits close to intracellular pH (~7.0-7.2)."}
+  ],
+  kinetics: [
+    {q:"For a first-order reaction, if you double the starting concentration, the half-life:", opts:["Doubles","Halves","Stays the same","Quadruples"], correct:2, explain:"First-order half-life (0.693/k) is independent of starting concentration."},
+    {q:"A zero-order reaction's concentration-vs-time graph looks like:", opts:["A straight line","An exponential curve","A steep hyperbola","A horizontal flat line"], correct:0, explain:"Zero-order rate is constant, so concentration falls linearly with time."}
+  ],
+  thermo: [
+    {q:"A reaction with ΔG = +15 kJ/mol is:", opts:["Spontaneous and fast","Spontaneous but slow","Non-spontaneous, needs energy input","At equilibrium"], correct:2, explain:"Positive ΔG means the reaction cannot proceed on its own."},
+    {q:"ATP hydrolysis has a strongly negative ΔG. Cells use this energy by:", opts:["Storing it as heat only","Coupling it to drive unfavorable reactions","Ignoring it","Converting it directly to DNA"], correct:1, explain:"Cells couple ATP hydrolysis's favorable ΔG to power otherwise unfavorable (positive ΔG) processes."}
+  ],
+  colligative: [
+    {q:"Colligative properties depend on:", opts:["The chemical identity of the solute","The number of dissolved particles","The color of the solution","The molecular weight of the solute only"], correct:1, explain:"Colligative effects depend purely on particle count, not particle identity."},
+    {q:"A bacterium placed in a strongly hypertonic (high-salt) solution will:", opts:["Swell and burst","Undergo plasmolysis (shrink)","Stay exactly the same","Immediately divide"], correct:1, explain:"Water leaves the cell toward the higher outside solute concentration, shrinking the cytoplasm — plasmolysis."}
+  ]
+};
+
+function buildSectionQuiz(sectionEl, data){
+  const host = document.createElement('div');
+  host.className = 'panel';
+  host.innerHTML = '<div class="panel-title">🧪 Quick Check <span class="quiz-score-badge" data-score>Score: 0 / '+data.length+'</span></div>';
+  data.forEach((item, qi)=>{
+    const qDiv = document.createElement('div');
+    qDiv.className = 'quiz-q';
+    qDiv.innerHTML = `<p class="qtext">${qi+1}. ${item.q}</p><div class="quiz-opts"></div><div class="quiz-feedback" style="display:none;"></div>`;
+    const optsHost = qDiv.querySelector('.quiz-opts');
+    const feedback = qDiv.querySelector('.quiz-feedback');
+    item.opts.forEach((opt, oi)=>{
+      const b = document.createElement('button');
+      b.className='quiz-opt'; b.type='button'; b.textContent=opt;
+      b.addEventListener('click', ()=>{
+        if(qDiv.dataset.answered) return;
+        qDiv.dataset.answered = '1';
+        [...optsHost.children].forEach((el,i)=>{
+          if(i===item.correct) el.classList.add('correct');
+          else if(i===oi) el.classList.add('wrong');
+        });
+        feedback.style.display='block';
+        if(oi===item.correct){
+          feedback.className='quiz-feedback ok';
+          feedback.textContent = '✅ Correct — ' + item.explain;
+          const badge = host.querySelector('[data-score]');
+          badge.dataset.count = (parseInt(badge.dataset.count||0)+1);
+          badge.textContent = 'Score: ' + badge.dataset.count + ' / ' + data.length;
+        } else {
+          feedback.className='quiz-feedback bad';
+          feedback.textContent = '❌ Not quite — ' + item.explain;
+        }
+      });
+      optsHost.appendChild(b);
+    });
+    host.appendChild(qDiv);
+  });
+  sectionEl.querySelector('.card').after(host);
+}
+buildSectionQuiz(document.getElementById('ph'), sectionQuizData.ph);
+buildSectionQuiz(document.getElementById('buffers'), sectionQuizData.buffers);
+buildSectionQuiz(document.getElementById('kinetics'), sectionQuizData.kinetics);
+buildSectionQuiz(document.getElementById('thermo'), sectionQuizData.thermo);
+buildSectionQuiz(document.getElementById('colligative'), sectionQuizData.colligative);
+
+// ============================================================
+// FLASHCARDS ENGINE
+// ============================================================
+const flashData = [
+  {front:'pH = ?', back:'−log₁₀[H⁺]\nLower pH = more H⁺ = more acidic'},
+  {front:'Henderson–Hasselbalch', back:'pH = pKa + log([A⁻]/[HA])\nWhen [A⁻]=[HA], pH = pKa'},
+  {front:'First-order half-life', back:'t½ = 0.693 / k\nConstant, regardless of starting concentration'},
+  {front:'Gibbs Free Energy', back:'ΔG = ΔH − TΔS\nNegative ΔG = spontaneous'},
+  {front:'Osmotic pressure', back:'π = M R T\nDepends only on particle number, not identity'},
+  {front:'Rate laws', back:'Zero: Rate=k\nFirst: Rate=k[A]\nSecond: Rate=k[A]²'}
+];
+let flashIdx = 0;
+const flashcardEl = document.getElementById('flashcard');
+const flashFront = document.getElementById('flashFront');
+const flashBack = document.getElementById('flashBack');
+const flashCounter = document.getElementById('flashCounter');
+function renderFlash(){
+  flashcardEl.classList.remove('flipped');
+  flashFront.textContent = flashData[flashIdx].front;
+  flashBack.textContent = flashData[flashIdx].back;
+  flashCounter.textContent = (flashIdx+1) + ' / ' + flashData.length;
+}
+flashcardEl.addEventListener('click', ()=>flashcardEl.classList.toggle('flipped'));
+flashcardEl.addEventListener('keypress', (e)=>{ if(e.key==='Enter' || e.key===' ') flashcardEl.classList.toggle('flipped'); });
+document.getElementById('flashPrev').addEventListener('click', ()=>{ flashIdx=(flashIdx-1+flashData.length)%flashData.length; renderFlash(); });
+document.getElementById('flashNext').addEventListener('click', ()=>{ flashIdx=(flashIdx+1)%flashData.length; renderFlash(); });
+renderFlash();
+
+// ============================================================
+// FINAL QUIZ ENGINE (10 questions, aggregated from all sections)
+// ============================================================
+const finalQuizData = [
+  {q:"pH is defined as:", opts:["log[H⁺]","−log[H⁺]","[H⁺]/[OH⁻]","−log[OH⁻]"], correct:1},
+  {q:"A drop of 3 pH units means [H⁺] has increased by a factor of:", opts:["3","30","300","1000"], correct:3},
+  {q:"Henderson–Hasselbalch: if [A⁻] > [HA], the solution's pH is:", opts:["Below pKa","Equal to pKa","Above pKa","Undefined"], correct:2},
+  {q:"Which is the main intracellular biological buffer?", opts:["Bicarbonate","Phosphate","Ammonia","Citrate"], correct:1},
+  {q:"Zero-order reaction rate depends on:", opts:["[A]²","[A]","Nothing — it's constant","Temperature only"], correct:2},
+  {q:"First-order half-life formula is:", opts:["k/0.693","0.693/k","k × [A]","1/k²"], correct:1},
+  {q:"A negative ΔG means the reaction is:", opts:["Non-spontaneous","At equilibrium","Spontaneous","Impossible"], correct:2},
+  {q:"ATP hydrolysis is used by cells to:", opts:["Store heat","Drive unfavorable reactions by coupling","Lower entropy only","Produce CO₂ only"], correct:1},
+  {q:"Osmotic pressure formula π = MRT shows π increases when:", opts:["Particle concentration or temperature increases","Only pressure increases","Only solvent volume increases","Particle identity changes"], correct:0},
+  {q:"A cell in a hypertonic solution will:", opts:["Swell","Shrink (plasmolysis)","Stay unchanged","Divide rapidly"], correct:1}
+];
+const finalHost = document.getElementById('finalQuizHost');
+const finalBadge = document.getElementById('finalScoreBadge');
+let finalScore = 0;
+finalQuizData.forEach((item, qi)=>{
+  const qDiv = document.createElement('div');
+  qDiv.className = 'quiz-q';
+  qDiv.innerHTML = `<p class="qtext">${qi+1}. ${item.q}</p><div class="quiz-opts"></div>`;
+  const optsHost = qDiv.querySelector('.quiz-opts');
+  item.opts.forEach((opt, oi)=>{
+    const b = document.createElement('button');
+    b.className='quiz-opt'; b.type='button'; b.textContent=opt;
+    b.addEventListener('click', ()=>{
+      if(qDiv.dataset.answered) return;
+      qDiv.dataset.answered='1';
+      [...optsHost.children].forEach((el,i)=>{
+        if(i===item.correct) el.classList.add('correct');
+        else if(i===oi) el.classList.add('wrong');
+      });
+      if(oi===item.correct){
+        finalScore++;
+        finalBadge.textContent = 'Score: ' + finalScore + ' / ' + finalQuizData.length;
+      }
+    });
+    optsHost.appendChild(b);
+  });
+  finalHost.appendChild(qDiv);
+});
+</script>
+</body>
+</html>

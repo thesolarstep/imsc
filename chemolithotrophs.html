@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemolithotrophs: Physiological Groups | MSc Microbial Physiology I</title>
+<style>
+:root{
+  --bg:#0b0f0e; --panel:#121917; --panel2:#161f1c; --border:#243330;
+  --text:#e6ede9; --muted:#8fa39c; --accent:#4fd1a5; --accent2:#f2a94e;
+  --donor:#4fd1a5; --acceptor:#f2635a; --energy:#f2a94e; --carbon:#7aa7f2;
+  --bad:#e05c5c; --good:#4fd1a5;
+  font-size:16px;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  line-height:1.5;
+}
+.wrap{max-width:980px; margin:0 auto; padding:1.2rem 1.2rem 4rem;}
+header.top{
+  padding:2.2rem 0 1.4rem; border-bottom:1px solid var(--border); margin-bottom:1.8rem;
+}
+.eyebrow{color:var(--accent); font-size:0.78rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;}
+h1{font-size:1.7rem; margin:0.3rem 0 0.4rem; font-weight:700;}
+.sub{color:var(--muted); font-size:0.95rem; max-width:640px;}
+section{margin-bottom:2.6rem;}
+h2{font-size:1.15rem; margin:0 0 0.9rem; display:flex; align-items:center; gap:0.5rem;}
+h2 .n{color:var(--accent2); font-variant-numeric:tabular-nums;}
+p{color:#c9d6d0; font-size:0.94rem;}
+.card{
+  background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1.1rem 1.2rem;
+}
+.hook{
+  background:linear-gradient(135deg,#122420,#0e1613); border:1px solid var(--border);
+  border-radius:12px; padding:1.6rem; text-align:center;
+}
+.hook .q{font-size:1.25rem; font-weight:600; color:var(--text);}
+.hook .a{color:var(--muted); margin-top:0.5rem; font-size:0.9rem;}
+
+/* Four questions grid */
+.qgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:0.7rem;}
+.qgrid .card{border-top:3px solid var(--accent);}
+.qgrid .card:nth-child(2){border-top-color:var(--acceptor);}
+.qgrid .card:nth-child(3){border-top-color:var(--energy);}
+.qgrid .card:nth-child(4){border-top-color:var(--carbon);}
+.qgrid .card b{display:block; font-size:0.9rem; margin-bottom:0.3rem;}
+.qgrid .card span{font-size:0.82rem; color:var(--muted);}
+
+/* Flow diagram */
+.flow{display:flex; flex-wrap:wrap; align-items:center; gap:0.4rem; justify-content:center; margin:1rem 0;}
+.flow .box{
+  background:var(--panel2); border:1px solid var(--border); border-radius:8px;
+  padding:0.55rem 0.85rem; font-size:0.85rem; font-weight:600; text-align:center; min-width:90px;
+}
+.flow .box.donor{border-color:var(--donor); color:var(--donor);}
+.flow .box.acceptor{border-color:var(--acceptor); color:var(--acceptor);}
+.flow .box.energy{border-color:var(--energy); color:var(--energy);}
+.flow .box.carbon{border-color:var(--carbon); color:var(--carbon);}
+.flow .arrow{color:var(--muted); font-size:1.1rem;}
+.flow-label{text-align:center; font-size:0.78rem; color:var(--muted); margin-top:-0.6rem; margin-bottom:1rem;}
+
+.callout{
+  background:#1a1610; border:1px solid #3a2f18; border-radius:8px; padding:0.8rem 1rem;
+  font-size:0.85rem; color:#f0d9a6; margin-top:0.8rem;
+}
+
+/* Sorter */
+.sorter-cards{display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;}
+.chip{
+  background:var(--panel2); border:1px solid var(--border); border-radius:20px;
+  padding:0.45rem 1rem; font-size:0.88rem; cursor:pointer; user-select:none;
+  transition:transform .1s, border-color .15s;
+}
+.chip:hover{border-color:var(--accent);}
+.chip:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+.chip.placed{opacity:0.35; cursor:default; pointer-events:none;}
+.bins{display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;}
+.bin{
+  border:2px dashed var(--border); border-radius:10px; padding:0.8rem; min-height:110px;
+}
+.bin h4{margin:0 0 0.5rem; font-size:0.85rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;}
+.bin .dropped{display:flex; flex-wrap:wrap; gap:0.4rem;}
+.bin .dropped .tag{
+  font-size:0.8rem; padding:0.3rem 0.65rem; border-radius:14px; font-weight:600;
+}
+.tag.correct{background:#123a2c; color:var(--good); border:1px solid var(--good);}
+.tag.wrong{background:#3a1717; color:var(--bad); border:1px solid var(--bad);}
+.sorter-status{font-size:0.85rem; color:var(--muted); margin-top:0.6rem;}
+
+/* Tabs */
+.tabs{display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:0.9rem;}
+.tab{
+  background:var(--panel2); border:1px solid var(--border); border-radius:8px;
+  padding:0.5rem 0.9rem; font-size:0.85rem; cursor:pointer; color:var(--muted); font-weight:600;
+}
+.tab.active{background:var(--accent); color:#08150f; border-color:var(--accent);}
+.tab:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+.groupcard{display:none;}
+.groupcard.active{display:block;}
+.gp-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:0.7rem; margin-top:0.8rem;}
+.gp-item{background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:0.7rem 0.85rem;}
+.gp-item .k{font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted);}
+.gp-item .v{font-size:0.92rem; margin-top:0.15rem; font-weight:600;}
+.fact{
+  margin-top:0.9rem; background:#0f1c17; border-left:3px solid var(--accent); padding:0.6rem 0.9rem;
+  font-size:0.85rem; color:#cde6db;
+}
+
+/* Builder */
+.builder-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:0.8rem; margin-bottom:1rem;}
+select{
+  width:100%; background:var(--panel2); color:var(--text); border:1px solid var(--border);
+  border-radius:8px; padding:0.55rem 0.6rem; font-size:0.88rem;
+}
+select:focus-visible{outline:2px solid var(--accent);}
+.builder-label{font-size:0.78rem; color:var(--muted); margin-bottom:0.3rem; display:block;}
+.result{
+  background:var(--panel2); border:1px solid var(--border); border-radius:10px; padding:1rem;
+  font-size:1.0rem; text-align:center; min-height:3rem; display:flex; align-items:center; justify-content:center;
+}
+.result.warn{border-color:var(--bad); color:var(--bad);}
+.result.ok{border-color:var(--good); color:var(--good);}
+
+/* Ecology */
+.eco-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:0.8rem;}
+.eco-grid .card{font-size:0.85rem;}
+.eco-grid .card .t{font-weight:700; margin-bottom:0.25rem; color:var(--accent);}
+
+/* Quiz */
+.qz{border-bottom:1px solid var(--border); padding:1rem 0;}
+.qz:last-child{border-bottom:none;}
+.qz .qtext{font-weight:600; margin-bottom:0.6rem; font-size:0.92rem;}
+.qz .opt{
+  display:block; width:100%; text-align:left; background:var(--panel2); border:1px solid var(--border);
+  border-radius:8px; padding:0.55rem 0.8rem; margin-bottom:0.4rem; cursor:pointer; font-size:0.86rem; color:var(--text);
+}
+.qz .opt:hover{border-color:var(--accent);}
+.qz .opt.correct{background:#123a2c; border-color:var(--good); color:var(--good);}
+.qz .opt.wrong{background:#3a1717; border-color:var(--bad); color:var(--bad);}
+.qz .exp{margin-top:0.5rem; font-size:0.82rem; color:var(--muted); display:none; padding:0.5rem 0.7rem; background:#0f1a16; border-radius:6px;}
+.qz .exp.show{display:block;}
+
+/* Challenge */
+.challenge-box{background:var(--panel2); border:1px solid var(--accent2); border-radius:10px; padding:1.1rem;}
+.challenge-steps{margin-top:1rem;}
+.cstep{
+  background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:0.65rem 0.85rem;
+  margin-bottom:0.5rem; font-size:0.86rem; cursor:pointer;
+}
+.cstep .ans{display:none; margin-top:0.4rem; color:var(--accent); font-weight:600;}
+.cstep.revealed .ans{display:block;}
+.cstep .prompt{color:var(--muted); font-size:0.78rem;}
+
+/* Recap */
+.recap{
+  background:linear-gradient(135deg,#0f1c17,#0b1210); border:1px solid var(--border);
+  border-radius:10px; padding:1.2rem;
+}
+.recap ul{margin:0.5rem 0 0; padding-left:1.2rem;}
+.recap li{font-size:0.88rem; margin-bottom:0.4rem; color:#d0ddd6;}
+
+footer{text-align:center; color:var(--muted); font-size:0.78rem; margin-top:2.5rem;}
+
+@media (max-width:600px){
+  .bins{grid-template-columns:1fr;}
+  h1{font-size:1.4rem;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="eyebrow">MSc Microbiology &middot; Microbial Physiology I</div>
+  <h1>Chemolithotrophs: Physiological Groups</h1>
+  <div class="sub">Energy without organic food — how microbes strip electrons from rocks, gas, and rust to live.</div>
+</header>
+
+<section class="hook">
+  <div class="q">What can a microbe eat if there is no organic food?</div>
+  <div class="a">No sugars. No amino acids. No organic carbon at all. Some microbes still thrive — by oxidizing inorganic chemicals like H₂, H₂S, Fe²⁺, or NH₃ for energy.</div>
+</section>
+
+<section>
+  <h2><span class="n">01</span> What is chemolithotrophy?</h2>
+  <p><b>Chemolithotrophy</b> is the use of <b>inorganic chemicals as electron donors</b> to generate energy (ATP), via an electron transport chain — exactly as chemoorganotrophs do with organic compounds, and phototrophs do with light-driven electron flow.</p>
+  <div class="flow">
+    <div class="box donor">Inorganic donor<br><span style="font-weight:400">H₂ / H₂S / Fe²⁺ / NH₃</span></div>
+    <div class="arrow">→</div>
+    <div class="box">Electron transport chain</div>
+    <div class="arrow">→</div>
+    <div class="box energy">ATP</div>
+  </div>
+  <div class="flow-label">energy metabolism — the "chemolitho" part</div>
+  <div class="flow">
+    <div class="box carbon">CO₂</div>
+    <div class="arrow">→</div>
+    <div class="box">Carbon fixation<br><span style="font-weight:400">e.g. Calvin cycle</span></div>
+    <div class="arrow">→</div>
+    <div class="box carbon">Cell carbon</div>
+  </div>
+  <div class="flow-label">carbon metabolism — the "autotroph" part (separate axis!)</div>
+  <div class="callout">
+    ⚠ Chemolithotrophy describes only the <b>energy/electron source</b>. Whether the organism is autotrophic depends on its <b>carbon source</b> — a separate axis entirely. Most chemolithotrophs are chemolithoautotrophs (CO₂-fixing), but some are chemolithoheterotrophs (organic carbon, inorganic energy). Don't collapse the two.
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">02</span> Four questions that separate the concepts</h2>
+  <div class="qgrid">
+    <div class="card"><b>1. What gives electrons?</b><span>Electron donor — defines "litho" vs "organo"</span></div>
+    <div class="card"><b>2. Where do electrons go?</b><span>Terminal electron acceptor — O₂, NO₃⁻, etc.</span></div>
+    <div class="card"><b>3. Where does energy come from?</b><span>The donor→acceptor redox reaction — ATP via ETC</span></div>
+    <div class="card"><b>4. Where does carbon come from?</b><span>CO₂ (autotroph) or organic C (heterotroph)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">03</span> Sort the electron donors</h2>
+  <p>Click each card and place it: inorganic or organic donor.</p>
+  <div class="sorter-cards" id="sorterCards"></div>
+  <div class="bins">
+    <div class="bin" id="binInorganic"><h4>Inorganic donor</h4><div class="dropped"></div></div>
+    <div class="bin" id="binOrganic"><h4>Organic donor</h4><div class="dropped"></div></div>
+  </div>
+  <div class="sorter-status" id="sorterStatus">0 / 6 sorted</div>
+</section>
+
+<section>
+  <h2><span class="n">04</span> Physiological group explorer</h2>
+  <div class="tabs" id="tabs"></div>
+  <div id="groupPanels"></div>
+</section>
+
+<section>
+  <h2><span class="n">05</span> Build the metabolism</h2>
+  <p>Select a donor, acceptor, and carbon source. Watch the physiological description assemble.</p>
+  <div class="builder-row">
+    <div>
+      <label class="builder-label" for="selDonor">Electron donor</label>
+      <select id="selDonor"></select>
+    </div>
+    <div>
+      <label class="builder-label" for="selAcceptor">Electron acceptor</label>
+      <select id="selAcceptor"></select>
+    </div>
+    <div>
+      <label class="builder-label" for="selCarbon">Carbon source</label>
+      <select id="selCarbon"></select>
+    </div>
+  </div>
+  <div class="result" id="builderResult">Select all three to build the metabolism.</div>
+</section>
+
+<section>
+  <h2><span class="n">06</span> Ecological significance</h2>
+  <div class="eco-grid">
+    <div class="card"><div class="t">Nitrification</div>Ammonia and nitrite oxidizers drive the global nitrogen cycle, converting NH₃ to NO₃⁻ in soils and wastewater treatment.</div>
+    <div class="card"><div class="t">Sulfur cycling</div>Sulfur oxidizers detoxify H₂S in sediments and are central to hydrothermal vent food webs.</div>
+    <div class="card"><div class="t">Iron cycling & AMD</div>Iron oxidizers like <i>Acidithiobacillus</i> drive acid mine drainage and biomining operations.</div>
+    <div class="card"><div class="t">Primary production in the dark</div>Chemolithoautotrophs support entire ecosystems (deep sea vents, caves) with no sunlight input.</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">07</span> Quick quiz</h2>
+  <div id="quizWrap"></div>
+</section>
+
+<section>
+  <h2><span class="n">08</span> Challenge question</h2>
+  <div class="challenge-box">
+    <p style="color:var(--text); font-weight:600;">"Organism X oxidizes Fe²⁺, uses O₂ as the terminal electron acceptor, and fixes CO₂."</p>
+    <p>Click each step to reveal the reasoning.</p>
+    <div class="challenge-steps" id="challengeSteps"></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">09</span> One-minute recap</h2>
+  <div class="recap">
+    <ul>
+      <li>Chemolithotrophs oxidize <b>inorganic</b> electron donors (H₂, H₂S, Fe²⁺, NH₃, NO₂⁻) for energy.</li>
+      <li>Energy source (donor→acceptor) and carbon source (CO₂ vs organic) are <b>independent axes</b>.</li>
+      <li>Chemolithoautotroph = inorganic energy + CO₂ carbon. Chemolithoheterotroph exists too — don't assume all chemolithotrophs fix CO₂.</li>
+      <li>Know the five groups: H₂, S, Fe, NH₃ (ammonia), NO₂⁻ (nitrite) oxidizers — and their representative genera.</li>
+      <li>Ecologically, these groups drive N, S, and Fe cycles and support life without sunlight.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>Microbial Physiology I &middot; Chemolithotrophy module &middot; offline, self-contained</footer>
+</div>
+
+<script>
+// ---------- DATA ----------
+const donors = [
+  {id:'h2', label:'H₂', type:'inorganic'},
+  {id:'h2s', label:'H₂S', type:'inorganic'},
+  {id:'fe2', label:'Fe²⁺', type:'inorganic'},
+  {id:'nh3', label:'NH₃', type:'inorganic'},
+  {id:'no2', label:'NO₂⁻', type:'inorganic'},
+  {id:'glucose', label:'Glucose', type:'organic'}
+];
+
+const groups = [
+  {
+    key:'h2', name:'Hydrogen', donor:'H₂', product:'H⁺ / H₂O',
+    acceptor:'O₂ (aerobic) or various (anaerobic e.g. NO₃⁻, SO₄²⁻)',
+    organism:'Hydrogenophilus, Ralstonia eutropha (Cupriavidus)',
+    role:'Recycles H₂ from fermentation and geochemical sources; metabolically versatile (facultative).',
+    fact:'Many hydrogen oxidizers are facultative chemolithotrophs — they can switch to organic carbon when H₂ runs out.'
+  },
+  {
+    key:'s', name:'Sulfur', donor:'H₂S / S⁰ / thiosulfate', product:'Sulfate (SO₄²⁻)',
+    acceptor:'O₂ (aerobic) or NO₃⁻ (some species)',
+    organism:'Acidithiobacillus, Beggiatoa, Thiobacillus',
+    role:'Detoxifies H₂S in sediments; base of hydrothermal vent food webs.',
+    fact:'Beggiatoa can store elemental sulfur granules inside the cell as a visible intermediate.'
+  },
+  {
+    key:'fe', name:'Iron', donor:'Fe²⁺', product:'Fe³⁺',
+    acceptor:'O₂ (neutrophilic) or NO₃⁻ (anaerobic nitrate-dependent)',
+    organism:'Gallionella, Acidithiobacillus ferrooxidans, Leptospirillum',
+    role:'Drives acid mine drainage; used industrially in biomining/bioleaching of ores.',
+    fact:'Iron oxidation yields very little energy per electron — these organisms must process huge quantities of Fe²⁺ to grow.'
+  },
+  {
+    key:'nh3', name:'Ammonia', donor:'NH₃ / NH₄⁺', product:'NO₂⁻ (nitrite)',
+    acceptor:'O₂',
+    organism:'Nitrosomonas, Nitrosospira',
+    role:'First step of nitrification; converts ammonia to nitrite in soil and wastewater treatment.',
+    fact:'Ammonia oxidation is also carried out by ammonia-oxidizing archaea (AOA), often outnumbering bacteria in soils.'
+  },
+  {
+    key:'no2', name:'Nitrite', donor:'NO₂⁻', product:'NO₃⁻ (nitrate)',
+    acceptor:'O₂',
+    organism:'Nitrobacter, Nitrospira',
+    role:'Second step of nitrification; nitrate is the form most plants take up.',
+    fact:'Nitrospira was later found capable of "comammox" — complete ammonia-to-nitrate oxidation in a single organism.'
+  }
+];
+
+const acceptors = ['O₂','NO₃⁻','SO₄²⁻','Fe³⁺'];
+const carbons = [
+  {id:'co2', label:'CO₂ (autotroph)'},
+  {id:'organic', label:'Organic carbon (heterotroph)'}
+];
+
+// ---------- SORTER ----------
+const sorterCards = document.getElementById('sorterCards');
+const status = document.getElementById('sorterStatus');
+let sortedCount = 0;
+donors.forEach(d=>{
+  const chip = document.createElement('button');
+  chip.className='chip';
+  chip.textContent=d.label;
+  chip.setAttribute('aria-label', 'Sort '+d.label);
+  chip.addEventListener('click', ()=>{
+    if(chip.classList.contains('placed')) return;
+    const guess = confirm(d.label+': is this an INORGANIC donor?\nOK = Inorganic, Cancel = Organic');
+    const guessType = guess ? 'inorganic' : 'organic';
+    const correct = guessType === d.type;
+    const bin = document.querySelector(d.type==='inorganic' ? '#binInorganic .dropped' : '#binOrganic .dropped');
+    const targetBin = correct ? bin : document.querySelector(guessType==='inorganic' ? '#binInorganic .dropped' : '#binOrganic .dropped');
+    const tag = document.createElement('span');
+    tag.className = 'tag ' + (correct ? 'correct' : 'wrong');
+    tag.textContent = d.label + (correct ? ' ✓' : ' ✗ ('+d.type+')');
+    targetBin.appendChild(tag);
+    chip.classList.add('placed');
+    sortedCount++;
+    status.textContent = sortedCount+' / 6 sorted';
+  });
+  sorterCards.appendChild(chip);
+});
+
+// ---------- TABS / GROUP EXPLORER ----------
+const tabsEl = document.getElementById('tabs');
+const panelsEl = document.getElementById('groupPanels');
+groups.forEach((g,i)=>{
+  const tab = document.createElement('button');
+  tab.className='tab'+(i===0?' active':'');
+  tab.textContent=g.name;
+  tab.setAttribute('role','tab');
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.groupcard').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-'+g.key).classList.add('active');
+  });
+  tabsEl.appendChild(tab);
+
+  const panel = document.createElement('div');
+  panel.className='groupcard card'+(i===0?' active':'');
+  panel.id='panel-'+g.key;
+  panel.innerHTML = `
+    <div class="gp-grid">
+      <div class="gp-item"><div class="k">Electron donor</div><div class="v">${g.donor}</div></div>
+      <div class="gp-item"><div class="k">Product</div><div class="v">${g.product}</div></div>
+      <div class="gp-item"><div class="k">Typical acceptor</div><div class="v">${g.acceptor}</div></div>
+      <div class="gp-item"><div class="k">Representative organism</div><div class="v">${g.organism}</div></div>
+    </div>
+    <div class="fact"><b>Ecological role:</b> ${g.role}</div>
+    <div class="fact">💡 ${g.fact}</div>
+  `;
+  panelsEl.appendChild(panel);
+});
+
+// ---------- METABOLISM BUILDER ----------
+const selDonor = document.getElementById('selDonor');
+const selAcceptor = document.getElementById('selAcceptor');
+const selCarbon = document.getElementById('selCarbon');
+const resultEl = document.getElementById('builderResult');
+
+function fill(sel, arr, getLabel, getValue){
+  const blank = document.createElement('option');
+  blank.textContent='— select —'; blank.value='';
+  sel.appendChild(blank);
+  arr.forEach(item=>{
+    const opt = document.createElement('option');
+    opt.value = getValue(item);
+    opt.textContent = getLabel(item);
+    sel.appendChild(opt);
+  });
+}
+fill(selDonor, donors, d=>d.label, d=>d.id);
+fill(selAcceptor, acceptors, a=>a, a=>a);
+fill(selCarbon, carbons, c=>c.label, c=>c.id);
+
+function updateBuilder(){
+  const d = donors.find(x=>x.id===selDonor.value);
+  const a = selAcceptor.value;
+  const c = carbons.find(x=>x.id===selCarbon.value);
+  if(!d || !a || !c){
+    resultEl.textContent = 'Select all three to build the metabolism.';
+    resultEl.className='result';
+    return;
+  }
+  if(d.type==='organic'){
+    resultEl.textContent = `${d.label} is an ORGANIC donor — this describes a chemoorganotroph, not a chemolithotroph.`;
+    resultEl.className='result warn';
+    return;
+  }
+  const trophy = c.id==='co2' ? 'chemolithoautotroph' : 'chemolithoheterotroph';
+  const groupName = ({h2:'hydrogen-oxidizing',h2s:'sulfur-oxidizing',fe2:'iron-oxidizing',nh3:'ammonia-oxidizing',no2:'nitrite-oxidizing'})[d.id];
+  resultEl.textContent = `«${d.label} + ${a} + ${c.label.split(' ')[0]} → ${groupName} ${trophy}»`;
+  resultEl.className='result ok';
+}
+[selDonor,selAcceptor,selCarbon].forEach(s=>s.addEventListener('change', updateBuilder));
+
+// ---------- QUIZ ----------
+const quizData = [
+  {
+    q:'An organism oxidizes glucose for energy and fixes atmospheric CO₂ for carbon. This organism is best described as:',
+    opts:['Chemolithoautotroph','Chemoorganoheterotroph (with independent carbon fixation — inconsistent combination)','Chemolithoheterotroph','Chemoorganotroph'],
+    correct:1,
+    exp:'Trick option: real organisms that oxidize glucose (organic donor) do not typically run CO₂ fixation as their carbon route — this combination is biologically inconsistent, which is the point: donor type usually predicts carbon strategy loosely, but the two are conceptually independent, not the same axis.'
+  },
+  {
+    q:'True or False: All chemolithotrophs are autotrophs.',
+    opts:['True','False'],
+    correct:1,
+    exp:'False. Chemolithotrophy defines the energy source only. Chemolithoheterotrophs use inorganic electron donors for energy but organic carbon for biosynthesis.'
+  },
+  {
+    q:'Nitrosomonas oxidizes NH₃ to NO₂⁻. What is the terminal electron acceptor in this aerobic process?',
+    opts:['NO₂⁻','CO₂','O₂','NO₃⁻'],
+    correct:2,
+    exp:'O₂ is the terminal electron acceptor for aerobic ammonia oxidizers; NO₂⁻ is the oxidation product, not the acceptor.'
+  },
+  {
+    q:'Which pairing correctly matches organism to physiological group?',
+    opts:['Nitrobacter — ammonia oxidizer','Gallionella — iron oxidizer','Nitrosomonas — nitrite oxidizer','Beggiatoa — hydrogen oxidizer'],
+    correct:1,
+    exp:'Gallionella oxidizes Fe²⁺ → Fe³⁺. Nitrobacter oxidizes nitrite (not ammonia); Nitrosomonas oxidizes ammonia (not nitrite); Beggiatoa oxidizes sulfur compounds (not H₂).'
+  },
+  {
+    q:'A student says: "Chemolithotrophs use inorganic carbon for energy." What is wrong with this statement?',
+    opts:['Nothing, it is correct','It confuses electron donor with carbon source — chemolithotrophs use inorganic electron donors for energy, and CO₂ (if autotrophic) is a separate, later carbon-fixation step','Chemolithotrophs do not use CO₂ at all','Chemolithotrophs only use organic carbon'],
+    correct:1,
+    exp:'This is the core conceptual trap of the topic: "energy source" (electron donor) and "carbon source" are two separate axes that students routinely merge into one.'
+  },
+  {
+    q:'Which of the following is an inorganic electron donor used by chemolithotrophs?',
+    opts:['Glucose','Fe²⁺','Lactate','Acetate'],
+    correct:1,
+    exp:'Fe²⁺ (ferrous iron) is inorganic. The others are organic compounds used by chemoorganotrophs.'
+  },
+  {
+    q:'Match the concept: an organism that oxidizes H₂S for energy but assimilates organic carbon from the environment is a:',
+    opts:['Chemolithoautotroph','Chemoorganoheterotroph','Chemolithoheterotroph','Phototroph'],
+    correct:2,
+    exp:'Inorganic energy source (H₂S) + organic carbon source = chemolithoheterotroph, a less common but real physiological type.'
+  }
+];
+
+const quizWrap = document.getElementById('quizWrap');
+quizData.forEach((item,qi)=>{
+  const box = document.createElement('div');
+  box.className='qz';
+  const qtext = document.createElement('div');
+  qtext.className='qtext';
+  qtext.textContent = (qi+1)+'. '+item.q;
+  box.appendChild(qtext);
+  const exp = document.createElement('div');
+  exp.className='exp';
+  exp.textContent = item.exp;
+
+  item.opts.forEach((opt,oi)=>{
+    const btn = document.createElement('button');
+    btn.className='opt';
+    btn.textContent = opt;
+    btn.addEventListener('click', ()=>{
+      const buttons = box.querySelectorAll('.opt');
+      buttons.forEach(b=>b.disabled=true);
+      if(oi===item.correct){
+        btn.classList.add('correct');
+      } else {
+        btn.classList.add('wrong');
+        buttons[item.correct].classList.add('correct');
+      }
+      exp.classList.add('show');
+    });
+    box.appendChild(btn);
+  });
+  box.appendChild(exp);
+  quizWrap.appendChild(box);
+});
+
+// ---------- CHALLENGE ----------
+const challengeData = [
+  {prompt:'Step 1 — What gives electrons? (click to reveal)', ans:'Electron donor: Fe²⁺ (inorganic → this is chemolithotrophy)'},
+  {prompt:'Step 2 — Where do electrons go?', ans:'Electron acceptor: O₂ (aerobic respiration)'},
+  {prompt:'Step 3 — Energy metabolism classification?', ans:'Chemolithotroph — inorganic donor (Fe²⁺), aerobic ETC to O₂'},
+  {prompt:'Step 4 — Where does carbon come from?', ans:'CO₂ is fixed → autotrophic carbon metabolism'},
+  {prompt:'Step 5 — Full physiological group?', ans:'Iron-oxidizing chemolithoautotroph (e.g. resembling Gallionella-type physiology)'}
+];
+const stepsEl = document.getElementById('challengeSteps');
+challengeData.forEach(s=>{
+  const div = document.createElement('div');
+  div.className='cstep';
+  div.innerHTML = `<div class="prompt">${s.prompt}</div><div class="ans">${s.ans}</div>`;
+  div.addEventListener('click', ()=>div.classList.toggle('revealed'));
+  div.setAttribute('tabindex','0');
+  div.setAttribute('role','button');
+  div.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault(); div.classList.toggle('revealed');}});
+  stepsEl.appendChild(div);
+});
+</script>
+</body>
+</html>
