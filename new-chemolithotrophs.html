@@ -1,0 +1,2483 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemolithotrophy Made Simple: Bioenergetics, Molecular Pathways & Physiology | MSc Microbial Physiology</title>
+<style>
+/* ============================================================
+   DESIGN TOKENS & STYLES
+   Bio-Geochemical Theme: Emerald, Amber, Azure, Coral & Slate
+   ============================================================ */
+:root {
+  --bg: #0a0f0d;
+  --bg-subtle: #0f1614;
+  --panel: #141f1c;
+  --panel2: #1a2723;
+  --panel3: #22332e;
+  --border: #2c423b;
+  --border-bright: #446359;
+  --text: #e8f2ee;
+  --text-muted: #95ada5;
+  --text-dim: #6c857d;
+  
+  --accent: #4ade80;
+  --accent-glow: rgba(74, 222, 128, 0.18);
+  --accent2: #fb923c;
+  --accent3: #38bdf8;
+  --accent4: #f472b6;
+  
+  --donor: #34d399;
+  --acceptor: #f87171;
+  --energy: #fbbf24;
+  --carbon: #60a5fa;
+  --ret: #c084fc;
+  
+  --good: #4ade80;
+  --good-bg: #132e20;
+  --bad: #f87171;
+  --bad-bg: #381a1a;
+  --warn: #fbbf24;
+  --warn-bg: #332712;
+  
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.55);
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: Georgia, Cambria, 'Times New Roman', serif;
+  --font-mono: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+[data-theme="light"] {
+  --bg: #f5f9f7;
+  --bg-subtle: #ebf2ef;
+  --panel: #ffffff;
+  --panel2: #f0f6f3;
+  --panel3: #e2ede8;
+  --border: #d0e0d8;
+  --border-bright: #adc4b9;
+  --text: #14241e;
+  --text-muted: #4e695f;
+  --text-dim: #7d968d;
+  
+  --accent: #15803d;
+  --accent-glow: rgba(21, 128, 61, 0.12);
+  --accent2: #c2410c;
+  --accent3: #0284c7;
+  --accent4: #be185d;
+  
+  --donor: #047857;
+  --acceptor: #b91c1c;
+  --energy: #b45309;
+  --carbon: #1d4ed8;
+  --ret: #7e22ce;
+  
+  --good: #15803d;
+  --good-bg: #dcfce7;
+  --bad: #b91c1c;
+  --bad-bg: #fee2e2;
+  --warn: #b45309;
+  --warn-bg: #fef3c7;
+  --shadow: 0 4px 20px rgba(20, 36, 30, 0.08);
+  --shadow-lg: 0 12px 36px rgba(20, 36, 30, 0.14);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  font-size: 16px;
+  transition: background .25s ease, color .25s ease;
+}
+
+/* Accessibility Skip link */
+.skip-link {
+  position: absolute; left: -999px; top: 0; background: var(--accent);
+  color: #000; padding: 10px 16px; font-weight: 700; z-index: 999; border-radius: 0 0 8px 0;
+}
+.skip-link:focus { left: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Sticky Navigation */
+header.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10, 15, 13, 0.94);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+[data-theme="light"] header.topbar { background: rgba(245, 249, 247, 0.94); }
+.topbar-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 10px 20px; max-width: 1160px; margin: 0 auto;
+}
+.brand {
+  display: flex; align-items: center; gap: 9px; font-weight: 700;
+  font-size: 0.98rem; color: var(--text); text-decoration: none;
+}
+.brand-icon {
+  width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, var(--donor), var(--energy));
+  display: flex; align-items: center; justify-content: center; font-weight: 900; color: #000; font-size: 0.82rem;
+}
+nav.nav-links {
+  display: flex; gap: 4px; flex-wrap: wrap; align-items: center;
+}
+nav.nav-links a {
+  font-size: 0.82rem; padding: 5px 9px; border-radius: 6px; text-decoration: none;
+  color: var(--text-muted); font-weight: 500; transition: all .15s ease;
+}
+nav.nav-links a:hover {
+  background: var(--panel2); color: var(--text);
+}
+.nav-actions { display: flex; gap: 8px; align-items: center; }
+.btn-icon {
+  background: var(--panel2); border: 1px solid var(--border); color: var(--text);
+  border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px; transition: all .15s ease;
+  font-family: var(--font-sans); font-weight: 600;
+}
+.btn-icon:hover { border-color: var(--accent); color: var(--accent); background: var(--panel3); }
+.btn-primary {
+  background: var(--accent); color: #06190f !important; font-weight: 700; border: 1px solid var(--accent);
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-sm { padding: 4px 9px; font-size: 0.78rem; border-radius: 6px; }
+
+#progressTrack { height: 3px; background: var(--bg-subtle); width: 100%; }
+#progressBar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--donor), var(--accent3), var(--energy)); transition: width .1s; }
+
+/* Main Wrapper */
+.wrap { max-width: 1120px; margin: 0 auto; padding: 1.5rem 1.25rem 5rem; }
+
+/* Typography */
+h1, h2, h3, h4 { line-height: 1.25; margin: 0 0 0.5rem; font-weight: 700; }
+h1 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); letter-spacing: -0.02em; }
+h2 {
+  font-size: 1.35rem; display: flex; align-items: center; gap: 0.6rem;
+  padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); margin: 0 0 1rem;
+}
+h2 .num {
+  font-family: var(--font-mono); font-size: 0.95rem; background: var(--panel2);
+  color: var(--accent); padding: 3px 8px; border-radius: 6px; border: 1px solid var(--border);
+}
+h3 { font-size: 1.12rem; color: var(--text); margin-top: 1.2rem; }
+h4 { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+p { margin: 0 0 1rem; color: var(--text); font-size: 0.96rem; }
+p.lead { font-size: 1.08rem; color: var(--text-muted); max-width: 820px; }
+
+section { margin-bottom: 3.5rem; }
+
+/* Cards & Layout */
+.card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 1.25rem 1.4rem; margin-bottom: 1.2rem; box-shadow: var(--shadow);
+}
+.card-subtle { background: var(--panel2); border-color: var(--border); }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 1.1rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; }
+
+/* Hero Banner */
+.hero {
+  background: linear-gradient(135deg, #10261f 0%, #0d1a16 50%, #091310 100%);
+  border: 1px solid var(--border-bright); border-radius: 16px; padding: 2.2rem 2rem;
+  margin-bottom: 2.4rem; position: relative; overflow: hidden;
+}
+[data-theme="light"] .hero {
+  background: linear-gradient(135deg, #e6f4ed 0%, #d8ece2 50%, #cbe4d7 100%);
+  border-color: var(--border-bright);
+}
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 0.76rem;
+  letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: var(--accent);
+  background: rgba(74, 222, 128, 0.1); border: 1px solid rgba(74, 222, 128, 0.25);
+  padding: 4px 10px; border-radius: 20px; margin-bottom: 1rem;
+}
+.hero-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1.2rem; }
+.badge {
+  font-size: 0.78rem; padding: 4px 10px; border-radius: 6px; background: var(--panel);
+  border: 1px solid var(--border); font-family: var(--font-mono); color: var(--text-muted);
+}
+.badge b { color: var(--text); }
+
+/* Plain-English & Analogy Callouts */
+.callout {
+  border-radius: var(--radius-sm); padding: 0.95rem 1.15rem; margin: 1rem 0;
+  border-left: 4px solid var(--border-bright); font-size: 0.92rem; background: var(--panel2);
+}
+.callout.plain { border-left-color: var(--accent); background: rgba(74, 222, 128, 0.08); }
+.callout.analogy { border-left-color: var(--energy); background: rgba(251, 191, 36, 0.08); }
+.callout.warning { border-left-color: var(--warn); background: var(--warn-bg); }
+.callout.info { border-left-color: var(--accent3); background: rgba(56, 189, 248, 0.08); }
+.callout.bioenergetics { border-left-color: var(--ret); background: rgba(192, 132, 252, 0.08); }
+.callout-title { font-weight: 700; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 6px; }
+
+/* Interactive Jargon Tooltips */
+.jargon {
+  border-bottom: 1.5px dotted var(--accent);
+  cursor: help;
+  position: relative;
+  font-weight: 600;
+  color: var(--accent);
+  display: inline-block;
+}
+.jargon:hover::after {
+  content: attr(data-def);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f1c18;
+  color: #eaf6f1;
+  border: 1px solid var(--border-bright);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 400;
+  white-space: normal;
+  width: 240px;
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  line-height: 1.35;
+  pointer-events: none;
+}
+[data-theme="light"] .jargon:hover::after {
+  background: #ffffff;
+  color: #14241e;
+  border-color: #a4c4b6;
+}
+
+/* Scientific & Chemical Formatting */
+.formula-box {
+  background: var(--panel2); border: 1.5px dashed var(--border-bright); border-radius: var(--radius);
+  padding: 1.1rem 1.3rem; margin: 1rem 0; text-align: center;
+}
+.formula-box .eq {
+  font-family: var(--font-mono); font-size: 1.15rem; color: var(--accent);
+  font-weight: 700; letter-spacing: 0.5px; margin-bottom: 0.4rem;
+}
+.formula-box .caption { font-size: 0.84rem; color: var(--text-muted); }
+.chem { font-family: var(--font-mono); font-weight: 600; }
+.math { font-family: var(--font-mono); color: var(--accent); font-weight: 600; }
+
+/* Pathway Flow Diagrams */
+.pathway-card {
+  background: var(--panel2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 1.1rem; margin: 1rem 0;
+}
+.pathway-step-row {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 0.8rem 0; justify-content: center;
+}
+.p-step {
+  background: var(--panel3); border: 1px solid var(--border-bright); border-radius: 8px;
+  padding: 0.6rem 0.9rem; font-size: 0.86rem; text-align: center; min-width: 120px;
+}
+.p-step .label { font-size: 0.74rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+.p-step .chem-name { font-family: var(--font-mono); font-weight: 700; font-size: 0.95rem; margin-top: 2px; }
+.p-step .enzyme { font-size: 0.74rem; color: var(--accent); font-weight: 600; margin-top: 3px; }
+.p-arrow { color: var(--accent); font-size: 1.3rem; font-weight: 700; }
+
+/* Interactive Simulators */
+.sim-container {
+  background: var(--panel); border: 1px solid var(--border-bright); border-radius: 14px;
+  padding: 1.3rem; margin: 1.2rem 0; box-shadow: var(--shadow-lg);
+}
+.sim-header {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+  gap: 10px; margin-bottom: 1.2rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--border);
+}
+.sim-title { font-weight: 700; font-size: 1.05rem; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+.sim-tag {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px;
+  border-radius: 4px; background: var(--panel2); border: 1px solid var(--border); color: var(--text-muted);
+}
+.sim-controls {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;
+  margin-bottom: 1rem; background: var(--panel2); padding: 1rem; border-radius: 10px;
+}
+.control-group label {
+  display: block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.4rem;
+}
+.btn-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 0.6rem; }
+select, input[type=range], input[type=number] {
+  width: 100%; background: var(--panel); color: var(--text); border: 1px solid var(--border);
+  border-radius: 7px; padding: 0.55rem 0.7rem; font-size: 0.9rem; font-family: var(--font-sans);
+}
+select:focus, input:focus { border-color: var(--accent); outline: none; }
+
+.sim-output-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.8rem; margin-top: 1rem;
+}
+.sim-metric {
+  background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem;
+  text-align: center;
+}
+.sim-metric .lbl { font-size: 0.74rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+.sim-metric .val { font-family: var(--font-mono); font-size: 1.15rem; font-weight: 700; margin-top: 0.2rem; }
+
+/* Canvas Visualizations */
+.canvas-wrap {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; position: relative; overflow: hidden; margin-top: 0.8rem;
+}
+canvas {
+  width: 100%; height: auto; aspect-ratio: 800 / 280; display: block;
+}
+
+/* Sorter Component */
+.sorter-pool { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 1.2rem; min-height: 48px; }
+.sorter-chip {
+  background: var(--panel2); border: 1px solid var(--border-bright); border-radius: 20px;
+  padding: 0.45rem 0.9rem; font-size: 0.88rem; cursor: pointer; user-select: none;
+  font-weight: 600; transition: all .15s ease; display: inline-flex; align-items: center; gap: 8px;
+}
+.sorter-chip:hover { transform: translateY(-2px); border-color: var(--accent); background: var(--panel3); }
+.sorter-chip.active-chip { border-color: var(--accent); background: var(--panel3); box-shadow: 0 0 10px var(--accent-glow); }
+.sorter-chip.placed { opacity: 0.35; cursor: not-allowed; transform: none; pointer-events: none; }
+.sorter-action-bar {
+  background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; padding: 0.8rem 1rem;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem;
+}
+.bins-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.bin-box {
+  background: var(--panel2); border: 2px dashed var(--border); border-radius: var(--radius);
+  padding: 1rem; min-height: 140px;
+}
+.bin-title { font-size: 0.86rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.7rem; }
+.bin-items { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.bin-tag {
+  font-size: 0.82rem; padding: 0.35rem 0.75rem; border-radius: 14px; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.bin-tag.correct { background: var(--good-bg); color: var(--good); border: 1px solid var(--good); }
+.bin-tag.wrong { background: var(--bad-bg); color: var(--bad); border: 1px solid var(--bad); }
+
+/* Tabs Component */
+.tab-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.6rem; }
+.tab-btn {
+  background: var(--panel2); border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.55rem 1rem; font-size: 0.86rem; cursor: pointer; color: var(--text-muted);
+  font-weight: 600; transition: all .15s ease; font-family: var(--font-sans);
+}
+.tab-btn:hover { color: var(--text); border-color: var(--border-bright); }
+.tab-btn.active { background: var(--accent); color: #071710; border-color: var(--accent); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Flashcards */
+.flash-container { display: flex; flex-direction: column; align-items: center; gap: 1rem; margin: 1.5rem 0; }
+.flashcard {
+  width: 100%; max-width: 580px; height: 260px; perspective: 1200px; cursor: pointer;
+}
+.flashcard-inner {
+  position: relative; width: 100%; height: 100%; transition: transform .5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+.flash-face {
+  position: absolute; inset: 0; backface-visibility: hidden; border-radius: 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 1.5rem; box-shadow: var(--shadow-lg); border: 1px solid var(--border-bright);
+}
+.flash-front { background: linear-gradient(135deg, var(--panel2), var(--panel3)); color: var(--text); }
+.flash-front .hint { font-size: 0.78rem; text-transform: uppercase; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.6rem; }
+.flash-front .term { font-size: 1.35rem; font-weight: 700; }
+.flash-back {
+  background: linear-gradient(135deg, #102e21, #0c2017); color: #eaf8f1; transform: rotateY(180deg);
+  border-color: var(--accent);
+}
+[data-theme="light"] .flash-back { background: linear-gradient(135deg, #e4f4ec, #d1ecde); color: #0f2b1c; }
+.flash-back .def { font-size: 0.95rem; line-height: 1.5; }
+.flash-back .subdef { font-size: 0.82rem; margin-top: 0.6rem; color: var(--accent); font-weight: 600; }
+.flash-nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+/* Tables */
+.table-wrap { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--border); border-radius: 10px; }
+table.data-table {
+  width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem;
+}
+table.data-table th, table.data-table td {
+  padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+}
+table.data-table th {
+  background: var(--panel2); color: var(--text-muted); font-size: 0.78rem;
+  text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;
+}
+table.data-table tr:last-child td { border-bottom: none; }
+table.data-table tr:hover td { background: rgba(74, 222, 128, 0.03); }
+td.mono { font-family: var(--font-mono); font-weight: 600; }
+
+/* Quiz */
+.quiz-item { border-bottom: 1px solid var(--border); padding: 1.2rem 0; }
+.quiz-item:last-child { border-bottom: none; }
+.quiz-qtext { font-weight: 600; font-size: 0.96rem; margin-bottom: 0.8rem; }
+.quiz-options { display: flex; flex-direction: column; gap: 0.45rem; }
+.quiz-opt {
+  text-align: left; background: var(--panel2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 0.65rem 0.95rem; font-size: 0.88rem; color: var(--text);
+  cursor: pointer; transition: all .15s ease; font-family: var(--font-sans);
+}
+.quiz-opt:hover:not(:disabled) { border-color: var(--accent); background: var(--panel3); }
+.quiz-opt.correct { background: var(--good-bg); border-color: var(--good); color: var(--good); font-weight: 600; }
+.quiz-opt.wrong { background: var(--bad-bg); border-color: var(--bad); color: var(--bad); }
+.quiz-expl {
+  margin-top: 0.7rem; font-size: 0.85rem; padding: 0.75rem 1rem; border-radius: 8px;
+  background: var(--panel2); border-left: 3px solid var(--accent); display: none;
+}
+.quiz-expl.show { display: block; }
+.quiz-scorebox {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  background: var(--panel2); border: 1px solid var(--border-bright); border-radius: 10px;
+  padding: 1rem 1.2rem; margin-bottom: 1.5rem;
+}
+.score-pill {
+  font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; color: var(--accent);
+}
+
+/* Expandables */
+details.expander {
+  border: 1px solid var(--border); border-radius: 9px; margin: 0.6rem 0; background: var(--panel2);
+  overflow: hidden;
+}
+details.expander summary {
+  padding: 0.8rem 1rem; font-weight: 600; font-size: 0.92rem; color: var(--text);
+  cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center;
+}
+details.expander summary::-webkit-details-marker { display: none; }
+details.expander summary::after { content: '+'; font-size: 1.2rem; color: var(--text-muted); }
+details.expander[open] summary::after { content: '–'; }
+details.expander .exp-body {
+  padding: 0.8rem 1rem 1rem; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--text-muted);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .bins-container { grid-template-columns: 1fr; }
+  .topbar-inner { flex-direction: column; align-items: flex-start; }
+  nav.nav-links { overflow-x: auto; width: 100%; padding-bottom: 4px; }
+  .sim-controls { grid-template-columns: 1fr; }
+}
+
+footer {
+  text-align: center; color: var(--text-dim); font-size: 0.82rem; margin-top: 4rem;
+  padding-top: 1.5rem; border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="topbar">
+  <div id="progressTrack"><div id="progressBar"></div></div>
+  <div class="topbar-inner">
+    <a href="#" class="brand">
+      <div class="brand-icon">⚡</div>
+      <span>Chemolithotrophy Made Simple</span>
+    </a>
+    <nav class="nav-links" aria-label="Section Navigation">
+      <a href="#primer">00 Primer & Battery</a>
+      <a href="#foundations">01 The 4 Axes</a>
+      <a href="#tower">02 Redox Tower</a>
+      <a href="#ret">03 Reverse e⁻ Flow</a>
+      <a href="#groups">04 The 8 Groups</a>
+      <a href="#carbon">05 Carbon Fixation</a>
+      <a href="#amd-lab">06 Mining & Rust Lab</a>
+      <a href="#builder">07 Builder</a>
+      <a href="#sorter">08 Sorter</a>
+      <a href="#problems">09 Worked Math</a>
+      <a href="#flashcards">10 Flashcards</a>
+      <a href="#exam">11 Exam</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle Light/Dark Theme">🌓 Mode</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+
+  <!-- ============================================================
+       HERO BANNER
+       ============================================================ -->
+  <section class="hero">
+    <div class="eyebrow">MSc Microbial Physiology &middot; From Intuitive First Principles to Advanced Biochemistry</div>
+    <h1>Chemolithotrophy: How Microbes "Eat" Rocks to Live</h1>
+    <p class="lead">
+      Imagine living without ever tasting sugar, fat, or carbohydrates. While humans and animals eat organic food, <b>chemolithotrophs</b> extract high-energy electrons directly from inorganic gases and minerals—like hydrogen gas (<span class="chem">H₂</span>), rotten-egg gas (<span class="chem">H₂S</span>), rusty iron (<span class="chem">Fe²⁺</span>), or ammonia fertilizer (<span class="chem">NH₃</span>).
+    </p>
+    <div class="hero-badges">
+      <div class="badge">💡 Intuitive Battery Analogy</div>
+      <div class="badge">🔋 All 8 Enzymatic Pathways Included</div>
+      <div class="badge">🔄 Reverse Electron Flow Explained Simply</div>
+      <div class="badge">✨ 6 Complete Carbon Fixation Routes</div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 00: INTUITIVE PRIMER — THE BATTERY ANALOGY
+       ============================================================ -->
+  <section id="primer">
+    <h2><span class="num">00</span> The Intuitive Primer: How Biological Electricity Works</h2>
+    
+    <div class="callout analogy">
+      <div class="callout-title">🔋 The Flashlight Battery Analogy (No Biochemistry Background Needed!)</div>
+      <p style="margin-bottom:0.5rem;">
+        Every living cell on Earth is essentially a chemical battery:
+      </p>
+      <ul>
+        <li><b>The Negative Terminal (<span class="jargon" data-def="The molecule that gives away high-energy electrons (the 'food').">Electron Donor</span>):</b> This is the food. It holds onto electrons loosely and wants to throw them away (e.g. <span class="chem">H₂</span>, <span class="chem">Fe²⁺</span>, or glucose).</li>
+        <li><b>The Wire (<span class="jargon" data-def="A chain of membrane proteins that pass electrons down step-by-step like a bucket brigade.">Electron Transport Chain / ETC</span>):</b> The cell passes electrons down a wire of proteins in its membrane. As electrons travel down, they release energy to pump protons outside the cell.</li>
+        <li><b>The Positive Terminal (<span class="jargon" data-def="The final destination molecule that catches the low-energy electrons.">Terminal Electron Acceptor</span>):</b> This is the vacuum or sponge that greedily catches the used electrons at the bottom (usually <span class="chem">O₂</span> from the air we breathe!).</li>
+        <li><b>The Lightbulb (<span class="jargon" data-def="The universal rechargeable energy coin of the cell (Adenosine Triphosphate).">ATP Synthase</span>):</b> Protons rush back inside through a tiny spinning turbine to charge up <b>ATP</b> (the cell's universal rechargeable battery).</li>
+      </ul>
+    </div>
+
+    <div class="grid-2">
+      <div class="card card-subtle">
+        <h3 style="margin-top:0; color:var(--accent2);">How Humans / Animals Do It</h3>
+        <p style="font-size:0.9rem; color:var(--text-muted);">
+          <b>Chemoorganotrophs ("Organic Eaters"):</b> We strip electrons from <b>organic carbon foods</b> (bread, glucose, lipids) and throw them onto oxygen (<span class="chem">O₂</span>) to make ATP.
+        </p>
+      </div>
+      <div class="card card-subtle" style="border-left: 3px solid var(--accent);">
+        <h3 style="margin-top:0; color:var(--accent);">How Chemolithotrophs Do It</h3>
+        <p style="font-size:0.9rem; color:var(--text-muted);">
+          <b>Chemolithotrophs ("Rock Eaters"):</b> They strip electrons from <b>inorganic minerals or gases</b> (<span class="chem">H₂</span>, <span class="chem">H₂S</span>, <span class="chem">Fe²⁺</span>, <span class="chem">NH₃</span>) and throw them onto <span class="chem">O₂</span> or nitrate to make ATP!
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 01: THE 4 METABOLIC AXES
+       ============================================================ -->
+  <section id="foundations">
+    <h2><span class="num">01</span> The 4 Separate Questions of Microbial Metabolism</h2>
+    <p>
+      Beginners often confuse <b>energy</b> with <b>carbon</b>. In microbiology, these are answered by 4 completely independent questions:
+    </p>
+
+    <div class="grid-4">
+      <div class="card card-subtle" style="border-top: 3px solid var(--donor);">
+        <h4>1. What gives electrons?</h4>
+        <p style="font-weight: 700; font-size: 1.02rem; margin: 0.2rem 0; color: var(--donor);">Litho vs. Organo</p>
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">
+          <b>Lithotroph:</b> Inorganic donor (<span class="chem">H₂</span>, <span class="chem">Fe²⁺</span>, <span class="chem">H₂S</span>, <span class="chem">NH₃</span>).<br>
+          <b>Organotroph:</b> Organic donor (glucose, acetate).
+        </p>
+      </div>
+
+      <div class="card card-subtle" style="border-top: 3px solid var(--energy);">
+        <h4>2. Where does energy come from?</h4>
+        <p style="font-weight: 700; font-size: 1.02rem; margin: 0.2rem 0; color: var(--energy);">Chemo vs. Photo</p>
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">
+          <b>Chemotroph:</b> Chemical oxidation reactions.<br>
+          <b>Phototroph:</b> Sunlight photons.
+        </p>
+      </div>
+
+      <div class="card card-subtle" style="border-top: 3px solid var(--carbon);">
+        <h4>3. Where does body carbon come from?</h4>
+        <p style="font-weight: 700; font-size: 1.02rem; margin: 0.2rem 0; color: var(--carbon);">Auto vs. Hetero</p>
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">
+          <b>Autotroph:</b> Builds body from scratch using <span class="chem">CO₂</span> gas.<br>
+          <b>Heterotroph:</b> Absorbs ready-made organic food.
+        </p>
+      </div>
+
+      <div class="card card-subtle" style="border-top: 3px solid var(--acceptor);">
+        <h4>4. Where do used electrons go?</h4>
+        <p style="font-weight: 700; font-size: 1.02rem; margin: 0.2rem 0; color: var(--acceptor);">Aerobic vs. Anaerobic</p>
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">
+          <b>Aerobic:</b> Thrown onto <span class="chem">O₂</span> gas.<br>
+          <b>Anaerobic:</b> Thrown onto <span class="chem">NO₃⁻</span>, <span class="chem">SO₄²⁻</span>, or <span class="chem">Fe³⁺</span>.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout plain">
+      <div class="callout-title">💡 In Plain English: What is a "Chemolithoautotroph"?</div>
+      Breaking down the word part by part:
+      <b>Chemo</b> (gets energy from chemicals) + <b>Litho</b> (electron donor is a rock/gas, not sugar) + <b>Autotroph</b> (makes its own body from <span class="chem">CO₂</span> gas in the air).
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 02: REDOX POTENTIAL & ELECTRON TOWER SIMULATOR
+       ============================================================ -->
+  <section id="tower">
+    <h2><span class="num">02</span> The Electron Tower & Thermodynamic Feasibility</h2>
+    
+    <div class="callout plain">
+      <div class="callout-title">🌊 Waterfalls and Electrons: Understanding Reduction Potential (E₀′)</div>
+      Think of the <b>Electron Tower</b> like a mountain with a waterfall:
+      <ul>
+        <li>Molecules at the <b>top (negative Volts, e.g. <span class="chem">H₂</span> at −0.41 V)</b> are high up on the cliff. They drop electrons easily.</li>
+        <li>Molecules at the <b>bottom (positive Volts, e.g. <span class="chem">O₂</span> at +0.82 V)</b> are at the bottom of the canyon. They catch falling electrons greedily.</li>
+        <li>The <b>farther electrons fall</b> (the larger the voltage gap <span class="math">ΔE₀′</span>), the more energy (<span class="math">ΔG°′</span>) is released to make ATP!</li>
+      </ul>
+    </div>
+
+    <div class="formula-box">
+      <div class="eq">ΔG°′ = − n · F · ΔE₀′ = − n · (96.485 kJ/V·mol) · (E₀′<sub>acceptor</sub> − E₀′<sub>donor</sub>)</div>
+      <div class="caption"><b>Simple Translation:</b> (Number of electrons) × (Physics constant) × (Height of the waterfall drop) = Total usable energy!</div>
+    </div>
+
+    <!-- SIMULATOR 1: ELECTRON TOWER & THERMODYNAMICS LAB -->
+    <div class="sim-container" id="simTower">
+      <div class="sim-header">
+        <div class="sim-title">⚡ Interactive Electron Tower & Bioenergetics Calculator</div>
+        <div class="sim-tag">Live Thermodynamic Engine</div>
+      </div>
+
+      <div class="sim-controls">
+        <div class="control-group">
+          <label for="towerDonor">1. Select Electron Donor (The Food)</label>
+          <select id="towerDonor">
+            <option value="h2" selected>H₂ / 2H⁺ (E₀′ = −0.41 V, n=2)</option>
+            <option value="co">CO / CO₂ (E₀′ = −0.54 V, n=2)</option>
+            <option value="formate">Formate / CO₂ (E₀′ = −0.43 V, n=2)</option>
+            <option value="nadh">NADH / NAD⁺ (E₀′ = −0.32 V, n=2)</option>
+            <option value="h2s">H₂S / S⁰ (E₀′ = −0.27 V, n=2)</option>
+            <option value="s0">S⁰ / SO₃²⁻ (E₀′ = −0.06 V, n=4)</option>
+            <option value="s2o3">S₂O₃²⁻ / SO₄²⁻ (E₀′ = +0.08 V, n=8)</option>
+            <option value="nh4">NH₄⁺ / NO₂⁻ (E₀′ = +0.34 V, n=6)</option>
+            <option value="no2">NO₂⁻ / NO₃⁻ (E₀′ = +0.43 V, n=2)</option>
+            <option value="fe_ph7">Fe²⁺ / Fe³⁺ (pH 7.0) (E₀′ = +0.20 V, n=1)</option>
+            <option value="fe_ph2">Fe²⁺ / Fe³⁺ (pH 2.0 Acidic) (E₀′ = +0.77 V, n=1)</option>
+            <option value="glucose">Glucose / 6CO₂ (E₀′ = −0.43 V, n=24)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="towerAcceptor">2. Select Electron Acceptor (The Trash Collector)</label>
+          <select id="towerAcceptor">
+            <option value="o2" selected>O₂ / H₂O (E₀′ = +0.82 V)</option>
+            <option value="no3">NO₃⁻ / NO₂⁻ (E₀′ = +0.43 V)</option>
+            <option value="no3_n2">NO₃⁻ / N₂ (Denitrification) (E₀′ = +0.74 V)</option>
+            <option value="fe3_ph2">Fe³⁺ / Fe²⁺ (pH 2.0) (E₀′ = +0.77 V)</option>
+            <option value="so4">SO₄²⁻ / H₂S (E₀′ = −0.22 V)</option>
+            <option value="co2_ch4">CO₂ / CH₄ (Methanogenesis) (E₀′ = −0.24 V)</option>
+            <option value="fumarate">Fumarate / Succinate (E₀′ = +0.03 V)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-bar">
+        <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">⚡ Quick Presets:</span>
+        <button class="btn-icon btn-sm" onclick="setTowerPreset('h2','o2')">Knallgas (H₂ + O₂)</button>
+        <button class="btn-icon btn-sm" onclick="setTowerPreset('fe_ph2','o2')">Iron (pH 2 + O₂)</button>
+        <button class="btn-icon btn-sm" onclick="setTowerPreset('nh4','o2')">AOB (NH₄⁺ + O₂)</button>
+        <button class="btn-icon btn-sm" onclick="setTowerPreset('no2','o2')">NOB (NO₂⁻ + O₂)</button>
+        <button class="btn-icon btn-sm" onclick="setTowerPreset('s2o3','o2')">Thiosulfate (S₂O₃²⁻ + O₂)</button>
+        <button class="btn-icon btn-sm" onclick="setTowerPreset('h2','co2_ch4')">Methanogenesis (H₂ + CO₂)</button>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="towerCanvas" width="800" height="280"></canvas>
+      </div>
+
+      <div class="sim-output-grid">
+        <div class="sim-metric">
+          <div class="lbl">Waterfall Drop (ΔE₀′)</div>
+          <div class="val" id="outDeltaE" style="color: var(--accent);">+1.23 V</div>
+        </div>
+        <div class="sim-metric">
+          <div class="lbl">Free Energy Released (ΔG°′)</div>
+          <div class="val" id="outDeltaG" style="color: var(--good);">−237.4 kJ/mol</div>
+        </div>
+        <div class="sim-metric">
+          <div class="lbl">Approximate ATP Yield</div>
+          <div class="val" id="outAtp">~ 4.7 mol ATP</div>
+        </div>
+        <div class="sim-metric">
+          <div class="lbl">Will it work spontaneously?</div>
+          <div class="val" id="outStatus" style="font-size: 0.95rem; color: var(--good);">Highly Spontaneous</div>
+        </div>
+      </div>
+      <div id="towerBioExplanation" class="callout plain" style="margin-top: 1rem; margin-bottom: 0;"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 03: REVERSE ELECTRON FLOW
+       ============================================================ -->
+  <section id="ret">
+    <h2><span class="num">03</span> The Central Puzzle: Reverse Electron Flow (RET)</h2>
+    
+    <div class="callout plain">
+      <div class="callout-title">💰 The Difference Between Energy (ATP) and Construction Materials (NADH)</div>
+      <p>
+        To build a house, you need two things: <b>Money (ATP)</b> to pay the workers, and <b>Bricks & Cement (NADH)</b> to lay the walls.
+      </p>
+      <ul>
+        <li><span class="chem">CO₂</span> gas is oxidized carbon. To turn it into cell body parts (proteins, DNA, cell walls), you <b>must force hydrogen atoms and electrons onto it</b>.</li>
+        <li>The cell's universal electron delivery truck is <b>NADH</b> (<span class="math">E₀′ = −0.32 V</span>).</li>
+        <li>If your food is <b>Hydrogen (<span class="chem">H₂</span> at −0.41 V)</b>: It's higher than NADH! You can just hand electrons directly to <span class="chem">NAD⁺</span> downhill for free!</li>
+        <li>If your food is <b>Iron (<span class="chem">Fe²⁺</span> at +0.77 V)</b> or <b>Nitrite (<span class="chem">NO₂⁻</span> at +0.43 V)</b>: It is far <em>below</em> NADH! Electrons naturally want to fall down, not jump up.</li>
+      </ul>
+    </div>
+
+    <div class="callout bioenergetics">
+      <div class="callout-title">🔄 The Solution: Pumping Water Back Up the Hill</div>
+      To make NADH, iron and nitrite bacteria must run a biological pump in reverse! They let most electrons fall to oxygen to pump protons out (<span class="jargon" data-def="The electrochemical proton battery gradient created across the cell membrane.">Proton Motive Force / Δp</span>), and then spend that battery power to <b>force electrons backwards uphill</b> into <span class="chem">NAD⁺</span> to make NADH. This is called <b>Reverse Electron Transport (RET)</b>.
+    </div>
+
+    <!-- SIMULATOR 2: REVERSE ELECTRON FLOW INTERACTIVE MODEL -->
+    <div class="sim-container" id="simRet">
+      <div class="sim-header">
+        <div class="sim-title">🔄 Membrane Bioenergetics & Reverse Electron Transport Simulator</div>
+        <div class="sim-tag">Chemiosmotic pmf Engine</div>
+      </div>
+
+      <div class="sim-controls">
+        <div class="control-group">
+          <label for="retDonorSelect">Organism / Electron Donor</label>
+          <select id="retDonorSelect">
+            <option value="nitrite" selected>Nitrobacter (NO₂⁻ → NO₃⁻, E₀′ = +0.43 V)</option>
+            <option value="iron">Acidithiobacillus ferrooxidans (Fe²⁺ → Fe³⁺, E₀′ = +0.77 V)</option>
+            <option value="sulfur">Thiobacillus thioparus (S₂O₃²⁻ → SO₄²⁻, E₀′ = +0.08 V)</option>
+            <option value="hydrogen">Cupriavidus necator (H₂ → 2H⁺, E₀′ = −0.41 V)</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="retPmfSlider">Proton Motive Force (Δp: 80 – 260 mV): <span id="valPmf" style="color:var(--accent); font-weight:700;">200 mV</span></label>
+          <input type="range" id="retPmfSlider" min="80" max="260" step="5" value="200">
+        </div>
+      </div>
+
+      <div class="btn-bar">
+        <button class="btn-icon btn-sm" id="btnToggleRetAnim">⏸ Pause Simulation</button>
+        <button class="btn-icon btn-sm" id="btnUncoupleRet" title="Collapses Proton Motive Force to 80 mV">⚡ Trigger Poison/Uncoupler (DNP)</button>
+        <button class="btn-icon btn-sm" id="btnMaxPmfRet" title="Restores optimal PMF to 240 mV">🔋 Supercharge Δp (240 mV)</button>
+        <button class="btn-icon btn-sm" id="btnResetRet">↺ Reset</button>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="retCanvas" width="800" height="280"></canvas>
+      </div>
+
+      <div class="sim-output-grid">
+        <div class="sim-metric">
+          <div class="lbl">Uphill Energy Barrier</div>
+          <div class="val" id="outRetBarrier" style="color: var(--warn);">ΔE = +0.75 V</div>
+        </div>
+        <div class="sim-metric">
+          <div class="lbl">Energy Spent on Reverse Flow</div>
+          <div class="val" id="outRetTax" style="color: var(--bad);">~ 78% of Total Flux</div>
+        </div>
+        <div class="sim-metric">
+          <div class="lbl">NADH Synthesis Status</div>
+          <div class="val" id="outNadhRate" style="color: var(--accent);">Active (High pmf)</div>
+        </div>
+        <div class="sim-metric">
+          <div class="lbl">Mechanism Employed</div>
+          <div class="val" id="outRetMech" style="font-size:0.86rem; color:var(--text);">pmf-driven Complex I reversal</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 04: THE 8 PHYSIOLOGICAL GROUPS & PATHWAYS
+       ============================================================ -->
+  <section id="groups">
+    <h2><span class="num">04</span> The 8 Main Groups of Rock-Eaters & Their Chemical Pathways</h2>
+    <p>
+      Click through each tab below to see the exact enzyme pathway, how electrons flow, and what these microbes do in nature:
+    </p>
+
+    <div class="tab-list" id="groupTabs" role="tablist">
+      <!-- Tabs populated via JS -->
+    </div>
+    <div id="groupPanels">
+      <!-- Panels populated via JS -->
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 05: THE 6 CARBON FIXATION PATHWAYS
+       ============================================================ -->
+  <section id="carbon">
+    <h2><span class="num">05</span> The 6 Ways Microbes Build Bodies from Air (CO₂ Fixation)</h2>
+    <p>
+      Plants only know one way to turn <span class="chem">CO₂</span> into sugar (the Calvin cycle). Chemolithotrophic microbes invented <b>six completely different pathways</b> millions of years before plants existed!
+    </p>
+
+    <!-- Visual Pathway Breakdown -->
+    <div class="grid-2">
+      <div class="pathway-card">
+        <h3 style="margin-top:0; color:var(--accent);">1. Calvin-Benson-Bassham (CBB) Cycle</h3>
+        <p style="font-size:0.86rem; color:var(--text-muted);">
+          <b>Used by:</b> <i>Nitrosomonas, Nitrobacter, Cupriavidus</i>, and green plants.<br>
+          <b>How it works:</b> The enzyme <span class="jargon" data-def="Ribulose-1,5-bisphosphate carboxylase-oxygenase: the most abundant enzyme on Earth, binds CO2 to a 5-carbon sugar.">RuBisCO</span> glues <span class="chem">CO₂</span> to a 5-carbon sugar, making two 3-carbon pieces.<br>
+          <b>Cost:</b> Expensive! (7 ATP + 4 NADPH per pyruvate).
+        </p>
+        <div class="pathway-step-row">
+          <div class="p-step"><div class="label">Input</div><div class="chem-name">3 CO₂</div></div>
+          <div class="p-arrow">→</div>
+          <div class="p-step"><div class="label">Key Enzyme</div><div class="chem-name">RuBisCO</div><div class="enzyme">Carboxysome</div></div>
+          <div class="p-arrow">→</div>
+          <div class="p-step"><div class="label">Product</div><div class="chem-name">Triose-P (Sugar)</div></div>
+        </div>
+      </div>
+
+      <div class="pathway-card">
+        <h3 style="margin-top:0; color:var(--good);">2. Reductive TCA (rTCA) Cycle</h3>
+        <p style="font-size:0.86rem; color:var(--text-muted);">
+          <b>Used by:</b> <i>Nitrospira</i>, deep-sea vent <i>Aquifex</i>.<br>
+          <b>How it works:</b> Runs the standard Krebs/citric acid cycle backwards! Very energy-efficient.<br>
+          <b>Cost:</b> Cheap! Only ~2 ATP equivalents per pyruvate.
+        </p>
+        <div class="pathway-step-row">
+          <div class="p-step"><div class="label">Input</div><div class="chem-name">3 CO₂ + Fd_red</div></div>
+          <div class="p-arrow">→</div>
+          <div class="p-step"><div class="label">Key Enzyme</div><div class="chem-name">ATP-Citrate Lyase</div><div class="enzyme">Reverses Krebs</div></div>
+          <div class="p-arrow">→</div>
+          <div class="p-step"><div class="label">Product</div><div class="chem-name">Pyruvate</div></div>
+        </div>
+      </div>
+
+      <div class="pathway-card">
+        <h3 style="margin-top:0; color:var(--energy);">3. Wood-Ljungdahl (Reductive Acetyl-CoA)</h3>
+        <p style="font-size:0.86rem; color:var(--text-muted);">
+          <b>Used by:</b> Methanogenic archaea, acetogens, Anammox bacteria.<br>
+          <b>How it works:</b> Linear assembly line! One <span class="chem">CO₂</span> is reduced to a methyl group (<span class="chem">−CH₃</span>), another to carbon monoxide (<span class="chem">CO</span>), and glued together.<br>
+          <b>Cost:</b> Net 0 to 1 ATP (Most efficient pathway on Earth!). Strictly anaerobic.
+        </p>
+        <div class="pathway-step-row">
+          <div class="p-step"><div class="label">Input</div><div class="chem-name">2 CO₂ + 4 H₂</div></div>
+          <div class="p-arrow">→</div>
+          <div class="p-step"><div class="label">Key Enzyme</div><div class="chem-name">CODH / ACS</div><div class="enzyme">Bi-functional</div></div>
+          <div class="p-arrow">→</div>
+          <div class="p-step"><div class="label">Product</div><div class="chem-name">Acetyl-CoA</div></div>
+        </div>
+      </div>
+
+      <div class="pathway-card">
+        <h3 style="margin-top:0; color:var(--accent3);">4. 3-Hydroxypropionate & 3-HP/4-HB Cycles</h3>
+        <p style="font-size:0.86rem; color:var(--text-muted);">
+          <b>Used by:</b> Ammonia-oxidizing archaea (AOA, Thaumarchaeota), green non-sulfur bacteria.<br>
+          <b>How it works:</b> Fixes <span class="chem">CO₂</span> via acetyl-CoA carboxylase, producing hydroxybutyryl intermediates.<br>
+          <b>Cost:</b> Moderate (6 ATP per pyruvate). Tolerates oxygen.
+        </p>
+        <div class="pathway-step-row">
+          <div class="p-step"><div class="label">Input</div><div class="chem-name">2 HCO₃⁻ + 4 [H]</div></div>
+          <div class="p-arrow">→</div>
+          <div class="p-step"><div class="label">Key Enzyme</div><div class="chem-name">4-HB-CoA Dehydratase</div></div>
+          <div class="p-arrow">→</div>
+          <div class="p-step"><div class="label">Product</div><div class="chem-name">Acetyl-CoA</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 06: ACID MINE DRAINAGE & BIOMINING LAB
+       ============================================================ -->
+  <section id="amd-lab">
+    <h2><span class="num">06</span> Real-World Lab: Acid Mine Drainage & Gold/Copper Biomining</h2>
+    
+    <div class="callout plain">
+      <div class="callout-title">⛏️ How Bacteria Dissolve Mountains to Mine Copper and Gold</div>
+      <p>
+        Pyrite (<span class="chem">FeS₂</span>, "Fool's Gold") is trapped inside rocks deep underground. When mining exposes it to air and moisture, iron-oxidizing bacteria (<i>Acidithiobacillus ferrooxidans</i>) move in:
+      </p>
+      <ul>
+        <li>They oxidize dissolved ferrous iron (<span class="chem">Fe²⁺ → Fe³⁺</span>) <b>100,000 times faster</b> than air alone!</li>
+        <li>The produced ferric iron (<span class="chem">Fe³⁺</span>) is a ferocious acid oxidant that attacks surrounding copper and gold ores, dissolving them into solution so miners can collect them (<b>Biomining</b>).</li>
+        <li>However, this also generates oceans of concentrated battery acid (<span class="chem">H₂SO₄</span>, pH &lt; 2) and orange iron rust crusts called "Yellowboy" that pollute rivers (<b>Acid Mine Drainage</b>).</li>
+      </ul>
+    </div>
+
+    <!-- SIMULATOR 3: AMD LAB -->
+    <div class="sim-container" id="simAmd">
+      <div class="sim-header">
+        <div class="sim-title">⛏️ Pyrite Bioleaching & Jarosite Precipitation Lab</div>
+        <div class="sim-tag">Industrial Biohydrometallurgy</div>
+      </div>
+
+      <div class="sim-controls">
+        <div class="control-group">
+          <label for="amdMicrobeSelect">Bacterial Inoculum</label>
+          <select id="amdMicrobeSelect">
+            <option value="active" selected>Active A. ferrooxidans + L. ferrooxidans (Biotic)</option>
+            <option value="sterile">Sterile Control (Abiotic Oxidation Only)</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="amdPhSlider">Environmental pH (0.8 to 4.5): <span id="valAmdPh" style="color:var(--accent); font-weight:700;">2.0</span></label>
+          <input type="range" id="amdPhSlider" min="0.8" max="4.5" step="0.1" value="2.0">
+        </div>
+        <div class="control-group">
+          <label for="amdO2Slider">Dissolved Oxygen (DO: 0 – 100%): <span id="valAmdO2" style="color:var(--accent); font-weight:700;">80%</span></label>
+          <input type="range" id="amdO2Slider" min="0" max="100" step="5" value="80">
+        </div>
+      </div>
+
+      <div class="btn-bar">
+        <button class="btn-icon btn-sm" id="btnToggleAmdAnim">⏸ Pause Simulation</button>
+        <button class="btn-icon btn-sm" id="btnAddLimeAmd">🧪 Add Slaked Lime Ca(OH)₂ (Neutralize to pH 4.0)</button>
+        <button class="btn-icon btn-sm" id="btnAcidifyAmd">⚡ Add Sulfuric Acid (Drop to pH 1.2)</button>
+        <button class="btn-icon btn-sm" id="btnResetAmd">↺ Reset Heap</button>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="amdCanvas" width="800" height="280"></canvas>
+      </div>
+
+      <div class="sim-output-grid">
+        <div class="sim-metric">
+          <div class="lbl">Fe²⁺ Oxidation Speed</div>
+          <div class="val" id="outAmdRate" style="color:var(--good);">100,000x Abiotic</div>
+        </div>
+        <div class="sim-metric">
+          <div class="lbl">Sulfuric Acid Level</div>
+          <div class="val" id="outAmdH2so4" style="color:var(--bad);">High (pH dropping)</div>
+        </div>
+        <div class="sim-metric">
+          <div class="lbl">Metal Extraction Recovery</div>
+          <div class="val" id="outAmdExtraction" style="color:var(--accent);">92.4% Recovery</div>
+        </div>
+        <div class="sim-metric">
+          <div class="lbl">Yellowboy (Jarosite) Crust</div>
+          <div class="val" id="outAmdPrecip">Precipitating</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 07: METABOLISM BUILDER
+       ============================================================ -->
+  <section id="builder">
+    <h2><span class="num">07</span> Custom Metabolism Construction Engine</h2>
+    <p>
+      Mix and match any electron donor, acceptor, carbon source, and pathway to see if nature has created such an organism:
+    </p>
+
+    <div class="sim-container">
+      <div class="sim-controls" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="control-group">
+          <label for="bDonor">1. Primary Electron Donor</label>
+          <select id="bDonor"></select>
+        </div>
+        <div class="control-group">
+          <label for="bAcceptor">2. Terminal Acceptor</label>
+          <select id="bAcceptor"></select>
+        </div>
+        <div class="control-group">
+          <label for="bCarbon">3. Carbon Assimilation</label>
+          <select id="bCarbon"></select>
+        </div>
+        <div class="control-group">
+          <label for="bPathway">4. Carbon Fixation Route</label>
+          <select id="bPathway"></select>
+        </div>
+      </div>
+
+      <div class="btn-bar" style="margin-bottom:1rem;">
+        <button class="btn-icon btn-sm" id="btnRandomBuilder">🎲 Generate Random Viable Phenotype</button>
+        <button class="btn-icon btn-sm" id="btnPresetNitrosomonas">🧬 Preset: Nitrosomonas</button>
+        <button class="btn-icon btn-sm" id="btnPresetAcidithiobacillus">⛏️ Preset: A. ferrooxidans</button>
+        <button class="btn-icon btn-sm" id="btnPresetCupriavidus">⚡ Preset: C. necator (Knallgas)</button>
+      </div>
+
+      <div id="builderResultCard" class="card card-subtle" style="border: 2px solid var(--border-bright); margin-bottom: 0;">
+        <div id="builderBadge" style="display:inline-block; font-weight:700; font-size:0.85rem; padding:3px 9px; border-radius:5px; margin-bottom:0.5rem; background:var(--panel3); color:var(--text-muted);">Awaiting selections...</div>
+        <h3 id="builderTitle" style="margin: 0.2rem 0 0.5rem; color: var(--accent);">Assemble a complete metabolic phenotype</h3>
+        <p id="builderDesc" style="font-size: 0.92rem; color: var(--text-muted); margin: 0;">Select options across all four controls above to generate full biochemical evaluation, physiological designation, and real-world microbial analogs.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 08: ELECTRON DONOR CLASSIFICATION SORTER
+       ============================================================ -->
+  <section id="sorter">
+    <h2><span class="num">08</span> Hands-On Sorter: Inorganic (Litho) vs. Organic (Organo)</h2>
+    <p>
+      Click on any molecule below, then click either <b>⚡ Inorganic</b> or <b>🧪 Organic</b> to sort it into the correct bin!
+    </p>
+
+    <div class="sorter-action-bar">
+      <div id="sorterPrompt" style="font-weight:600; font-size:0.9rem; color:var(--accent);">Select a molecule below to classify:</div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-icon btn-sm btn-primary" id="btnClassifyInorganic" disabled>⚡ Inorganic (Litho)</button>
+        <button class="btn-icon btn-sm" id="btnClassifyOrganic" disabled style="background:var(--accent2); color:#000; font-weight:700;">🧪 Organic (Organo)</button>
+        <button class="btn-icon btn-sm" id="btnAutoSort">🪄 Auto-Solve</button>
+        <button class="btn-icon btn-sm" id="resetSorterBtn">↺ Reset</button>
+      </div>
+    </div>
+
+    <div class="sorter-pool" id="sorterPool"></div>
+
+    <div class="bins-container">
+      <div class="bin-box" id="binInorganic">
+        <div class="bin-title" style="color: var(--donor);">⚡ Inorganic Donors (Lithotrophic - Minerals & Gases)</div>
+        <div class="bin-items" id="itemsInorganic"></div>
+      </div>
+
+      <div class="bin-box" id="binOrganic">
+        <div class="bin-title" style="color: var(--accent2);">🧪 Organic Donors (Organotrophic - Sugars & Carbon Chains)</div>
+        <div class="bin-items" id="itemsOrganic"></div>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.8rem;">
+      <div id="sorterScore" style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--text-muted);">0 of 12 classified</div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 09: WORKED BIOENERGETIC PROBLEMS
+       ============================================================ -->
+  <section id="problems">
+    <h2><span class="num">09</span> Step-by-Step Mathematical Calculations (Simplified)</h2>
+    <p>
+      Clear, step-by-step math breakdowns showing how much energy these organisms actually harvest:
+    </p>
+
+    <details class="expander" open>
+      <summary>Problem 1: Why Iron Oxidizers Must Eat Tons of Rust to Make One Gram of Body Mass</summary>
+      <div class="exp-body">
+        <p><b>Question:</b> At pH 2.0, the reduction potential of iron is <span class="math">+0.77 V</span>, and oxygen is <span class="math">+0.82 V</span>.</p>
+        <ol>
+          <li>Calculate the voltage drop (<span class="math">ΔE₀′</span>) and energy released (<span class="math">ΔG°′</span>) per mole of iron oxidized.</li>
+          <li>If making 1 mole of carbon body mass costs <span class="math">~ 480 kJ</span> of energy, how many kilograms of iron must the bacterium turn over?</li>
+        </ol>
+        <div class="callout plain">
+          <b>Step-by-Step Solution:</b><br>
+          1. Voltage drop: <span class="math">ΔE₀′ = +0.82 V − (+0.77 V) = <b>+0.05 V</b></span> (Tiny! Like a dying 0.05V battery!).<br>
+          Energy: <span class="math">ΔG°′ = −(1) × (96.485) × (0.05 V) = <b>−4.82 kJ/mol Fe²⁺</b></span>.<br><br>
+          2. Iron mass required:<br>
+          <span class="math">Moles = 480 kJ / 4.82 kJ/mol ≈ <b>99.6 moles Fe²⁺</b></span>.<br>
+          <span class="math">Mass = 99.6 mol × 55.85 g/mol ≈ <b>5,562 grams (5.56 kg) of iron!</b></span><br><br>
+          <i>What this means:</i> The bacterium must eat over <b>5.5 kilograms (12 pounds!)</b> of liquid iron just to grow 12 grams of cellular carbon. That is why iron oxidizers produce gigantic mountains of orange rust!
+        </div>
+      </div>
+    </details>
+
+    <details class="expander">
+      <summary>Problem 2: Comparing Hydrogen Gas (Knallgas) vs. Rocket Fuel (Anammox)</summary>
+      <div class="exp-body">
+        <p><b>Question:</b> Compare the energy release of burning hydrogen gas vs. anaerobic ammonium oxidation.</p>
+        <div class="callout plain">
+          <b>Step-by-Step Solution:</b><br>
+          • <b>Knallgas Reaction:</b> <span class="chem">H₂ + ½O₂ → H₂O</span><br>
+          <span class="math">ΔE₀′ = 0.82 − (−0.41) = +1.23 V</span> &nbsp;→&nbsp; <span class="math">ΔG°′ = <b>−237.4 kJ/mol H₂</b></span> (Fiercely explosive energy!).<br><br>
+          • <b>Anammox Reaction:</b> <span class="chem">NH₄⁺ + NO₂⁻ → N₂ + 2H₂O</span><br>
+          <span class="math">ΔE₀′ = 1.00 − (−0.28) = +1.28 V</span> &nbsp;→&nbsp; <span class="math">ΔG°′ = <b>−370.5 kJ/mol NH₄⁺</b></span> (Even more energetic than hydrogen!).
+        </div>
+      </div>
+    </details>
+
+    <details class="expander">
+      <summary>Problem 3: Why Hydrogen Bacteria Don't Pay the "Reverse Flow" Energy Tax</summary>
+      <div class="exp-body">
+        <p><b>Question:</b> Explain why <i>Cupriavidus necator</i> has an unfair advantage over iron and nitrite bacteria.</p>
+        <div class="callout plain">
+          <b>Step-by-Step Solution:</b><br>
+          1. The cell needs electrons delivered to <span class="chem">NAD⁺</span> at <span class="math">−0.32 V</span>.<br>
+          2. Hydrogen gas (<span class="chem">H₂</span>) sits way up high on the tower at <span class="math">−0.41 V</span>.<br>
+          3. Because <span class="chem">H₂</span> is higher than <span class="chem">NAD⁺</span>, the bacterium's <b>Soluble Hydrogenase (SH)</b> enzyme simply transfers electrons directly into <span class="chem">NAD⁺</span> for free without spending any ATP or proton battery power!
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============================================================
+       SECTION 10: INTERACTIVE HIGH-YIELD FLASHCARDS
+       ============================================================ -->
+  <section id="flashcards">
+    <h2><span class="num">10</span> Jargon-Buster Flashcard Revision Deck</h2>
+    <p>
+      Click on any card to flip it and test your memory on the key enzymes and structures:
+    </p>
+
+    <div class="flash-container">
+      <div class="flashcard" id="flashCard">
+        <div class="flashcard-inner">
+          <div class="flash-face flash-front">
+            <div class="hint" id="flashCategory">Enzymology &middot; Group 1</div>
+            <div class="term" id="flashTerm">Rusticyanin</div>
+          </div>
+          <div class="flash-face flash-back">
+            <div class="def" id="flashDef">A blue copper protein in iron-eating bacteria that catches electrons from iron at pH 2.0 and passes them to cytochrome c.</div>
+            <div class="subdef" id="flashSub">Essential for iron oxidation at extreme acidity</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flash-nav">
+        <button class="btn-icon" id="flashPrev">◀ Prev</button>
+        <button class="btn-icon btn-primary" id="flashFlipBtn">↺ Flip Card</button>
+        <button class="btn-icon" id="flashShuffleBtn">🔀 Shuffle</button>
+        <span id="flashCounter" style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--text-muted); margin: 0 6px;">1 / 12</span>
+        <button class="btn-icon" id="flashNext">Next ▶</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 11: MSC COMPREHENSIVE EXAMINATION
+       ============================================================ -->
+  <section id="exam">
+    <h2><span class="num">11</span> Mastery Quiz: Test Your Understanding</h2>
+    <p>
+      12 practical scenario questions with full plain-English explanations:
+    </p>
+
+    <div class="quiz-scorebox">
+      <div>
+        <div style="font-weight: 700; font-size: 0.92rem;">Mastery Progress</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);" id="quizProgressLabel">0 of 12 Answered</div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <button class="btn-icon btn-sm" id="btnRevealAllQuiz">👁️ Reveal Explanations</button>
+        <button class="btn-icon btn-sm" id="btnResetQuiz">↺ Reset Exam</button>
+        <div class="score-pill" id="quizScore">Score: 0 / 12</div>
+      </div>
+    </div>
+
+    <div id="quizContainer">
+      <!-- Generated via JS -->
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 12: MASTER SUMMARY
+       ============================================================ -->
+  <section id="summary">
+    <h2><span class="num">12</span> Quick Summary: The Big Picture Takeaways</h2>
+    <div class="card card-subtle" style="border-left: 4px solid var(--accent);">
+      <h3 style="margin-top:0;">What You Need to Remember</h3>
+      <ul>
+        <li><b>Chemolithotrophy</b> = Eating inorganic chemicals (<span class="chem">H₂, H₂S, Fe²⁺, NH₃, NO₂⁻, CO</span>) for energy instead of organic sugars.</li>
+        <li><b>Energy vs. Carbon</b> are separate: Chemolithotrophs can build their own bodies from <span class="chem">CO₂</span> (autotrophs) or eat organic scraps (heterotrophs/mixotrophs).</li>
+        <li><b>Reverse Electron Flow (RET)</b> = When your food is lower on the electron tower than NADH, you must spend battery power (<span class="math">Δp</span>) to push electrons backwards uphill to make NADH for building cell walls and DNA.</li>
+        <li><b>Hydrazine (<span class="chem">N₂H₄</span>)</b> = Real rocket fuel created inside a special dense organelle (the anammoxosome) by Anammox bacteria to produce <span class="chem">N₂</span> gas.</li>
+        <li><b>Comammox</b> = Bacteria like <i>Nitrospira inopinata</i> that perform the entire nitrification process from ammonia all the way to nitrate in a single cell.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap" style="padding-top:0; padding-bottom:1rem;">
+    MSc Microbiology &middot; Advanced Microbial Physiology &middot; Chemolithotrophy & Inorganic Bioenergetics Module &middot; Fully Self-Contained Offline Web App
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT LOGIC & SIMULATION ENGINES
+     ============================================================ -->
+<script>
+// ---------- DATA DEFINITIONS ----------
+const donorsList = [
+  { id: 'h2', label: 'H₂ (Hydrogen gas)', type: 'inorganic', e0: -0.41, n: 2, desc: 'Knallgas reaction donor' },
+  { id: 'co', label: 'CO (Carbon monoxide)', type: 'inorganic', e0: -0.54, n: 2, desc: 'Carboxydotrophic donor' },
+  { id: 'h2s', label: 'H₂S (Hydrogen sulfide)', type: 'inorganic', e0: -0.27, n: 2, desc: 'Colorless sulfur donor' },
+  { id: 's0', label: 'S⁰ (Elemental sulfur)', type: 'inorganic', e0: -0.06, n: 4, desc: 'Stored inside or outside cell' },
+  { id: 's2o3', label: 'S₂O₃²⁻ (Thiosulfate)', type: 'inorganic', e0: 0.08, n: 8, desc: 'Sox pathway substrate' },
+  { id: 'nh3', label: 'NH₃ / NH₄⁺ (Ammonia)', type: 'inorganic', e0: 0.34, n: 6, desc: 'Substrate for AMO enzyme' },
+  { id: 'no2', label: 'NO₂⁻ (Nitrite)', type: 'inorganic', e0: 0.43, n: 2, desc: 'Substrate for NXR enzyme' },
+  { id: 'fe2', label: 'Fe²⁺ (Ferrous iron)', type: 'inorganic', e0: 0.77, n: 1, desc: 'Substrate for rusticyanin/Cyc2' },
+  { id: 'glucose', label: 'Glucose (C₆H₁₂O₆)', type: 'organic', e0: -0.43, n: 24, desc: 'Standard chemoorganotrophic donor' },
+  { id: 'acetate', label: 'Acetate (CH₃COO⁻)', type: 'organic', e0: -0.28, n: 8, desc: 'Short-chain fatty acid' },
+  { id: 'lactate', label: 'Lactate (C₃H₅O₃⁻)', type: 'organic', e0: -0.19, n: 4, desc: 'Fermentation product' },
+  { id: 'methane', label: 'Methane (CH₄)', type: 'organic', e0: -0.24, n: 8, desc: 'Methylotrophic single-carbon donor' }
+];
+
+const physiologicalGroups = [
+  {
+    key: 'h2',
+    name: '1. Hydrogen Oxidizers (Knallgas Bacteria)',
+    tag: 'Knallgas Bacteria',
+    donor: 'H₂ (E₀′ = −0.41 V)',
+    acceptor: 'O₂ (aerobic) or NO₃⁻, SO₄²⁻, CO₂ (anaerobic)',
+    product: 'H₂O / H⁺',
+    enzymes: 'Membrane-bound hydrogenase (MBH) & Soluble NAD⁺-reducing hydrogenase (SH)',
+    carbonFix: 'Calvin-Benson-Bassham (CBB) Cycle',
+    retNeeded: 'No! (SH directly reduces NAD⁺ to NADH exergonically for free!)',
+    organisms: '<i>Cupriavidus necator</i> (formerly <i>Ralstonia eutropha</i>), <i>Hydrogenovibrio marinus</i>, <i>Aquifex pyrophilus</i>',
+    ecology: 'Abundant in oxic-anoxic interfaces, volcanic hot springs, deep subsurface lithoautotrophic ecosystems (SLiMEs).',
+    biotech: 'Industrial production of polyhydroxyalkanoates (PHB bioplastics) and Single-Cell Protein (SCP) from CO₂ and H₂ gas feeds.',
+    pathwayVisual: `
+      <div class="pathway-step-row">
+        <div class="p-step"><div class="label">Substrate</div><div class="chem-name">H₂ gas</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Membrane Enzyme</div><div class="chem-name">MBH</div><div class="enzyme">Pumps Δp for ATP</div></div>
+        <div class="p-arrow">+</div>
+        <div class="p-step"><div class="label">Cytoplasmic Enzyme</div><div class="chem-name">SH</div><div class="enzyme">Makes NADH directly</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Final Products</div><div class="chem-name">ATP + NADH + H₂O</div></div>
+      </div>
+    `,
+    deepDive: '<i>Cupriavidus necator</i> is the model organism. It harbors two distinct hydrogenases: the <b>Membrane-Bound Hydrogenase (MBH)</b> feeds electrons into the respiratory chain to pump protons for ATP synthesis, while the <b>Soluble Hydrogenase (SH)</b> uses FMN and Fe-S centers to reduce NAD⁺ directly to NADH without consuming any proton motive force!'
+  },
+  {
+    key: 'sulfur',
+    name: '2. Sulfur & Sulfide Oxidizers (Colorless Sulfur Bacteria)',
+    tag: 'Colorless Sulfur Bacteria',
+    donor: 'H₂S, HS⁻, S⁰, S₂O₃²⁻ (Thiosulfate), SO₃²⁻ (Sulfite)',
+    acceptor: 'O₂ or NO₃⁻ (e.g. <i>Thiobacillus denitrificans</i>)',
+    product: 'SO₄²⁻ (Sulfate) + H⁺ (Extreme acidification)',
+    enzymes: 'Sox multienzyme complex (SoxYZ, SoxAX, SoxB, SoxCD), DSR-APS pathway, Sulfur oxygenase reductase (SOR)',
+    carbonFix: 'Calvin Cycle (Form I/II RuBisCO) or rTCA Cycle',
+    retNeeded: 'Yes (E₀′ ranges from −0.27 V to +0.08 V; requires pmf-driven reverse flow to make NADH)',
+    organisms: '<i>Acidithiobacillus thiooxidans</i>, <i>Beggiatoa alba</i>, <i>Thiomargarita namibiensis</i>, <i>Paracoccus pantotrophus</i>, <i>Riftia</i> symbionts',
+    ecology: 'Form the primary trophic foundation of hydrothermal deep-sea vent ecosystems (tubeworms, giant clams); detoxify H₂S in marine sediments.',
+    biotech: 'Flue-gas desulfurization, bio-desulfurization of biogas, industrial bio-mining of sulfide ores (chalcopyrite).',
+    pathwayVisual: `
+      <div class="pathway-step-row">
+        <div class="p-step"><div class="label">Sulfur Source</div><div class="chem-name">S₂O₃²⁻ / H₂S</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Sox Complex</div><div class="chem-name">SoxYZ-AX-B-CD</div><div class="enzyme">8 e⁻ oxidation</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Intermediate</div><div class="chem-name">S⁰ / SO₃²⁻</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">End Product</div><div class="chem-name">SO₄²⁻ (Sulfate)</div></div>
+      </div>
+    `,
+    deepDive: 'Two distinct pathways exist: (1) The periplasmic <b>Sox pathway</b> (in <i>Paracoccus</i>) carries out complete 8-electron oxidation of thiosulfate to sulfate without free sulfur intermediates; (2) The <b>DSR-APS pathway</b> in <i>Beggiatoa</i> oxidizes sulfide to elemental sulfur globules (S⁰), which are later oxidized via APS reductase and ATP sulfurylase, producing ATP by substrate-level phosphorylation!'
+  },
+  {
+    key: 'iron',
+    name: '3. Iron Oxidizers (FeOB - Rust Makers)',
+    tag: 'Iron-Oxidizing Bacteria & Archaea',
+    donor: 'Fe²⁺ (Ferrous iron, E₀′ = +0.77 V at pH 2, +0.20 V at pH 7)',
+    acceptor: 'O₂ (aerobic) or NO₃⁻ (anaerobic photoferrotrophy)',
+    product: 'Fe³⁺ (Ferric iron) → Rust / Ferrihydrite / Jarosite',
+    enzymes: 'Outer membrane Cytochrome Cyc2, Periplasmic Rusticyanin (copper protein), Cytochrome aa₃ oxidase',
+    carbonFix: 'Calvin Cycle (in Carboxysomes) via Form I RuBisCO',
+    retNeeded: 'Extreme! (E₀′ = +0.77 V vs −0.32 V for NADH; requires massive pmf consumption)',
+    organisms: '<i>Acidithiobacillus ferrooxidans</i>, <i>Leptospirillum ferrooxidans</i>, <i>Gallionella ferruginea</i>, <i>Mariprofundus ferrooxydans</i>',
+    ecology: 'Responsible for Acid Mine Drainage (AMD) in coal/metal mines. Neutrophilic Zetaproteobacteria (<i>Mariprofundus</i>) build bizarre twisted stalks of ferric oxyhydroxide in marine vents.',
+    biotech: 'Bio-hydrometallurgy: Commercial bioleaching of refractory gold ores and copper sulfide heaps worldwide.',
+    pathwayVisual: `
+      <div class="pathway-step-row">
+        <div class="p-step"><div class="label">Fe²⁺ at Outer Membrane</div><div class="chem-name">Fe²⁺ → Fe³⁺ + e⁻</div><div class="enzyme">Cyc2 Cytochrome</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Periplasmic Carrier</div><div class="chem-name">Rusticyanin</div><div class="enzyme">Blue Copper (+0.68V)</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Split Junction</div><div class="chem-name">Cytochrome c</div><div class="enzyme">Forward or Reverse</div></div>
+      </div>
+    `,
+    deepDive: 'Iron oxidation yields the lowest free energy of any respiratory metabolism (ΔE₀′ = +0.05 V, ΔG°′ = −29 kJ/mol). At pH 2, outer-membrane Cyc2 extracts an electron from Fe²⁺ and transfers it to the blue-copper protein rusticyanin (E₀′ = +0.68 V). Over 85% of electron flux flows down to O₂ through Cytochrome aa₃ to generate Δp, while the remainder is forced backwards uphill through cytochrome bc₁ and Complex I to reduce NAD⁺ → NADH.'
+  },
+  {
+    key: 'aob',
+    name: '4. Ammonia Oxidizers (AOB & AOA - Nitrification Part 1)',
+    tag: 'Nitrification Stage 1',
+    donor: 'NH₃ / NH₄⁺ (E₀′ = +0.34 V)',
+    acceptor: 'O₂',
+    product: 'NO₂⁻ (Nitrite) + 4H⁺',
+    enzymes: 'Ammonia Monooxygenase (AMO, membrane copper enzyme) & Hydroxylamine Oxidoreductase (HAO, periplasmic heme enzyme)',
+    carbonFix: 'Calvin Cycle in AOB; 3-HP/4-HB cycle in Thaumarchaeota (AOA)',
+    retNeeded: 'Yes (from ubiquinone/cytochrome c pool at +0.25 V backwards to NAD⁺ at −0.32 V)',
+    organisms: '<b>AOB:</b> <i>Nitrosomonas europaea</i>, <i>Nitrosospira</i>. <b>AOA:</b> <i>Nitrosopumilus maritimus</i>',
+    ecology: 'Drive the rate-limiting first step of global nitrification in soils, lakes, and oceans; essential in municipal sewage treatment.',
+    biotech: 'Activated sludge biological nutrient removal (BNR) in wastewater treatment plants.',
+    pathwayVisual: `
+      <div class="pathway-step-row">
+        <div class="p-step"><div class="label">Ammonia Gas</div><div class="chem-name">NH₃ + O₂ + 2H⁺</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Enzyme 1</div><div class="chem-name">AMO</div><div class="enzyme">Uses 2 e⁻ to activate O₂</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Intermediate</div><div class="chem-name">NH₂OH (Hydroxylamine)</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Enzyme 2</div><div class="chem-name">HAO</div><div class="enzyme">Yields 4 e⁻ (2 to AMO, 2 to ETC)</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Product</div><div class="chem-name">NO₂⁻ (Nitrite)</div></div>
+      </div>
+    `,
+    deepDive: 'Ammonia oxidation is a two-step enzymatic reaction: (1) NH₃ + O₂ + 2H⁺ + 2e⁻ → NH₂OH + H₂O catalyzed by membrane-bound AMO; (2) NH₂OH + H₂O → NO₂⁻ + 5H⁺ + 4e⁻ catalyzed by HAO. Notice that 2 of the 4 electrons released by HAO must be recycled back to AMO to activate molecular oxygen!'
+  },
+  {
+    key: 'nob',
+    name: '5. Nitrite Oxidizers (NOB - Nitrification Part 2)',
+    tag: 'Nitrification Stage 2',
+    donor: 'NO₂⁻ (Nitrite, E₀′ = +0.43 V)',
+    acceptor: 'O₂',
+    product: 'NO₃⁻ (Nitrate)',
+    enzymes: 'Nitrite Oxidoreductase (NXR: Mo-pterin enzyme, periplasmic or cytoplasmic facing)',
+    carbonFix: 'Calvin Cycle in <i>Nitrobacter</i>; rTCA Cycle in <i>Nitrospira</i> and <i>Nitrospina</i>',
+    retNeeded: 'Yes (Very heavy pmf tax: NO₂⁻ enters respiratory chain at Cytochrome c level ~ +0.40 V)',
+    organisms: '<i>Nitrobacter winogradskyi</i>, <i>Nitrospira marina</i>, <i>Nitrospina gracilis</i>, <i>Nitrococcus</i>',
+    ecology: 'Converts toxic nitrite into nitrate, the primary nitrogen source assimilated by terrestrial crops and phytoplankton.',
+    biotech: 'Prevention of toxic nitrite accumulation in aquaculture and biofiltration systems.',
+    pathwayVisual: `
+      <div class="pathway-step-row">
+        <div class="p-step"><div class="label">Nitrite Input</div><div class="chem-name">NO₂⁻ + H₂O</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Key Enzyme</div><div class="chem-name">NXR (Molybdopterin)</div><div class="enzyme">2 e⁻ released</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">End Product</div><div class="chem-name">NO₃⁻ (Nitrate)</div></div>
+      </div>
+    `,
+    deepDive: 'In <i>Nitrobacter</i>, NXR is located on the cytoplasmic face of invaginated intracytoplasmic membranes. In contrast, in <i>Nitrospira</i>, NXR is periplasmic. <i>Nitrospira</i> fixes carbon using the energy-efficient <b>rTCA cycle</b> rather than the Calvin cycle, giving it a profound thermodynamic growth advantage in oligotrophic ecosystems!'
+  },
+  {
+    key: 'comammox',
+    name: '6. Comammox (Complete Ammonia Oxidation in 1 Cell)',
+    tag: 'Single-Organism Nitrification',
+    donor: 'NH₃ → NO₂⁻ → NO₃⁻ (Complete oxidation in one bacterium)',
+    acceptor: 'O₂',
+    product: 'NO₃⁻ (Nitrate)',
+    enzymes: 'Co-localized AMO, HAO, and periplasmic NXR clusters',
+    carbonFix: 'Reductive TCA (rTCA) Cycle',
+    retNeeded: 'Yes (handled with high efficiency via periplasmic NXR coupling)',
+    organisms: '<i>Nitrospira inopinata</i>, <i>Candidatus</i> Nitrospira nitrificans',
+    ecology: 'Discovered in 2015, overturning a 120-year dogma that nitrification requires two separate microbial guilds. Dominates deep aquifers and drinking water pipes.',
+    biotech: 'Revolutionizing bioengineering of energy-efficient single-tank wastewater treatment systems.',
+    pathwayVisual: `
+      <div class="pathway-step-row">
+        <div class="p-step"><div class="label">Step 1</div><div class="chem-name">NH₃ → NH₂OH</div><div class="enzyme">AMO</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Step 2</div><div class="chem-name">NH₂OH → NO₂⁻</div><div class="enzyme">HAO</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Step 3</div><div class="chem-name">NO₂⁻ → NO₃⁻</div><div class="enzyme">NXR (All in 1 Cell!)</div></div>
+      </div>
+    `,
+    deepDive: 'For over a century, microbiologists believed ammonia oxidation and nitrite oxidation could not occur in a single cell due to kinetic theory ("division of labor"). In 2015, researchers isolated <i>Nitrospira inopinata</i> harboring both functional operons, proving comammox organisms exhibit higher biomass yield per mole of ammonia consumed than canonical AOB/NOB co-cultures!'
+  },
+  {
+    key: 'anammox',
+    name: '7. Anammox (Anaerobic Ammonium Oxidation - Rocket Fuel)',
+    tag: 'Rocket Fuel Metabolism',
+    donor: 'NH₄⁺ (Ammonium)',
+    acceptor: 'NO₂⁻ (Nitrite)',
+    product: 'N₂ (Dinitrogen gas) + 2H₂O (ΔG°′ = −357 kJ/mol)',
+    enzymes: 'Hydrazine Synthase (HZS) & Hydrazine Dehydrogenase (HDH)',
+    carbonFix: 'Wood-Ljungdahl (Reductive Acetyl-CoA) Pathway',
+    retNeeded: 'No (Wood-Ljungdahl uses ferredoxin and electrons direct from HDH)',
+    organisms: '<i>Candidatus</i> Brocadia anammoxidans, <i>Kuenenia stuttgartiensis</i> (Planctomycetes)',
+    ecology: 'Responsible for >50% of all nitrogen gas loss (N₂) from the global oceans, keeping atmospheric nitrogen balanced.',
+    biotech: 'DEMON and Sharon-Anammox industrial wastewater bioreactors: saves 60% aeration energy and 100% supplemental carbon.',
+    pathwayVisual: `
+      <div class="pathway-step-row">
+        <div class="p-step"><div class="label">Inputs</div><div class="chem-name">NH₄⁺ + NO₂⁻</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Rocket Fuel Maker</div><div class="chem-name">HZS</div><div class="enzyme">Hydrazine Synthase</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Dangerous Intermediate</div><div class="chem-name">N₂H₄ (Hydrazine)</div><div class="enzyme">Trapped in Ladderanes</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Oxidizer</div><div class="chem-name">HDH</div><div class="enzyme">Hydrazine Dehydrogenase</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Product</div><div class="chem-name">N₂ gas + 4 e⁻</div></div>
+      </div>
+    `,
+    deepDive: 'Anammox bacteria contain a dedicated membrane-bound organelle called the <b>Anammoxosome</b> surrounded by unique "ladderane" lipids (fused cyclobutane rings) that form an ultra-dense, gas-impermeable barrier. This prevents the toxic, highly reactive intermediate <b>hydrazine (N₂H₄ — rocket fuel!)</b> from leaking into the cytoplasm!'
+  },
+  {
+    key: 'carboxydotrophs',
+    name: '8. Carboxydotrophs & Methanogens (C1 Gas Eaters)',
+    tag: 'C1 Inorganic Metabolism',
+    donor: 'CO (Carbon monoxide, E₀′ = −0.54 V) or H₂ (Methanogenesis)',
+    acceptor: 'O₂ (Carboxydotrophs) or CO₂ (Methanogenesis)',
+    product: 'CO₂ (from CO) or CH₄ (from CO₂ reduction)',
+    enzymes: 'Mo-Cu Carbon Monoxide Dehydrogenase (CODH), Methyl-CoM reductase',
+    carbonFix: 'Calvin Cycle in <i>Oligotropha</i>; Methanogenic Wood-Ljungdahl variant in archaea',
+    retNeeded: 'No (CO and H₂ are at −0.54 V / −0.41 V, reducing ferredoxin and NAD⁺ directly)',
+    organisms: '<i>Oligotropha carboxidovorans</i>, <i>Methanothermobacter thermautotrophicus</i>',
+    ecology: 'Carboxydotrophs scavenge volcanic and anthropogenic CO gas in soils. Methanogenic archaea drive terminal anaerobic carbon mineralization.',
+    biotech: 'Syngas (CO + H₂) fermentation into biofuels, biochemicals, and renewable natural gas (biomethane).',
+    pathwayVisual: `
+      <div class="pathway-step-row">
+        <div class="p-step"><div class="label">Toxic Gas</div><div class="chem-name">CO + H₂O</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Key Enzyme</div><div class="chem-name">CODH</div><div class="enzyme">[Mo-S-Cu] Active Site</div></div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><div class="label">Products</div><div class="chem-name">CO₂ + 2H⁺ + 2e⁻</div></div>
+      </div>
+    `,
+    deepDive: '<i>Oligotropha carboxidovorans</i> uses a unique binuclear [Mo-S-Cu] carbon monoxide dehydrogenase (CODH) resistant to oxygen poisoning, allowing it to oxidize atmospheric CO (CO + H₂O → CO₂ + 2H⁺ + 2e⁻) while running aerobic respiration to fix the produced CO₂ via RuBisCO!'
+  }
+];
+
+// Flashcards Data (12 Cards)
+const flashcardsData = [
+  { cat: 'Enzymology &middot; Iron', term: 'Rusticyanin', def: 'A blue copper protein in iron-eating bacteria (Acidithiobacillus) that catches electrons from outer-membrane Cyc2 and passes them to Cytochrome c.', sub: 'Essential for iron oxidation at pH 2.0' },
+  { cat: 'Bioenergetics &middot; RET', term: 'Reverse Electron Transport (RET)', def: 'Pumping electrons backwards up the energetic waterfall from positive donors (+0.77V Fe²⁺ or +0.43V NO₂⁻) to make NADH (−0.32V) using battery power (Δp).', sub: 'Mandatory for CO₂ fixation in iron, nitrite & sulfur oxidizers' },
+  { cat: 'Organelle &middot; Nitrogen', term: 'Anammoxosome & Ladderanes', def: 'A sealed biological tank inside Anammox bacteria made of tightly packed "ladder-shaped" lipids that prevent explosive rocket fuel (hydrazine N₂H₄) from leaking.', sub: 'Site of anaerobic ammonium oxidation to N₂' },
+  { cat: 'Pathway &middot; Sulfur', term: 'Sox Multienzyme System', def: 'A 4-part protein machine (SoxYZ, SoxAX, SoxB, SoxCD) that directly oxidizes thiosulfate to sulfate, stripping 8 electrons without producing sulfur chunks.', sub: 'Found in Paracoccus and hydrothermal vent tubeworm bacteria' },
+  { cat: 'Enzymology &middot; Ammonia', term: 'Ammonia Monooxygenase (AMO)', def: 'A copper-containing membrane enzyme that uses 2 electrons to activate oxygen and oxidize ammonia into hydroxylamine (NH₂OH).', sub: 'The first step in biological nitrification' },
+  { cat: 'Discovery &middot; Nitrogen', term: 'Comammox', def: 'Complete Ammonia Oxidation in a single bacterial cell (e.g. Nitrospira inopinata) that possesses both AMO and NXR, turning ammonia all the way to nitrate.', sub: 'Discovered in 2015, overturning a 120-year dogma' },
+  { cat: 'Carbon Fixation &middot; CBB', term: 'Carboxysome', def: 'A tiny protein honeycomb micro-tank in cyanobacteria and nitrifiers that traps CO₂ around RuBisCO to speed up carbon fixation and prevent oxygen interference.', sub: 'Found in Nitrosomonas, Nitrobacter & Thiobacillus' },
+  { cat: 'Carbon Fixation &middot; Energetics', term: 'Reductive TCA (rTCA) Cycle', def: 'Running the Krebs citric acid cycle in reverse to build sugars at a fraction of the ATP cost of the Calvin cycle.', sub: 'Used by Aquificae and Nitrospira' },
+  { cat: 'Hydrogen &middot; Enzymes', term: 'Soluble Hydrogenase (SH)', def: 'A cytoplasmic enzyme in hydrogen bacteria (Cupriavidus) that hands electrons from H₂ directly to NAD⁺ without spending any ATP or proton battery power.', sub: 'Why hydrogen bacteria grow so fast compared to iron oxidizers' },
+  { cat: 'Industrial &middot; Mining', term: 'Indirect Bioleaching', def: 'Bacteria oxidize Fe²⁺ into Fe³⁺. The produced Fe³⁺ acts like a chemical acid drill that dissolves copper and gold out of solid rock.', sub: 'How 15% of the world\'s copper is extracted' },
+  { cat: 'Enzymology &middot; Nitrite', term: 'Nitrite Oxidoreductase (NXR)', def: 'A molybdenum enzyme that oxidizes toxic nitrite (NO₂⁻) into plant fertilizer nitrate (NO₃⁻).', sub: 'Stage 2 of nitrification' },
+  { cat: 'Archaea &middot; Thaumarchaeota', term: 'Ammonia-Oxidizing Archaea (AOA)', def: 'Tiny marine archaea with a superpower for scavenging nanomolar ammonia in deep ocean deserts where bacteria starve.', sub: 'Dominate global oceanic nitrogen cycling' }
+];
+
+// Quiz Data (12 Questions)
+const quizExamData = [
+  {
+    q: '1. Why can hydrogen-eating bacteria like <i>Cupriavidus necator</i> make NADH without running Reverse Electron Transport (RET)?',
+    opts: [
+      'Because they lack an electron transport chain entirely',
+      'Because hydrogen gas (H₂ at −0.41 V) sits higher on the electron tower than NAD⁺/NADH (−0.32 V), letting electrons flow naturally downhill',
+      'Because they do not need NADH to build cell parts',
+      'Because they only use reverse ATP synthase'
+    ],
+    correct: 1,
+    exp: 'Since H₂ sits higher on the waterfall (−0.41 V) than NAD⁺ (−0.32 V), electrons drop spontaneously downhill to make NADH without consuming any cellular battery power.'
+  },
+  {
+    q: '2. In iron-oxidizing bacteria growing at pH 2.0, what is the voltage gap (ΔE₀′) between Fe²⁺/Fe³⁺ (+0.77 V) and O₂/H₂O (+0.82 V)?',
+    opts: [
+      'ΔE₀′ = +1.59 V (Huge energy waterfall)',
+      'ΔE₀′ = −0.05 V (Non-spontaneous)',
+      'ΔE₀′ = +0.05 V (A tiny trickle of energy, yielding only ~ −4.8 kJ per mole of iron)',
+      'ΔE₀′ = +0.43 V (Moderate energy)'
+    ],
+    correct: 2,
+    exp: 'ΔE₀′ = +0.82 V − (+0.77 V) = +0.05 V. Because this voltage drop is so tiny, iron oxidizers must consume kilograms of iron just to grow a few grams of cell mass!'
+  },
+  {
+    q: '3. What dangerous rocket fuel chemical is produced inside the anammoxosome during anaerobic ammonium oxidation?',
+    opts: [
+      'Hydrogen cyanide (HCN)',
+      'Hydrazine (N₂H₄ — rocket propellant)',
+      'Nitroglycerin',
+      'Sulfuric acid'
+    ],
+    correct: 1,
+    exp: 'Hydrazine (N₂H₄) is made by Hydrazine Synthase (HZS). It is trapped inside dense ladderane lipids so it doesn\'t destroy the rest of the cell before being oxidized to harmless N₂ gas.'
+  },
+  {
+    q: '4. Which carbon fixation pathway requires the LOWEST amount of ATP per mole of pyruvate produced?',
+    opts: [
+      'Calvin-Benson-Bassham (CBB) Cycle',
+      'Wood-Ljungdahl (Reductive Acetyl-CoA) Pathway',
+      '3-Hydroxypropionate Bicycle',
+      '3-HP / 4-Hydroxybutyrate Cycle'
+    ],
+    correct: 1,
+    exp: 'The strictly anaerobic Wood-Ljungdahl pathway is the most efficient carbon pathway on Earth, costing net 0 to 1 ATP equivalent.'
+  },
+  {
+    q: '5. What is the job of a carboxysome in autotrophic bacteria?',
+    opts: [
+      'To store iron and rust particles',
+      'To concentrate CO₂ gas around RuBisCO to speed up sugar synthesis and prevent oxygen mistakes',
+      'To pump protons out of the cell',
+      'To synthesize hydrazine'
+    ],
+    correct: 1,
+    exp: 'Carboxysomes are protein shell micro-tanks that convert bicarbonate into pure CO₂ directly next to RuBisCO, supercharging carbon fixation.'
+  },
+  {
+    q: '6. When ammonia is oxidized to nitrite by Ammonia-Oxidizing Bacteria (AOB), what happens to the electrons released?',
+    opts: [
+      'All 4 electrons are thrown away into the air',
+      'HAO oxidizes hydroxylamine producing 4 electrons; 2 of them must be recycled back to AMO to activate oxygen, while 2 go to the respiratory chain',
+      'AMO uses ATP to make dinitrogen gas',
+      'AOB cannot grow aerobically'
+    ],
+    correct: 1,
+    exp: 'AMO needs 2 electrons to activate O₂ and attack NH₃. The subsequent enzyme (HAO) produces 4 electrons, returning 2 to AMO and sending the net 2 electrons to the ETC.'
+  },
+  {
+    q: '7. Why do Ammonia-Oxidizing Archaea (AOA) dominate open oceans over bacteria?',
+    opts: [
+      'AOA have an ultra-high affinity for ammonia (Km < 100 nM), allowing them to scavenge trace ammonia where bacteria starve',
+      'AOA swim with giant flagella',
+      'AOA breathe sulfate instead of oxygen',
+      'AOA do not need carbon'
+    ],
+    correct: 0,
+    exp: 'Marine Thaumarchaeota archaea can capture nanomolar concentrations of ammonia in nutrient deserts where bacterial nitrifiers cannot survive.'
+  },
+  {
+    q: '8. What is "Comammox"?',
+    opts: [
+      'An industrial pesticide',
+      'A single bacterium (like <i>Nitrospira inopinata</i>) that performs complete nitrification from ammonia all the way to nitrate',
+      'A giant sulfur-eating worm',
+      'A type of rust found in acid mines'
+    ],
+    correct: 1,
+    exp: 'Comammox stands for Complete Ammonia Oxidation, discovered in 2015 in Nitrospira species that harbor all necessary enzymes in a single cell.'
+  },
+  {
+    q: '9. An organism gets its ATP by oxidizing H₂S gas, but eats pre-made acetate for carbon. It is called a:',
+    opts: [
+      'Chemolithoautotroph',
+      'Chemolithoheterotroph (or mixotroph)',
+      'Chemoorganoautotroph',
+      'Phototroph'
+    ],
+    correct: 1,
+    exp: 'Inorganic electron donor (H₂S = "chemolitho") + organic carbon source (acetate = "heterotroph") = Chemolithoheterotroph.'
+  },
+  {
+    q: '10. What is rusticyanin?',
+    opts: [
+      'A red pigment in tomatoes',
+      'A blue copper electron carrier protein in <i>Acidithiobacillus</i> that survives extreme acid (pH 2) to transfer electrons from iron',
+      'A bioplastic polymer',
+      'A sulfur storage bubble'
+    ],
+    correct: 1,
+    exp: 'Rusticyanin is an acid-stable copper protein in the periplasm of iron-oxidizing bacteria that carries electrons from Cyc2 to Cytochrome c.'
+  },
+  {
+    q: '11. Why do commercial copper and gold mining operations spray heaps of rock with <i>Acidithiobacillus</i>?',
+    opts: [
+      'The bacteria eat the gold directly',
+      'The bacteria oxidize Fe²⁺ into Fe³⁺, which acts as a powerful chemical oxidant that dissolves metal sulfides out of rock',
+      'The bacteria make cyanide gas',
+      'The bacteria freeze the rock matrix'
+    ],
+    correct: 1,
+    exp: 'In indirect bioleaching, bacteria continuously produce ferric iron (Fe³⁺), which chemically dissolves insoluble copper and gold ores from crushed rock heaps.'
+  },
+  {
+    q: '12. Which electron donor releases the LARGEST amount of energy when combined with oxygen?',
+    opts: [
+      'Ferrous iron (Fe²⁺ at pH 2.0)',
+      'Nitrite (NO₂⁻)',
+      'Hydrogen gas (H₂)',
+      'Thiosulfate (S₂O₃²⁻)'
+    ],
+    correct: 2,
+    exp: 'H₂ sits near the very top of the biological redox tower (−0.41 V). When paired with O₂ (+0.82 V), it yields a huge ΔE₀′ of +1.23 V (ΔG°′ = −237.4 kJ/mol).'
+  }
+];
+
+// ---------- THEME CONTROLLER ----------
+const themeBtn = document.getElementById('themeToggle');
+let isDark = true;
+themeBtn.addEventListener('click', () => {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  themeBtn.textContent = isDark ? '🌓 Mode' : '☀️ Light';
+  drawTowerCanvas();
+  drawRetCanvas();
+  drawAmdCanvas();
+});
+
+// ---------- READING PROGRESS BAR ----------
+window.addEventListener('scroll', () => {
+  const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+});
+
+// ---------- SIMULATOR 1: ELECTRON TOWER & THERMODYNAMICS ----------
+const selTD = document.getElementById('towerDonor');
+const selTA = document.getElementById('towerAcceptor');
+const outDeltaE = document.getElementById('outDeltaE');
+const outDeltaG = document.getElementById('outDeltaG');
+const outAtp = document.getElementById('outAtp');
+const outStatus = document.getElementById('outStatus');
+const towerBioExp = document.getElementById('towerBioExplanation');
+const tCanvas = document.getElementById('towerCanvas');
+const tCtx = tCanvas.getContext('2d');
+
+const towerDonorsData = {
+  h2: { name: 'H₂ / 2H⁺', e0: -0.41, n: 2 },
+  co: { name: 'CO / CO₂', e0: -0.54, n: 2 },
+  formate: { name: 'Formate / CO₂', e0: -0.43, n: 2 },
+  nadh: { name: 'NADH / NAD⁺', e0: -0.32, n: 2 },
+  h2s: { name: 'H₂S / S⁰', e0: -0.27, n: 2 },
+  s0: { name: 'S⁰ / SO₃²⁻', e0: -0.06, n: 4 },
+  s2o3: { name: 'S₂O₃²⁻ / SO₄²⁻', e0: 0.08, n: 8 },
+  nh4: { name: 'NH₄⁺ / NO₂⁻', e0: 0.34, n: 6 },
+  no2: { name: 'NO₂⁻ / NO₃⁻', e0: 0.43, n: 2 },
+  fe_ph7: { name: 'Fe²⁺ / Fe³⁺ (pH 7)', e0: 0.20, n: 1 },
+  fe_ph2: { name: 'Fe²⁺ / Fe³⁺ (pH 2)', e0: 0.77, n: 1 },
+  glucose: { name: 'Glucose / 6CO₂', e0: -0.43, n: 24 }
+};
+
+const towerAcceptorsData = {
+  o2: { name: 'O₂ / H₂O', e0: 0.82 },
+  no3: { name: 'NO₃⁻ / NO₂⁻', e0: 0.43 },
+  no3_n2: { name: 'NO₃⁻ / N₂ (Denitrification)', e0: 0.74 },
+  fe3_ph2: { name: 'Fe³⁺ / Fe²⁺ (pH 2)', e0: 0.77 },
+  so4: { name: 'SO₄²⁻ / H₂S', e0: -0.22 },
+  co2_ch4: { name: 'CO₂ / CH₄ (Methanogenesis)', e0: -0.24 },
+  fumarate: { name: 'Fumarate / Succinate', e0: 0.03 }
+};
+
+function setTowerPreset(dVal, aVal) {
+  selTD.value = dVal;
+  selTA.value = aVal;
+  updateTowerSim();
+}
+
+function updateTowerSim() {
+  const d = towerDonorsData[selTD.value];
+  const a = towerAcceptorsData[selTA.value];
+  const deltaE = a.e0 - d.e0;
+  const F = 96.485;
+  const deltaG = -d.n * F * deltaE;
+  const atpYield = deltaG < 0 ? (Math.abs(deltaG) / 50).toFixed(1) : '0';
+
+  outDeltaE.textContent = (deltaE >= 0 ? '+' : '') + deltaE.toFixed(2) + ' V';
+  outDeltaG.textContent = (deltaG >= 0 ? '+' : '−') + Math.abs(deltaG).toFixed(1) + ' kJ/mol donor';
+  outAtp.textContent = deltaG < 0 ? `~ ${atpYield} mol ATP` : '0 (Endergonic)';
+
+  if (deltaE > 0.8) {
+    outStatus.textContent = 'Highly Spontaneous (Rich Energy Yield)';
+    outStatus.style.color = 'var(--good)';
+  } else if (deltaE > 0.1) {
+    outStatus.textContent = 'Moderately Spontaneous (Viable)';
+    outStatus.style.color = 'var(--accent)';
+  } else if (deltaE > 0) {
+    outStatus.textContent = 'Marginal (Thermodynamic limit of life!)';
+    outStatus.style.color = 'var(--warn)';
+  } else {
+    outStatus.textContent = 'Impossible (+ΔG: Uphill without power)';
+    outStatus.style.color = 'var(--bad)';
+  }
+
+  // Plain explanation
+  let expText = `<b>Simple Breakdown:</b> Electrons fall from <b>${d.name}</b> (E₀′ = ${d.e0 >= 0 ? '+' : '−'}${Math.abs(d.e0)} V) down to <b>${a.name}</b> (E₀′ = ${a.e0 >= 0 ? '+' : '−'}${Math.abs(a.e0)} V). `;
+  if (d.e0 > -0.32) {
+    expText += `<br>⚠️ <b>Reverse Flow Needed:</b> Because ${d.name} is lower than NADH (−0.32 V), this organism <b>must spend ATP/proton battery power</b> to push electrons backwards uphill to make NADH for building DNA and cell walls.`;
+  } else {
+    expText += `<br>✅ <b>No Reverse Flow Needed:</b> ${d.name} is higher than NADH (−0.32 V), so it can reduce NAD⁺ directly for free!`;
+  }
+  towerBioExp.innerHTML = expText;
+
+  drawTowerCanvas();
+}
+
+function drawTowerCanvas() {
+  const w = tCanvas.width;
+  const h = tCanvas.height;
+  tCtx.clearRect(0, 0, w, h);
+
+  const d = towerDonorsData[selTD.value];
+  const a = towerAcceptorsData[selTA.value];
+
+  const minE = -0.6, maxE = 0.9;
+  function getY(e) {
+    const norm = (e - minE) / (maxE - minE);
+    return 30 + norm * (h - 60);
+  }
+
+  const dY = getY(d.e0);
+  const aY = getY(a.e0);
+  const midX = w / 2;
+
+  // Background grid lines
+  tCtx.strokeStyle = isDark ? '#223830' : '#d5e4dc';
+  tCtx.lineWidth = 1;
+  for (let e = -0.5; e <= 0.8; e += 0.25) {
+    const y = getY(e);
+    tCtx.beginPath();
+    tCtx.moveTo(50, y);
+    tCtx.lineTo(w - 50, y);
+    tCtx.stroke();
+    tCtx.fillStyle = isDark ? '#6e8a80' : '#7e968d';
+    tCtx.font = '11px monospace';
+    tCtx.textAlign = 'right';
+    tCtx.fillText((e >= 0 ? '+' : '−') + Math.abs(e).toFixed(2) + ' V', 45, y + 4);
+  }
+
+  // Central Tower Axis
+  tCtx.strokeStyle = isDark ? '#3d5c52' : '#b2ccc0';
+  tCtx.lineWidth = 4;
+  tCtx.beginPath();
+  tCtx.moveTo(midX, getY(-0.55));
+  tCtx.lineTo(midX, getY(0.85));
+  tCtx.stroke();
+
+  // Electron Drop Arrow
+  tCtx.strokeStyle = dY <= aY ? '#4ade80' : '#f87171';
+  tCtx.lineWidth = 4;
+  tCtx.beginPath();
+  tCtx.moveTo(midX + 40, dY);
+  tCtx.lineTo(midX + 40, aY);
+  tCtx.stroke();
+
+  // Arrowhead
+  const dir = dY <= aY ? 1 : -1;
+  tCtx.fillStyle = dY <= aY ? '#4ade80' : '#f87171';
+  tCtx.beginPath();
+  tCtx.moveTo(midX + 40, aY);
+  tCtx.lineTo(midX + 34, aY - dir * 10);
+  tCtx.lineTo(midX + 46, aY - dir * 10);
+  tCtx.fill();
+
+  // Donor Node
+  tCtx.fillStyle = '#34d399';
+  tCtx.beginPath();
+  tCtx.arc(midX, dY, 8, 0, Math.PI * 2);
+  tCtx.fill();
+  tCtx.fillStyle = isDark ? '#ffffff' : '#10261f';
+  tCtx.font = 'bold 12px system-ui';
+  tCtx.textAlign = 'right';
+  tCtx.fillText(`[Donor / Food] ${d.name} (${d.e0 >= 0 ? '+' : '−'}${Math.abs(d.e0)}V)`, midX - 16, dY + 4);
+
+  // Acceptor Node
+  tCtx.fillStyle = '#f87171';
+  tCtx.beginPath();
+  tCtx.arc(midX, aY, 8, 0, Math.PI * 2);
+  tCtx.fill();
+  tCtx.fillStyle = isDark ? '#ffffff' : '#10261f';
+  tCtx.textAlign = 'left';
+  tCtx.fillText(`[Acceptor / Trash] ${a.name} (${a.e0 >= 0 ? '+' : '−'}${Math.abs(a.e0)}V)`, midX + 55, aY + 4);
+
+  // NAD+/NADH Reference line
+  const nadhY = getY(-0.32);
+  tCtx.strokeStyle = '#c084fc';
+  tCtx.setLineDash([4, 4]);
+  tCtx.beginPath();
+  tCtx.moveTo(midX - 140, nadhY);
+  tCtx.lineTo(midX + 140, nadhY);
+  tCtx.stroke();
+  tCtx.setLineDash([]);
+  tCtx.fillStyle = '#c084fc';
+  tCtx.font = '10px monospace';
+  tCtx.textAlign = 'center';
+  tCtx.fillText('NADH Reference Level (−0.32 V)', midX, nadhY - 6);
+}
+
+selTD.addEventListener('change', updateTowerSim);
+selTA.addEventListener('change', updateTowerSim);
+
+// ---------- SIMULATOR 2: REVERSE ELECTRON TRANSPORT ----------
+const retDonorSel = document.getElementById('retDonorSelect');
+const retPmfSlider = document.getElementById('retPmfSlider');
+const valPmf = document.getElementById('valPmf');
+const outRetBarrier = document.getElementById('outRetBarrier');
+const outRetTax = document.getElementById('outRetTax');
+const outNadhRate = document.getElementById('outNadhRate');
+const outRetMech = document.getElementById('outRetMech');
+const rCanvas = document.getElementById('retCanvas');
+const rCtx = rCanvas.getContext('2d');
+
+const btnToggleRet = document.getElementById('btnToggleRetAnim');
+const btnUncoupleRet = document.getElementById('btnUncoupleRet');
+const btnMaxPmfRet = document.getElementById('btnMaxPmfRet');
+const btnResetRet = document.getElementById('btnResetRet');
+
+let isRetRunning = true;
+let retAnimTick = 0;
+
+const retProfiles = {
+  nitrite: { name: 'Nitrobacter', donorE: 0.43, tax: 78, desc: 'pmf-driven Complex I reversal from Cyt c' },
+  iron: { name: 'Acidithiobacillus ferrooxidans', donorE: 0.77, tax: 88, desc: 'Extreme pmf drain across Cyc2/Rusticyanin' },
+  sulfur: { name: 'Thiobacillus', donorE: 0.08, tax: 45, desc: 'Reversal from Quinone pool to Complex I' },
+  hydrogen: { name: 'Cupriavidus necator', donorE: -0.41, tax: 0, desc: 'Direct exergonic reduction via Soluble Hydrogenase' }
+};
+
+function updateRetSim() {
+  const p = retProfiles[retDonorSel.value];
+  const pmf = parseInt(retPmfSlider.value);
+  valPmf.textContent = pmf + ' mV';
+
+  const barrier = p.donorE - (-0.32);
+  outRetBarrier.textContent = barrier > 0 ? `ΔE = +${barrier.toFixed(2)} V Uphill` : `ΔE = ${barrier.toFixed(2)} V (Downhill)`;
+  outRetTax.textContent = p.tax > 0 ? `~ ${(p.tax * (200 / pmf)).toFixed(0)}% of Total pmf Flux` : '0% (No REF needed)';
+
+  if (p.tax === 0) {
+    outNadhRate.textContent = 'Maximum (Direct SH)';
+    outNadhRate.style.color = 'var(--good)';
+    outRetMech.textContent = 'Cytoplasmic Soluble Hydrogenase';
+  } else if (pmf < 130) {
+    outNadhRate.textContent = 'Starving (pmf too low for REF)';
+    outNadhRate.style.color = 'var(--bad)';
+    outRetMech.textContent = 'Inadequate pmf to drive Complex I backwards';
+  } else {
+    outNadhRate.textContent = 'Active (pmf-driven)';
+    outNadhRate.style.color = 'var(--accent)';
+    outRetMech.textContent = p.desc;
+  }
+
+  drawRetCanvas();
+}
+
+function drawRetCanvas() {
+  const w = rCanvas.width;
+  const h = rCanvas.height;
+  rCtx.clearRect(0, 0, w, h);
+
+  const pmf = parseInt(retPmfSlider.value);
+  const p = retProfiles[retDonorSel.value];
+
+  // Draw Membrane Bilayer
+  const memY = h * 0.42;
+  const memH = 45;
+
+  rCtx.fillStyle = isDark ? '#1b2f27' : '#d2e8dd';
+  rCtx.fillRect(0, memY, w, memH);
+
+  rCtx.fillStyle = isDark ? '#7fa99b' : '#336353';
+  rCtx.font = 'bold 11px system-ui';
+  rCtx.textAlign = 'left';
+  rCtx.fillText('OUTSIDE / PERIPLASM (HIGH [H⁺] BATTERY)', 20, memY - 14);
+  rCtx.fillText('INSIDE / CYTOPLASM (NADH Synthesis & CO₂ Fixation)', 20, memY + memH + 26);
+
+  // Complexes
+  const compW = 90;
+  const compH = 65;
+
+  // Complex I
+  const c1X = w * 0.22 - compW / 2;
+  rCtx.fillStyle = p.tax > 0 ? (pmf > 130 ? '#c084fc' : '#6b4c8a') : '#4ade80';
+  rCtx.fillRect(c1X, memY - 10, compW, compH);
+  rCtx.fillStyle = '#000';
+  rCtx.font = 'bold 11px system-ui';
+  rCtx.textAlign = 'center';
+  rCtx.fillText('Complex I', c1X + compW / 2, memY + 14);
+  rCtx.fillText(p.tax > 0 ? '◀ Reverse Flow' : 'Forward Flow', c1X + compW / 2, memY + 28);
+
+  // Cytochrome bc1 / Rusticyanin
+  const c2X = w * 0.5 - compW / 2;
+  rCtx.fillStyle = '#38bdf8';
+  rCtx.fillRect(c2X, memY - 5, compW, compH);
+  rCtx.fillStyle = '#000';
+  rCtx.fillText('Cyt / Quinone', c2X + compW / 2, memY + 16);
+  rCtx.fillText('Pool', c2X + compW / 2, memY + 30);
+
+  // Cytochrome aa3 Oxidase
+  const c3X = w * 0.78 - compW / 2;
+  rCtx.fillStyle = '#f87171';
+  rCtx.fillRect(c3X, memY - 10, compW, compH);
+  rCtx.fillStyle = '#000';
+  rCtx.fillText('Cyt aa₃ Oxidase', c3X + compW / 2, memY + 14);
+  rCtx.fillText('▶ Down to O₂', c3X + compW / 2, memY + 28);
+
+  // Electron Flow Lines
+  rCtx.strokeStyle = '#f87171';
+  rCtx.lineWidth = 3;
+  rCtx.beginPath();
+  rCtx.moveTo(c2X + compW, memY + 20);
+  rCtx.lineTo(c3X, memY + 20);
+  rCtx.stroke();
+
+  if (p.tax > 0) {
+    rCtx.strokeStyle = pmf > 130 ? '#c084fc' : '#6b4c8a';
+    rCtx.setLineDash([5, 4]);
+    rCtx.beginPath();
+    rCtx.moveTo(c2X, memY + 20);
+    rCtx.lineTo(c1X + compW, memY + 20);
+    rCtx.stroke();
+    rCtx.setLineDash([]);
+  }
+
+  // Dynamic moving particles
+  if (isRetRunning) {
+    retAnimTick += 0.08;
+    const offset1 = (retAnimTick * 30) % (c3X - (c2X + compW));
+    rCtx.fillStyle = '#fbbf24';
+    rCtx.beginPath();
+    rCtx.arc(c2X + compW + offset1, memY + 20, 5, 0, Math.PI * 2);
+    rCtx.fill();
+
+    if (p.tax > 0 && pmf > 130) {
+      const offset2 = (retAnimTick * 25) % (c2X - (c1X + compW));
+      rCtx.fillStyle = '#c084fc';
+      rCtx.beginPath();
+      rCtx.arc(c2X - offset2, memY + 20, 5, 0, Math.PI * 2);
+      rCtx.fill();
+    }
+  }
+
+  // Text annotations
+  rCtx.fillStyle = '#fbbf24';
+  rCtx.font = 'bold 11px system-ui';
+  rCtx.textAlign = 'center';
+  rCtx.fillText('O₂ + 4H⁺ → 2H₂O (Protons Pumped Out ⬆)', c3X + compW / 2, memY - 22);
+  rCtx.fillText(p.tax > 0 ? (pmf > 130 ? 'NAD⁺ → NADH (Consuming Proton Battery ⬇)' : 'NAD⁺ reduction stopped (Low Battery)') : 'Direct Hydrogenase (No Battery Consumed)', c1X + compW / 2, memY + memH + 48);
+}
+
+function retLoop() {
+  if (isRetRunning) {
+    drawRetCanvas();
+  }
+  requestAnimationFrame(retLoop);
+}
+requestAnimationFrame(retLoop);
+
+btnToggleRet.addEventListener('click', () => {
+  isRetRunning = !isRetRunning;
+  btnToggleRet.textContent = isRetRunning ? '⏸ Pause Simulation' : '▶ Resume Simulation';
+});
+btnUncoupleRet.addEventListener('click', () => {
+  retPmfSlider.value = 80;
+  updateRetSim();
+});
+btnMaxPmfRet.addEventListener('click', () => {
+  retPmfSlider.value = 240;
+  updateRetSim();
+});
+btnResetRet.addEventListener('click', () => {
+  retPmfSlider.value = 200;
+  retDonorSel.value = 'nitrite';
+  updateRetSim();
+});
+
+retDonorSel.addEventListener('change', updateRetSim);
+retPmfSlider.addEventListener('input', updateRetSim);
+
+// ---------- SECTION 04: PHYSIOLOGICAL GROUPS TABS ----------
+const groupTabsEl = document.getElementById('groupTabs');
+const groupPanelsEl = document.getElementById('groupPanels');
+
+physiologicalGroups.forEach((g, idx) => {
+  const btn = document.createElement('button');
+  btn.className = 'tab-btn' + (idx === 0 ? ' active' : '');
+  btn.textContent = g.name.split(' (')[0];
+  btn.setAttribute('role', 'tab');
+  btn.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById('panel-' + g.key).classList.add('active');
+  });
+  groupTabsEl.appendChild(btn);
+
+  const panel = document.createElement('div');
+  panel.className = 'tab-panel' + (idx === 0 ? ' active' : '');
+  panel.id = 'panel-' + g.key;
+  panel.innerHTML = `
+    <div class="card" style="border-top: 3px solid var(--accent);">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:0.8rem;">
+        <h3 style="margin:0; font-size:1.25rem;">${g.name}</h3>
+        <span class="badge" style="color:var(--accent); font-weight:700;">${g.tag}</span>
+      </div>
+
+      <div class="card card-subtle" style="border-left: 3px solid var(--accent); margin-bottom: 1rem;">
+        <div style="font-weight:700; color:var(--accent); font-size:0.88rem; text-transform:uppercase;">🧬 Chemical Reaction Pathway Flow</div>
+        ${g.pathwayVisual}
+      </div>
+
+      <div class="grid-2" style="margin-bottom:1rem;">
+        <div class="card card-subtle" style="margin-bottom:0;">
+          <h4 style="color:var(--donor);">⚡ Energy Input & Output</h4>
+          <p style="font-size:0.88rem; margin-bottom:0.4rem;"><b>Electron Donor (Food):</b> ${g.donor}</p>
+          <p style="font-size:0.88rem; margin-bottom:0.4rem;"><b>Electron Acceptor:</b> ${g.acceptor}</p>
+          <p style="font-size:0.88rem; margin:0;"><b>End Waste Product:</b> ${g.product}</p>
+        </div>
+
+        <div class="card card-subtle" style="margin-bottom:0;">
+          <h4 style="color:var(--carbon);">🔬 Biochemical Machinery</h4>
+          <p style="font-size:0.88rem; margin-bottom:0.4rem;"><b>Key Enzymes:</b> ${g.enzymes}</p>
+          <p style="font-size:0.88rem; margin-bottom:0.4rem;"><b>Carbon Fixation Route:</b> ${g.carbonFix}</p>
+          <p style="font-size:0.88rem; margin:0;"><b>Reverse Electron Flow:</b> ${g.retNeeded}</p>
+        </div>
+      </div>
+
+      <div class="callout plain" style="margin-bottom:0.8rem;">
+        <div class="callout-title">💡 How It Works In Plain English</div>
+        ${g.deepDive}
+      </div>
+
+      <div class="grid-2">
+        <div style="font-size:0.88rem;">
+          <b>Representative Organisms:</b> ${g.organisms}<br>
+          <span style="color:var(--text-muted); display:block; margin-top:0.4rem;"><b>Where they live:</b> ${g.ecology}</span>
+        </div>
+        <div style="font-size:0.88rem;">
+          <b style="color:var(--accent2);">Human & Industrial Uses:</b><br>
+          <span style="color:var(--text-muted); display:block; margin-top:0.4rem;">${g.biotech}</span>
+        </div>
+      </div>
+    </div>
+  `;
+  groupPanelsEl.appendChild(panel);
+});
+
+// ---------- SIMULATOR 3: ACID MINE DRAINAGE & BIOMINING LAB ----------
+const amdMicrobe = document.getElementById('amdMicrobeSelect');
+const amdPh = document.getElementById('amdPhSlider');
+const amdO2 = document.getElementById('amdO2Slider');
+const valAmdPh = document.getElementById('valAmdPh');
+const valAmdO2 = document.getElementById('valAmdO2');
+const outAmdRate = document.getElementById('outAmdRate');
+const outAmdH2so4 = document.getElementById('outAmdH2so4');
+const outAmdExtraction = document.getElementById('outAmdExtraction');
+const outAmdPrecip = document.getElementById('outAmdPrecip');
+const amdCanvas = document.getElementById('amdCanvas');
+const amdCtx = amdCanvas.getContext('2d');
+
+const btnToggleAmd = document.getElementById('btnToggleAmdAnim');
+const btnAddLimeAmd = document.getElementById('btnAddLimeAmd');
+const btnAcidifyAmd = document.getElementById('btnAcidifyAmd');
+const btnResetAmd = document.getElementById('btnResetAmd');
+
+let isAmdRunning = true;
+let amdAnimTick = 0;
+
+function updateAmdSim() {
+  const isBiotic = amdMicrobe.value === 'active';
+  const ph = parseFloat(amdPh.value);
+  const do2 = parseInt(amdO2.value);
+
+  valAmdPh.textContent = ph.toFixed(1);
+  valAmdO2.textContent = do2 + '%';
+
+  if (!isBiotic) {
+    outAmdRate.textContent = '1x (Abiotic Slow Baseline)';
+    outAmdRate.style.color = 'var(--text-muted)';
+    outAmdH2so4.textContent = 'Negligible rate';
+    outAmdExtraction.textContent = `${(do2 * 0.12).toFixed(1)}% (Sluggish)`;
+    outAmdPrecip.textContent = 'Minimal';
+  } else {
+    const boost = ph <= 2.5 && do2 > 30 ? 100000 : Math.round(10000 * (do2 / 100));
+    outAmdRate.textContent = `${boost.toLocaleString()}x Abiotic!`;
+    outAmdRate.style.color = 'var(--bad)';
+    outAmdH2so4.textContent = 'Severe (pH plunging to 1.5)';
+    outAmdExtraction.textContent = `${Math.min(98, 60 + do2 * 0.38).toFixed(1)}% Recovery`;
+    outAmdPrecip.textContent = ph > 2.0 ? 'Heavy Jarosite Crust (Yellowboy)' : 'Soluble Fe³⁺ in solution';
+  }
+
+  drawAmdCanvas();
+}
+
+function drawAmdCanvas() {
+  const w = amdCanvas.width;
+  const h = amdCanvas.height;
+  amdCtx.clearRect(0, 0, w, h);
+
+  const isBiotic = amdMicrobe.value === 'active';
+  const ph = parseFloat(amdPh.value);
+
+  // Draw Pyrite Rock
+  amdCtx.fillStyle = '#475569';
+  amdCtx.beginPath();
+  amdCtx.moveTo(w * 0.12, h * 0.85);
+  amdCtx.lineTo(w * 0.32, h * 0.35);
+  amdCtx.lineTo(w * 0.52, h * 0.85);
+  amdCtx.fill();
+
+  amdCtx.fillStyle = '#fbbf24';
+  amdCtx.font = 'bold 12px system-ui';
+  amdCtx.textAlign = 'center';
+  amdCtx.fillText('Pyrite Ore (FeS₂)', w * 0.32, h * 0.65);
+
+  // Jarosite crust if pH > 2
+  if (ph > 2.0 && isBiotic) {
+    amdCtx.fillStyle = 'rgba(234, 179, 8, 0.7)';
+    amdCtx.beginPath();
+    amdCtx.moveTo(w * 0.12, h * 0.85);
+    amdCtx.lineTo(w * 0.32, h * 0.35);
+    amdCtx.lineTo(w * 0.52, h * 0.85);
+    amdCtx.lineTo(w * 0.48, h * 0.88);
+    amdCtx.lineTo(w * 0.32, h * 0.42);
+    amdCtx.lineTo(w * 0.16, h * 0.88);
+    amdCtx.fill();
+    amdCtx.fillStyle = '#d97706';
+    amdCtx.fillText('Jarosite Crust (Yellowboy)', w * 0.32, h * 0.88);
+  }
+
+  // Leaching cycle loop
+  amdCtx.strokeStyle = isBiotic ? '#f87171' : '#94a3b8';
+  amdCtx.lineWidth = 4;
+  amdCtx.beginPath();
+  amdCtx.arc(w * 0.72, h * 0.55, 55, 0, Math.PI * 2);
+  amdCtx.stroke();
+
+  amdCtx.fillStyle = isBiotic ? '#4ade80' : '#94a3b8';
+  amdCtx.fillText(isBiotic ? 'A. ferrooxidans (Fe²⁺ → Fe³⁺)' : 'Abiotic Slow Oxidation', w * 0.72, h * 0.35);
+  amdCtx.fillStyle = '#f87171';
+  amdCtx.fillText('Fe³⁺ dissolves FeS₂ → Cu²⁺ / Fe²⁺ + H₂SO₄', w * 0.72, h * 0.78);
+
+  // Animated revolving ions
+  if (isAmdRunning) {
+    amdAnimTick += isBiotic ? 0.04 : 0.005;
+    const angle = amdAnimTick;
+    const x = w * 0.72 + Math.cos(angle) * 55;
+    const y = h * 0.55 + Math.sin(angle) * 55;
+    amdCtx.fillStyle = '#38bdf8';
+    amdCtx.beginPath();
+    amdCtx.arc(x, y, 7, 0, Math.PI * 2);
+    amdCtx.fill();
+  }
+}
+
+function amdLoop() {
+  if (isAmdRunning) {
+    drawAmdCanvas();
+  }
+  requestAnimationFrame(amdLoop);
+}
+requestAnimationFrame(amdLoop);
+
+btnToggleAmd.addEventListener('click', () => {
+  isAmdRunning = !isAmdRunning;
+  btnToggleAmd.textContent = isAmdRunning ? '⏸ Pause Simulation' : '▶ Resume Simulation';
+});
+btnAddLimeAmd.addEventListener('click', () => {
+  amdPh.value = 4.0;
+  updateAmdSim();
+});
+btnAcidifyAmd.addEventListener('click', () => {
+  amdPh.value = 1.2;
+  updateAmdSim();
+});
+btnResetAmd.addEventListener('click', () => {
+  amdPh.value = 2.0;
+  amdO2.value = 80;
+  amdMicrobe.value = 'active';
+  updateAmdSim();
+});
+
+amdMicrobe.addEventListener('change', updateAmdSim);
+amdPh.addEventListener('input', updateAmdSim);
+amdO2.addEventListener('input', updateAmdSim);
+
+// ---------- SECTION 07: METABOLISM BUILDER ----------
+const bDonor = document.getElementById('bDonor');
+const bAcceptor = document.getElementById('bAcceptor');
+const bCarbon = document.getElementById('bCarbon');
+const bPathway = document.getElementById('bPathway');
+const bBadge = document.getElementById('builderBadge');
+const bTitle = document.getElementById('builderTitle');
+const bDesc = document.getElementById('builderDesc');
+
+const btnRandBuild = document.getElementById('btnRandomBuilder');
+const btnPNitro = document.getElementById('btnPresetNitrosomonas');
+const btnPAcidi = document.getElementById('btnPresetAcidithiobacillus');
+const btnPCupria = document.getElementById('btnPresetCupriavidus');
+
+const builderDonors = [
+  { id: 'h2', label: 'H₂ (Hydrogen Gas)', type: 'litho' },
+  { id: 'h2s', label: 'H₂S / Thiosulfate', type: 'litho' },
+  { id: 'fe2', label: 'Fe²⁺ (Ferrous Iron)', type: 'litho' },
+  { id: 'nh3', label: 'NH₃ (Ammonia)', type: 'litho' },
+  { id: 'no2', label: 'NO₂⁻ (Nitrite)', type: 'litho' },
+  { id: 'glucose', label: 'Glucose', type: 'organo' }
+];
+
+const builderAcceptors = ['O₂ (Aerobic)', 'NO₃⁻ (Nitrate)', 'SO₄²⁻ (Sulfate)', 'Fe³⁺ (Ferric Iron)'];
+const builderCarbons = ['CO₂ (Autotrophy)', 'Organic Carbon (Heterotrophy)'];
+const builderPathways = [
+  'Calvin-Benson-Bassham (CBB) Cycle',
+  'Reductive TCA (rTCA) Cycle',
+  'Wood-Ljungdahl Pathway',
+  'None (Heterotrophic Assimilation)'
+];
+
+function fillSelect(sel, items) {
+  items.forEach(it => {
+    const opt = document.createElement('option');
+    opt.value = typeof it === 'object' ? it.id : it;
+    opt.textContent = typeof it === 'object' ? it.label : it;
+    sel.appendChild(opt);
+  });
+}
+fillSelect(bDonor, builderDonors);
+fillSelect(bAcceptor, builderAcceptors);
+fillSelect(bCarbon, builderCarbons);
+fillSelect(bPathway, builderPathways);
+
+function updateBuilder() {
+  const dObj = builderDonors.find(x => x.id === bDonor.value);
+  const acc = bAcceptor.value;
+  const carb = bCarbon.value;
+  const pth = bPathway.value;
+
+  const isLitho = dObj.type === 'litho';
+  const isAuto = carb.includes('CO₂');
+
+  let phenotype = '';
+  if (isLitho && isAuto) phenotype = 'Chemolithoautotroph';
+  else if (isLitho && !isAuto) phenotype = 'Chemolithoheterotroph (Mixotroph)';
+  else if (!isLitho && isAuto) phenotype = 'Chemoorganoautotroph (Theoretical)';
+  else phenotype = 'Chemoorganoheterotroph';
+
+  bBadge.textContent = phenotype;
+  bBadge.style.color = isLitho ? 'var(--donor)' : 'var(--accent2)';
+  bBadge.style.background = isLitho ? 'var(--good-bg)' : 'var(--warn-bg)';
+
+  bTitle.textContent = `${dObj.label.split(' (')[0]} + ${acc.split(' ')[0]} → ${phenotype}`;
+
+  let desc = `Energy metabolism powered by <b>${dObj.label}</b> giving electrons to <b>${acc}</b>. Body mass built from <b>${carb}</b>. `;
+  if (isLitho && isAuto) {
+    desc += `Utilizes the <b>${pth}</b> for carbon fixation. Classic real-world examples: <i>${
+      dObj.id === 'fe2' ? 'Acidithiobacillus ferrooxidans' :
+      dObj.id === 'nh3' ? 'Nitrosomonas europaea' :
+      dObj.id === 'no2' ? 'Nitrobacter winogradskyi' :
+      dObj.id === 'h2s' ? 'Beggiatoa / Thiomicrospira' : 'Cupriavidus necator'
+    }</i>.`;
+  } else if (isLitho && !isAuto) {
+    desc += `An interesting mixotrophic lifestyle: harvests ATP from mineral rocks, but absorbs preformed organic scraps for carbon frameworks.`;
+  } else {
+    desc += `Standard animal/bacterial lifestyle eating organic food for both energy and body structure (e.g. <i>E. coli</i> or humans).`;
+  }
+  bDesc.innerHTML = desc;
+}
+
+[bDonor, bAcceptor, bCarbon, bPathway].forEach(s => s.addEventListener('change', updateBuilder));
+
+btnRandBuild.addEventListener('click', () => {
+  bDonor.selectedIndex = Math.floor(Math.random() * builderDonors.length);
+  bAcceptor.selectedIndex = Math.floor(Math.random() * builderAcceptors.length);
+  bCarbon.selectedIndex = Math.floor(Math.random() * builderCarbons.length);
+  bPathway.selectedIndex = Math.floor(Math.random() * builderPathways.length);
+  updateBuilder();
+});
+
+btnPNitro.addEventListener('click', () => {
+  bDonor.value = 'nh3';
+  bAcceptor.selectedIndex = 0;
+  bCarbon.selectedIndex = 0;
+  bPathway.selectedIndex = 0;
+  updateBuilder();
+});
+
+btnPAcidi.addEventListener('click', () => {
+  bDonor.value = 'fe2';
+  bAcceptor.selectedIndex = 0;
+  bCarbon.selectedIndex = 0;
+  bPathway.selectedIndex = 0;
+  updateBuilder();
+});
+
+btnPCupria.addEventListener('click', () => {
+  bDonor.value = 'h2';
+  bAcceptor.selectedIndex = 0;
+  bCarbon.selectedIndex = 0;
+  bPathway.selectedIndex = 0;
+  updateBuilder();
+});
+
+// ---------- SECTION 08: EXPANDED DONOR SORTER ----------
+const sorterPool = document.getElementById('sorterPool');
+const itemsInorg = document.getElementById('itemsInorganic');
+const itemsOrg = document.getElementById('itemsOrganic');
+const sorterScore = document.getElementById('sorterScore');
+const sorterPrompt = document.getElementById('sorterPrompt');
+const btnClassInorg = document.getElementById('btnClassifyInorganic');
+const btnClassOrg = document.getElementById('btnClassifyOrganic');
+const btnAutoSort = document.getElementById('btnAutoSort');
+const resetSorterBtn = document.getElementById('resetSorterBtn');
+
+let activeChipObj = null;
+let placedCount = 0;
+
+function initSorter() {
+  sorterPool.innerHTML = '';
+  itemsInorg.innerHTML = '';
+  itemsOrg.innerHTML = '';
+  placedCount = 0;
+  activeChipObj = null;
+  sorterScore.textContent = '0 of 12 classified';
+  sorterPrompt.textContent = 'Select a molecule below to classify:';
+  btnClassInorg.disabled = true;
+  btnClassOrg.disabled = true;
+
+  donorsList.forEach(d => {
+    const chip = document.createElement('div');
+    chip.className = 'sorter-chip';
+    chip.textContent = d.label;
+    chip.setAttribute('role', 'button');
+    chip.setAttribute('tabindex', '0');
+
+    chip.addEventListener('click', () => {
+      if (chip.classList.contains('placed')) return;
+      document.querySelectorAll('.sorter-chip').forEach(c => c.classList.remove('active-chip'));
+      chip.classList.add('active-chip');
+      activeChipObj = { chip, data: d };
+      sorterPrompt.innerHTML = `Classify <b>${d.label}</b>: Is it Inorganic or Organic?`;
+      btnClassInorg.disabled = false;
+      btnClassOrg.disabled = false;
+    });
+
+    sorterPool.appendChild(chip);
+  });
+}
+
+function handleSortChoice(chosenType) {
+  if (!activeChipObj) return;
+  const { chip, data } = activeChipObj;
+  const isCorrect = chosenType === data.type;
+
+  const tag = document.createElement('span');
+  tag.className = 'bin-tag ' + (isCorrect ? 'correct' : 'wrong');
+  tag.textContent = data.label.split(' (')[0] + (isCorrect ? ' ✓' : ' ✗');
+
+  if (chosenType === 'inorganic') {
+    itemsInorg.appendChild(tag);
+  } else {
+    itemsOrg.appendChild(tag);
+  }
+
+  chip.classList.add('placed');
+  chip.classList.remove('active-chip');
+  placedCount++;
+  sorterScore.textContent = `${placedCount} of 12 classified`;
+  activeChipObj = null;
+  btnClassInorg.disabled = true;
+  btnClassOrg.disabled = true;
+  sorterPrompt.textContent = placedCount === 12 ? '🎉 All molecules classified!' : 'Select next molecule:';
+}
+
+btnClassInorg.addEventListener('click', () => handleSortChoice('inorganic'));
+btnClassOrg.addEventListener('click', () => handleSortChoice('organic'));
+
+btnAutoSort.addEventListener('click', () => {
+  initSorter();
+  donorsList.forEach(d => {
+    const tag = document.createElement('span');
+    tag.className = 'bin-tag correct';
+    tag.textContent = d.label.split(' (')[0] + ' ✓';
+    if (d.type === 'inorganic') itemsInorg.appendChild(tag);
+    else itemsOrg.appendChild(tag);
+  });
+  document.querySelectorAll('.sorter-chip').forEach(c => c.classList.add('placed'));
+  placedCount = 12;
+  sorterScore.textContent = '12 of 12 classified';
+  sorterPrompt.textContent = '🎉 All molecules classified correctly!';
+});
+
+resetSorterBtn.addEventListener('click', initSorter);
+
+// ---------- SECTION 10: FLASHCARDS ENGINE ----------
+let currentFlashIdx = 0;
+const flashCard = document.getElementById('flashCard');
+const flashCat = document.getElementById('flashCategory');
+const flashTerm = document.getElementById('flashTerm');
+const flashDef = document.getElementById('flashDef');
+const flashSub = document.getElementById('flashSub');
+const flashCounter = document.getElementById('flashCounter');
+const flashPrev = document.getElementById('flashPrev');
+const flashNext = document.getElementById('flashNext');
+const flashFlipBtn = document.getElementById('flashFlipBtn');
+const flashShuffleBtn = document.getElementById('flashShuffleBtn');
+
+function renderFlashcard() {
+  flashCard.classList.remove('flipped');
+  setTimeout(() => {
+    const c = flashcardsData[currentFlashIdx];
+    flashCat.innerHTML = c.cat;
+    flashTerm.textContent = c.term;
+    flashDef.innerHTML = c.def;
+    flashSub.textContent = c.sub;
+    flashCounter.textContent = `${currentFlashIdx + 1} / ${flashcardsData.length}`;
+  }, 150);
+}
+
+flashCard.addEventListener('click', () => {
+  flashCard.classList.toggle('flipped');
+});
+flashFlipBtn.addEventListener('click', () => {
+  flashCard.classList.toggle('flipped');
+});
+flashNext.addEventListener('click', () => {
+  currentFlashIdx = (currentFlashIdx + 1) % flashcardsData.length;
+  renderFlashcard();
+});
+flashPrev.addEventListener('click', () => {
+  currentFlashIdx = (currentFlashIdx - 1 + flashcardsData.length) % flashcardsData.length;
+  renderFlashcard();
+});
+flashShuffleBtn.addEventListener('click', () => {
+  currentFlashIdx = Math.floor(Math.random() * flashcardsData.length);
+  renderFlashcard();
+});
+
+// ---------- SECTION 11: MSC QUIZ ENGINE ----------
+const quizContainer = document.getElementById('quizContainer');
+const quizScoreEl = document.getElementById('quizScore');
+const quizProgressLabel = document.getElementById('quizProgressLabel');
+const btnRevealQuiz = document.getElementById('btnRevealAllQuiz');
+const btnResetQuiz = document.getElementById('btnResetQuiz');
+
+let quizScore = 0;
+let answeredCount = 0;
+
+function renderQuiz() {
+  quizContainer.innerHTML = '';
+  quizScore = 0;
+  answeredCount = 0;
+  quizScoreEl.textContent = `Score: 0 / ${quizExamData.length}`;
+  quizProgressLabel.textContent = `0 of ${quizExamData.length} Answered`;
+
+  quizExamData.forEach((qItem, qIdx) => {
+    const box = document.createElement('div');
+    box.className = 'quiz-item';
+
+    const qText = document.createElement('div');
+    qText.className = 'quiz-qtext';
+    qText.innerHTML = qItem.q;
+    box.appendChild(qText);
+
+    const optsWrap = document.createElement('div');
+    optsWrap.className = 'quiz-options';
+
+    const expl = document.createElement('div');
+    expl.className = 'quiz-expl';
+    expl.innerHTML = `<b>Plain-English Explanation:</b> ${qItem.exp}`;
+
+    qItem.opts.forEach((optText, optIdx) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-opt';
+      btn.innerHTML = optText;
+
+      btn.addEventListener('click', () => {
+        const allBtns = optsWrap.querySelectorAll('.quiz-opt');
+        allBtns.forEach(b => b.disabled = true);
+
+        if (optIdx === qItem.correct) {
+          btn.classList.add('correct');
+          quizScore++;
+        } else {
+          btn.classList.add('wrong');
+          allBtns[qItem.correct].classList.add('correct');
+        }
+
+        expl.classList.add('show');
+        answeredCount++;
+        quizScoreEl.textContent = `Score: ${quizScore} / ${quizExamData.length}`;
+        quizProgressLabel.textContent = `${answeredCount} of ${quizExamData.length} Answered`;
+      });
+
+      optsWrap.appendChild(btn);
+    });
+
+    box.appendChild(optsWrap);
+    box.appendChild(expl);
+    quizContainer.appendChild(box);
+  });
+}
+
+btnRevealQuiz.addEventListener('click', () => {
+  document.querySelectorAll('.quiz-expl').forEach(e => e.classList.add('show'));
+  quizExamData.forEach((qItem, qIdx) => {
+    const items = quizContainer.children[qIdx];
+    const btns = items.querySelectorAll('.quiz-opt');
+    btns.forEach((b, i) => {
+      b.disabled = true;
+      if (i === qItem.correct) b.classList.add('correct');
+    });
+  });
+});
+
+btnResetQuiz.addEventListener('click', renderQuiz);
+
+// Initialise everything on DOM load
+window.addEventListener('DOMContentLoaded', () => {
+  updateTowerSim();
+  updateRetSim();
+  updateAmdSim();
+  updateBuilder();
+  initSorter();
+  renderFlashcard();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
