@@ -1,0 +1,2034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Immunoassays: ELISA and Radioimmunoassay | MSc Learning Module</title>
+  <style>
+    /* ==========================================================================
+       CSS RESET & BASE THEME
+       Clean, restrained scientific typography and palette
+       ========================================================================== */
+    :root {
+      --bg-page: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-alt: #f1f5f9;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-light: #64748b;
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+      
+      /* Scientific brand accents */
+      --primary: #0284c7;       /* Medical/Biochemical Cyan-Blue */
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --secondary: #0d9488;     /* Teal */
+      --secondary-light: #ccfbf1;
+      --accent: #6366f1;        /* Indigo */
+      --accent-light: #e0e7ff;
+      --warning: #d97706;       /* Amber */
+      --warning-light: #fef3c7;
+      --success: #16a34a;       /* Green */
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+      --transition: all 0.2s ease-in-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-main);
+      background-color: var(--bg-page);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Container & Layout */
+    .module-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* Header */
+    header.module-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 48px 24px;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      color: #7dd3fc;
+    }
+
+    .module-header h1 {
+      font-size: 2.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .module-header p.subtitle {
+      font-size: 1.15rem;
+      color: #94a3b8;
+      max-width: 760px;
+      margin-bottom: 20px;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 0.875rem;
+      color: #cbd5e1;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 16px;
+    }
+
+    .header-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Layout Grid */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Sticky Sidebar Navigation */
+    aside.nav-sidebar {
+      position: sticky;
+      top: 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 18px 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sidebar-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-light);
+      margin-bottom: 12px;
+      padding-left: 8px;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-list a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: var(--transition);
+      line-height: 1.3;
+    }
+
+    .nav-list a:hover {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .nav-list a.active {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 600;
+      border-left: 3px solid var(--primary);
+    }
+
+    /* Main Content Sections */
+    main.main-content {
+      min-width: 0;
+    }
+
+    .content-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--bg-surface-alt);
+      padding-bottom: 14px;
+      margin-bottom: 24px;
+    }
+
+    .section-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border-radius: var(--radius-sm);
+    }
+
+    h2.section-title {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .section-toggle-btn {
+      background: none;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .section-toggle-btn:hover {
+      background: var(--bg-surface-alt);
+      color: var(--text-main);
+    }
+
+    h3.subsection-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 24px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3.subsection-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+
+    p {
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      font-size: 0.98rem;
+    }
+
+    p strong {
+      color: var(--text-main);
+    }
+
+    /* Concept Sequence / Flow Badges */
+    .concept-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin: 18px 0;
+    }
+
+    .flow-step {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      color: var(--primary-dark);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .flow-arrow {
+      color: var(--text-light);
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    /* Comparison & Info Boxes */
+    .info-callout {
+      border-left: 4px solid var(--primary);
+      background: var(--primary-light);
+      padding: 14px 18px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 20px 0;
+      font-size: 0.95rem;
+      color: #034f75;
+    }
+
+    .warning-callout {
+      border-left: 4px solid var(--warning);
+      background: var(--warning-light);
+      padding: 14px 18px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 20px 0;
+      font-size: 0.95rem;
+      color: #92400e;
+    }
+
+    .takeaway-box {
+      border-left: 4px solid var(--secondary);
+      background: var(--secondary-light);
+      padding: 14px 18px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 22px 0 12px;
+      font-size: 0.95rem;
+      color: #0f5147;
+      font-weight: 500;
+    }
+
+    .takeaway-box strong {
+      color: #064e3b;
+    }
+
+    /* Structured Assay Cards (Standardized Teaching Schema) */
+    .assay-spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin: 18px 0;
+    }
+
+    .assay-spec-item {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+    }
+
+    .assay-spec-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-light);
+      margin-bottom: 4px;
+    }
+
+    .assay-spec-value {
+      font-size: 0.92rem;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    /* Scientific Figures & Media Cards */
+    .figure-container {
+      margin: 24px 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background: #fafafa;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .figure-media-wrapper {
+      position: relative;
+      background: #ffffff;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 220px;
+    }
+
+    .figure-media-wrapper img {
+      max-width: 100%;
+      height: auto;
+      max-height: 480px;
+      object-fit: contain;
+      border-radius: 4px;
+      transition: opacity 0.3s ease;
+    }
+
+    .figure-fallback {
+      display: none;
+      background: #f8fafc;
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-sm);
+      padding: 24px;
+      text-align: center;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .figure-fallback-icon {
+      font-size: 2rem;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .figure-fallback p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .img-failed .figure-fallback {
+      display: block;
+    }
+
+    .img-failed img {
+      display: none;
+    }
+
+    .figure-caption {
+      padding: 12px 18px;
+      background: var(--bg-surface-alt);
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .figure-caption-title {
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .figure-attribution {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: var(--text-light);
+    }
+
+    .figure-attribution a {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+
+    /* Comparison Tables */
+    .table-responsive {
+      overflow-x: auto;
+      margin: 20px 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    table.scientific-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      background: var(--bg-surface);
+      text-align: left;
+    }
+
+    table.scientific-table th {
+      background: var(--bg-surface-alt);
+      padding: 12px 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      border-bottom: 2px solid var(--border-strong);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    table.scientific-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    table.scientific-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    table.scientific-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .table-feature-tag {
+      font-weight: 600;
+      color: var(--text-main);
+      display: block;
+    }
+
+    /* Interactive Format Tabs / Cards */
+    .tabs-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      padding: 10px 18px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      transition: var(--transition);
+    }
+
+    .tab-btn:hover {
+      color: var(--primary);
+      background: var(--bg-surface-alt);
+    }
+
+    .tab-btn.active {
+      color: var(--primary-dark);
+      border-bottom-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Knowledge Checkpoint Widget */
+    .checkpoint-widget {
+      background: #fdfdfd;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      margin: 28px 0 12px;
+      position: relative;
+    }
+
+    .checkpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .checkpoint-badge {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .checkpoint-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .checkpoint-question {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .checkpoint-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .checkpoint-opt-btn {
+      text-align: left;
+      padding: 10px 14px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .checkpoint-opt-btn:hover {
+      background: var(--bg-surface-alt);
+      border-color: var(--border-strong);
+      color: var(--text-main);
+    }
+
+    .checkpoint-opt-btn.correct {
+      background: var(--success-light);
+      border-color: var(--success);
+      color: #14532d;
+      font-weight: 600;
+    }
+
+    .checkpoint-opt-btn.wrong {
+      background: var(--danger-light);
+      border-color: var(--danger);
+      color: #7f1d1d;
+    }
+
+    .checkpoint-feedback {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      display: none;
+      line-height: 1.4;
+    }
+
+    .checkpoint-feedback.visible {
+      display: block;
+    }
+
+    .checkpoint-feedback.success {
+      background: var(--success-light);
+      color: #14532d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .checkpoint-feedback.error {
+      background: var(--danger-light);
+      color: #7f1d1d;
+      border: 1px solid #fecaca;
+    }
+
+    /* Tooltip Term Highlights */
+    .glossary-term {
+      color: var(--primary-dark);
+      text-decoration: underline dotted 2px var(--primary);
+      text-underline-offset: 3px;
+      cursor: help;
+      position: relative;
+      font-weight: 600;
+      transition: var(--transition);
+      background-color: rgba(2, 132, 199, 0.05);
+      padding: 1px 3px;
+      border-radius: 3px;
+    }
+
+    .glossary-term:hover, .glossary-term:focus {
+      background-color: var(--primary-light);
+      color: #034f75;
+      outline: none;
+    }
+
+    /* Floating Tooltip Bubble */
+    #global-tooltip {
+      position: fixed;
+      z-index: 9999;
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      line-height: 1.35;
+      max-width: 280px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+
+    #global-tooltip.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #global-tooltip strong {
+      color: #38bdf8;
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.86rem;
+    }
+
+    /* Searchable Glossary Section */
+    .glossary-search-bar {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .glossary-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      background: var(--bg-surface);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .glossary-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    .glossary-card {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      transition: var(--transition);
+    }
+
+    .glossary-card:hover {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .glossary-card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .glossary-card-def {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Big Picture Map Card */
+    .big-picture-map {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 28px;
+      border-radius: var(--radius-md);
+      margin: 24px 0;
+    }
+
+    .map-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .map-badge {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .map-badge.root {
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #ffffff;
+    }
+
+    .map-badge.elisa {
+      background: #0d9488;
+      border-color: #2dd4bf;
+    }
+
+    .map-badge.ria {
+      background: #7c3aed;
+      border-color: #a78bfa;
+    }
+
+    .map-arrow {
+      color: #94a3b8;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    /* 5 Takeaways List */
+    .five-things-list {
+      list-style: none;
+      counter-reset: five-counter;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .five-things-list li {
+      counter-increment: five-counter;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .five-things-list li::before {
+      content: counter(five-counter);
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: var(--primary);
+      color: #ffffff;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    /* Utility */
+    .text-center { text-align: center; }
+    .badge-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--bg-surface-alt);
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Universal Term Tooltip -->
+  <div id="global-tooltip" role="tooltip" aria-hidden="true"></div>
+
+  <div class="module-container">
+
+    <!-- Module Header -->
+    <header class="module-header">
+      <div class="header-badge">MSc Microbiology & Biochemistry Foundation Module</div>
+      <h1>Immunoassays: ELISA and Radioimmunoassay</h1>
+      <p class="subtitle">A focused, theoretical foundation on antibody-antigen specificity, enzyme-linked immunosorbent assays, and radioimmunoassays for beginner graduate students.</p>
+      
+      <div class="header-meta">
+        <div class="header-meta-item">🎯 <strong>Core Goal:</strong> Understand detection mechanisms & signal interpretation</div>
+        <div class="header-meta-item">⏱️ <strong>Study Time:</strong> ~25–30 minutes</div>
+        <div class="header-meta-item">💡 <strong>Prerequisite:</strong> Basic concept of antigens & antibodies</div>
+      </div>
+    </header>
+
+    <div class="content-grid">
+
+      <!-- Sticky Table of Contents -->
+      <aside class="nav-sidebar">
+        <div class="sidebar-title">Module Contents</div>
+        <nav class="nav-list" id="toc-nav">
+          <a href="#section-1" class="active">1. Immunoassay Basics</a>
+          <a href="#section-2">2. ELISA Principles & Formats</a>
+          <a href="#section-3">3. Signal & Interpretation</a>
+          <a href="#section-4">4. Radioimmunoassay (RIA)</a>
+          <a href="#section-5">5. ELISA vs RIA Comparison</a>
+          <a href="#section-6">6. The Big Picture</a>
+          <a href="#glossary-section">7. Searchable Glossary</a>
+        </nav>
+      </aside>
+
+      <!-- Main Learning Content -->
+      <main class="main-content">
+
+        <!-- ==================================================================
+             SECTION 1 — IMMUNOASSAY BASICS
+             ================================================================== -->
+        <section id="section-1" class="content-card">
+          <div class="section-header">
+            <div class="section-header-left">
+              <span class="section-number">1</span>
+              <h2 class="section-title">Immunoassay Basics</h2>
+            </div>
+            <button class="section-toggle-btn" onclick="toggleSection(this)">Collapse</button>
+          </div>
+
+          <div class="section-body">
+            <p>Welcome to immunoassays. Before diving into laboratory instrumentation, we first establish the foundational rules of biological recognition that make these assays work.</p>
+
+            <h3 class="subsection-title">Core Definitions</h3>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+              <li><strong>What is an <span class="glossary-term" data-term="antigen">antigen</span>?</strong> Any foreign molecule, protein, pathogen component, or small chemical that can be specifically bound by an antibody.</li>
+              <li><strong>What is an <span class="glossary-term" data-term="antibody">antibody</span>?</strong> A Y-shaped protective immunoglobulin protein produced by B-cells that binds tightly and selectively to a designated antigen target.</li>
+              <li><strong>What is an <span class="glossary-term" data-term="epitope">epitope</span>?</strong> The specific localized surface region on the antigen recognized directly by the antibody's antigen-binding site.</li>
+              <li><strong>What is <span class="glossary-term" data-term="specificity">antigen-antibody specificity</span>?</strong> The precise chemical and structural "lock-and-key" fit between antibody paratopes and antigen epitopes, mediated by non-covalent hydrogen bonding, electrostatic attraction, and hydrophobic interactions.</li>
+              <li><strong>What is an <span class="glossary-term" data-term="immunoassay">immunoassay</span>?</strong> A biochemical analytical test that uses the specific binding of an antibody to its target antigen to detect or quantify a substance in a sample.</li>
+            </ul>
+
+            <h3 class="subsection-title">Why Binding Enables Detection</h3>
+            <p>An antibody acts as a molecular "bloodhound." Because it binds only to its corresponding target even in complex biological mixtures (such as blood serum, urine, or cell lysates), we can harness this binding to generate a measurable optical or radioactive signal:</p>
+
+            <!-- Concept Sequence Flow -->
+            <div class="concept-flow">
+              <span class="flow-step">Target Molecule (Analyte)</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Specific Antibody Recognition</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Measurable Signal (Enzyme / Radioisotope)</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Infer Presence or Exact Concentration</span>
+            </div>
+
+            <h3 class="subsection-title">Qualitative vs Quantitative Detection</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;">
+              <div style="background: var(--bg-surface-alt); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                <strong style="color: var(--primary-dark); font-size: 0.95rem;">Qualitative Detection (Yes / No)</strong>
+                <p style="font-size: 0.88rem; margin: 6px 0 0;">Determines whether the target is present or absent above a threshold cutoff (e.g., rapid pregnancy tests or initial virus screening).</p>
+              </div>
+              <div style="background: var(--bg-surface-alt); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                <strong style="color: var(--secondary); font-size: 0.95rem;">Quantitative Detection (How Much)</strong>
+                <p style="font-size: 0.88rem; margin: 6px 0 0;">Measures the exact numerical concentration (e.g., pg/mL or ng/mL) by comparing sample signal to a calibrated standard curve.</p>
+              </div>
+            </div>
+
+            <!-- Scientific Figure: Antigen-Antibody Binding -->
+            <div class="figure-container">
+              <div class="figure-media-wrapper">
+                <img loading="lazy" 
+                     src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Antigen-antibody-complex.png" 
+                     alt="Diagram of an antigen-antibody complex demonstrating specific epitope binding" 
+                     onerror="this.closest('.figure-container').classList.add('img-failed');">
+                <div class="figure-fallback">
+                  <div class="figure-fallback-icon">🔬</div>
+                  <p><strong>Antigen-Antibody Recognition Diagram</strong></p>
+                  <p>Antibodies possess specific binding sites that selectively latch onto antigen epitopes via complementary non-covalent forces.</p>
+                  <a href="https://commons.wikimedia.org/wiki/File:Antigen-antibody-complex.png" target="_blank" rel="noopener">View source image on Wikimedia Commons &rarr;</a>
+                </div>
+              </div>
+              <div class="figure-caption">
+                <div class="figure-caption-title">Figure 1.1: Specific Antigen-Antibody Recognition Complex</div>
+                Depiction of immunoglobulin Fab arms binding with high spatial and electrostatic specificity to the target antigen.
+                <div class="figure-attribution">
+                  Source: Alejandro Porto, <a href="https://commons.wikimedia.org/wiki/File:Antigen-antibody-complex.png" target="_blank" rel="noopener">Wikimedia Commons (CC BY-SA 3.0)</a>.
+                </div>
+              </div>
+            </div>
+
+            <!-- Checkpoint 1 -->
+            <div class="checkpoint-widget" data-quiz="1">
+              <div class="checkpoint-header">
+                <span class="checkpoint-badge">Concept Check 1</span>
+                <span class="checkpoint-title">Understanding Immunoassay Logic</span>
+              </div>
+              <div class="checkpoint-question">Why can an antibody be used to accurately detect a specific viral protein in a complex blood sample containing thousands of other proteins?</div>
+              <div class="checkpoint-options">
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, false, 'Incorrect. Antibodies do not destroy proteins during an analytical immunoassay.')">A. The antibody destroys all other non-target blood proteins.</button>
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, true, 'Correct! The structural lock-and-key specificity allows the antibody to bind only to the target epitope, ignoring irrelevant background molecules.')">B. The antibody recognizes and binds exclusively to the unique epitope on the target viral protein.</button>
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, false, 'Incorrect. Antibodies naturally possess no enzymatic color without an artificial conjugated label.')">C. Antibodies naturally turn brightly colored whenever any protein touches them.</button>
+              </div>
+              <div class="checkpoint-feedback"></div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ==================================================================
+             SECTION 2 — ELISA (PRINCIPLE, WORKFLOW, & 4 FORMATS)
+             ================================================================== -->
+        <section id="section-2" class="content-card">
+          <div class="section-header">
+            <div class="section-header-left">
+              <span class="section-number">2</span>
+              <h2 class="section-title">Enzyme-Linked Immunosorbent Assay (ELISA)</h2>
+            </div>
+            <button class="section-toggle-btn" onclick="toggleSection(this)">Collapse</button>
+          </div>
+
+          <div class="section-body">
+            
+            <!-- 2.1 What is ELISA? -->
+            <h3 class="subsection-title">2.1 What is ELISA?</h3>
+            <p><strong>ELISA</strong> stands for <strong>Enzyme-Linked Immunosorbent Assay</strong>. In simple terms: an antibody or antigen is immobilized onto a solid surface, specific molecular binding occurs, and an enzyme-conjugated reporter antibody converts a colorless <span class="glossary-term" data-term="substrate">substrate</span> into a colored product whose <span class="glossary-term" data-term="absorbance">absorbance</span> reveals whether (and how much) target is present.</p>
+
+            <div class="assay-spec-grid">
+              <div class="assay-spec-item">
+                <div class="assay-spec-label">Solid Surface</div>
+                <div class="assay-spec-value">Polystyrene 96-well microplate with hydrophobic binding sites</div>
+              </div>
+              <div class="assay-spec-item">
+                <div class="assay-spec-label">Target Analyte</div>
+                <div class="assay-spec-value">Antigen or antibody in serum, saliva, urine, or culture media</div>
+              </div>
+              <div class="assay-spec-item">
+                <div class="assay-spec-label">Enzyme-Linked Component</div>
+                <div class="assay-spec-value">Reporter antibody conjugated to an enzyme (<span class="glossary-term" data-term="HRP">HRP</span> or <span class="glossary-term" data-term="alkaline phosphatase">AP</span>)</div>
+              </div>
+              <div class="assay-spec-item">
+                <div class="assay-spec-label">Signal Readout</div>
+                <div class="assay-spec-value"><span class="glossary-term" data-term="chromogenic">Chromogenic</span> color change measured as optical density (<span class="glossary-term" data-term="absorbance">absorbance</span>)</div>
+              </div>
+            </div>
+
+            <!-- Plate Visual -->
+            <div class="figure-container">
+              <div class="figure-media-wrapper">
+                <img loading="lazy" 
+                     src="https://upload.wikimedia.org/wikipedia/commons/4/46/ELISA_Plate_image.jpg" 
+                     alt="A 96-well ELISA microplate showing varying yellow color intensities across dilution wells" 
+                     onerror="this.closest('.figure-container').classList.add('img-failed');">
+                <div class="figure-fallback">
+                  <div class="figure-fallback-icon">🧪</div>
+                  <p><strong>96-Well ELISA Microplate</strong></p>
+                  <p>Polystyrene 96-well plates allow parallel testing of blanks, standards, and unknown samples. Color intensity is directly read on a plate spectrophotometer.</p>
+                  <a href="https://commons.wikimedia.org/wiki/File:ELISA_Plate_image.jpg" target="_blank" rel="noopener">View source image on Wikimedia Commons &rarr;</a>
+                </div>
+              </div>
+              <div class="figure-caption">
+                <div class="figure-caption-title">Figure 2.1: Typical 96-Well ELISA Microplate Assay</div>
+                Wells display varying chromogenic color intensity proportional to antibody-enzyme complex concentration across sample dilution series.
+                <div class="figure-attribution">
+                  Source: Kim.kan, <a href="https://commons.wikimedia.org/wiki/File:ELISA_Plate_image.jpg" target="_blank" rel="noopener">Wikimedia Commons (CC BY-SA 4.0)</a>.
+                </div>
+              </div>
+            </div>
+
+            <!-- 2.2 Basic ELISA Workflow -->
+            <h3 class="subsection-title">2.2 Basic ELISA Workflow</h3>
+            <p>Every ELISA format follows a consistent step-by-step logic:</p>
+
+            <div class="concept-flow">
+              <span class="flow-step">1. Coat Solid Well</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">2. Add Sample</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">3. Ag-Ab Binding</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step" style="border-color: var(--danger); color: var(--danger);">4. Wash Well</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">5. Add Enzyme-Linked Ab</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step" style="border-color: var(--danger); color: var(--danger);">6. Wash Well</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">7. Add Substrate</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">8. Measure Absorbance</span>
+            </div>
+
+            <div class="info-callout">
+              <strong>Crucial Concept — Why is washing essential?</strong><br>
+              Washing removes all unbound antigens, unadsorbed antibodies, and free enzyme conjugates. If unbound enzyme-linked antibodies are not completely washed away, they will react with the added substrate and produce intense false-positive background color, ruining the assay!
+            </div>
+
+            <!-- Workflow Visual -->
+            <div class="figure-container">
+              <div class="figure-media-wrapper">
+                <img loading="lazy" 
+                     src="https://upload.wikimedia.org/wikipedia/commons/b/ba/ELISA_diagram.png" 
+                     alt="Step-by-step diagram illustrating the stages of an ELISA immunoassay" 
+                     onerror="this.closest('.figure-container').classList.add('img-failed');">
+                <div class="figure-fallback">
+                  <div class="figure-fallback-icon">📊</div>
+                  <p><strong>ELISA Sequential Workflow Diagram</strong></p>
+                  <p>Illustrates the addition of antigens, incubation, critical wash steps, enzyme conjugation, and chromogenic substrate cleavage.</p>
+                  <a href="https://commons.wikimedia.org/wiki/File:ELISA_diagram.png" target="_blank" rel="noopener">View source image on Wikimedia Commons &rarr;</a>
+                </div>
+              </div>
+              <div class="figure-caption">
+                <div class="figure-caption-title">Figure 2.2: Generalized ELISA Execution Sequence</div>
+                Immobilization of target, incubation, thorough intermediate washing to eliminate non-specific binding, and enzymatic signal generation.
+                <div class="figure-attribution">
+                  Source: Cavitri, <a href="https://commons.wikimedia.org/wiki/File:ELISA_diagram.png" target="_blank" rel="noopener">Wikimedia Commons (CC BY 3.0)</a>.
+                </div>
+              </div>
+            </div>
+
+            <!-- 2.3 Major ELISA Formats -->
+            <h3 class="subsection-title">2.3 The Four Major ELISA Formats</h3>
+            <p>ELISA assays are configured in four primary formats, depending on whether we directly label the primary antibody, use a secondary antibody, sandwich the target between two antibodies, or compete with a known reference.</p>
+
+            <!-- Comparison Table -->
+            <div class="table-responsive">
+              <table class="scientific-table">
+                <thead>
+                  <tr>
+                    <th>Format</th>
+                    <th>What It Detects</th>
+                    <th>Core Principle</th>
+                    <th>Minimal Workflow</th>
+                    <th>Signal Origin</th>
+                    <th>Common Use</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Direct ELISA</strong></td>
+                    <td>Antigen in sample</td>
+                    <td>Enzyme is directly chemically attached to the primary antibody.</td>
+                    <td>Ag coated &rarr; labelled 1&deg; Ab &rarr; wash &rarr; substrate</td>
+                    <td>Enzyme on primary antibody</td>
+                    <td>Fast screening, simple antigen titration</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Indirect ELISA</strong></td>
+                    <td>Specific antibody in serum</td>
+                    <td>Unlabelled primary antibody is bound by an enzyme-linked secondary antibody.</td>
+                    <td>Ag coated &rarr; 1&deg; Ab &rarr; wash &rarr; labelled 2&deg; Ab &rarr; wash &rarr; substrate</td>
+                    <td>Enzyme on secondary antibody (amplified signal)</td>
+                    <td>Antibody screening (e.g., anti-HIV or viral titer tests)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Sandwich ELISA</strong></td>
+                    <td>Antigen (with &ge;2 epitopes)</td>
+                    <td>Antigen is sandwiched between a capture antibody and a detection antibody.</td>
+                    <td>Capture Ab &rarr; sample Ag &rarr; detection Ab &rarr; enzyme-label &rarr; substrate</td>
+                    <td>Enzyme on detection complex</td>
+                    <td>Cytokines, hormones, complex sample matrices (high specificity)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Competitive ELISA</strong></td>
+                    <td>Small antigens / haptens</td>
+                    <td>Sample antigen competes with labelled reference antigen for limited antibody.</td>
+                    <td>Sample Ag + labelled Ag + Ab &rarr; wash &rarr; substrate</td>
+                    <td>Enzyme on bound reference antigen (inversely related!)</td>
+                    <td>Drug testing, toxin analysis, low-molecular-weight metabolites</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Interactive Format Detail Tabs -->
+            <h3 class="subsection-title" style="margin-top: 32px;">Explore Each Format In Detail</h3>
+            
+            <div class="tabs-nav" role="tablist">
+              <button class="tab-btn active" role="tab" onclick="switchTab(this, 'pane-direct')">Direct ELISA</button>
+              <button class="tab-btn" role="tab" onclick="switchTab(this, 'pane-indirect')">Indirect ELISA</button>
+              <button class="tab-btn" role="tab" onclick="switchTab(this, 'pane-sandwich')">Sandwich ELISA</button>
+              <button class="tab-btn" role="tab" onclick="switchTab(this, 'pane-comp')">Competitive ELISA</button>
+            </div>
+
+            <!-- Pane: Direct ELISA -->
+            <div id="pane-direct" class="tab-pane active">
+              <div class="assay-spec-grid">
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">What It Detects</div>
+                  <div class="assay-spec-value">Antigen directly coated to the well</div>
+                </div>
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">Basic Principle</div>
+                  <div class="assay-spec-value">The <span class="glossary-term" data-term="primary antibody">primary antibody</span> itself carries the enzyme label. Only one antibody is required.</div>
+                </div>
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">Minimal Workflow</div>
+                  <div class="assay-spec-value">Target antigen coated &rarr; wash &rarr; enzyme-labelled 1&deg; Ab &rarr; wash &rarr; substrate &rarr; signal</div>
+                </div>
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">What Produces Signal?</div>
+                  <div class="assay-spec-value">Enzyme conjugated directly onto the primary antibody</div>
+                </div>
+              </div>
+
+              <div class="figure-container">
+                <div class="figure-media-wrapper">
+                  <img loading="lazy" 
+                       src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Direct-ELISA.jpg" 
+                       alt="Direct ELISA diagram illustrating enzyme-labeled primary antibody binding immobilized antigen" 
+                       onerror="this.closest('.figure-container').classList.add('img-failed');">
+                  <div class="figure-fallback">
+                    <div class="figure-fallback-icon">🎯</div>
+                    <p><strong>Direct ELISA Diagram</strong></p>
+                    <p>Antigen coated to the microplate well is directly recognized by an enzyme-conjugated primary antibody.</p>
+                    <a href="https://commons.wikimedia.org/wiki/File:Direct-ELISA.jpg" target="_blank" rel="noopener">View source on Wikimedia Commons &rarr;</a>
+                  </div>
+                </div>
+                <div class="figure-caption">
+                  <div class="figure-caption-title">Figure 2.3: Direct ELISA Mechanism</div>
+                  Direct binding: Antigen is immobilized directly onto the plastic well, followed by the addition of an enzyme-conjugated primary antibody.
+                  <div class="figure-attribution">
+                    Source: ZellBio, <a href="https://commons.wikimedia.org/wiki/File:Direct-ELISA.jpg" target="_blank" rel="noopener">Wikimedia Commons (CC BY-SA 4.0)</a>.
+                  </div>
+                </div>
+              </div>
+
+              <div class="takeaway-box">
+                <strong>One-Sentence Takeaway:</strong> Direct ELISA is the fastest format because only one antibody is used, but labeling every primary antibody is expensive and provides no signal amplification.
+              </div>
+            </div>
+
+            <!-- Pane: Indirect ELISA -->
+            <div id="pane-indirect" class="tab-pane">
+              <div class="assay-spec-grid">
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">What It Detects</div>
+                  <div class="assay-spec-value">Target antibody in a biological sample (e.g., patient serum)</div>
+                </div>
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">Basic Principle</div>
+                  <div class="assay-spec-value">An unlabelled <span class="glossary-term" data-term="primary antibody">primary antibody</span> binds the antigen, followed by an enzyme-labelled <span class="glossary-term" data-term="secondary antibody">secondary antibody</span> that targets the constant (Fc) region of the primary antibody.</div>
+                </div>
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">Minimal Workflow</div>
+                  <div class="assay-spec-value">Antigen &rarr; sample (primary Ab) &rarr; wash &rarr; enzyme-labelled secondary Ab &rarr; wash &rarr; substrate &rarr; signal</div>
+                </div>
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">Why use a secondary antibody?</div>
+                  <div class="assay-spec-value">1) Signal amplification (multiple secondary antibodies bind one primary antibody); 2) Flexibility (one labelled secondary antibody works for many assays).</div>
+                </div>
+              </div>
+
+              <div class="figure-container">
+                <div class="figure-media-wrapper">
+                  <img loading="lazy" 
+                       src="https://upload.wikimedia.org/wikipedia/commons/1/12/Indirect-ELISA.jpg" 
+                       alt="Indirect ELISA diagram showing unlabelled primary antibody bound by enzyme-labelled secondary antibody" 
+                       onerror="this.closest('.figure-container').classList.add('img-failed');">
+                  <div class="figure-fallback">
+                    <div class="figure-fallback-icon">🔄</div>
+                    <p><strong>Indirect ELISA Diagram</strong></p>
+                    <p>Unlabelled primary antibody binds to immobilized antigen; enzyme-labeled secondary antibody recognizes the primary antibody and amplifies the signal.</p>
+                    <a href="https://commons.wikimedia.org/wiki/File:Indirect-ELISA.jpg" target="_blank" rel="noopener">View source on Wikimedia Commons &rarr;</a>
+                  </div>
+                </div>
+                <div class="figure-caption">
+                  <div class="figure-caption-title">Figure 2.4: Indirect ELISA Mechanism</div>
+                  Two-step recognition: Primary antibody binds target antigen; enzyme-conjugated anti-species secondary antibody binds the primary antibody, boosting signal sensitivity.
+                  <div class="figure-attribution">
+                    Source: ZellBio, <a href="https://commons.wikimedia.org/wiki/File:Indirect-ELISA.jpg" target="_blank" rel="noopener">Wikimedia Commons (CC BY-SA 4.0)</a>.
+                  </div>
+                </div>
+              </div>
+
+              <div class="takeaway-box">
+                <strong>One-Sentence Takeaway:</strong> Indirect ELISA is ideal for determining whether a patient has developed antibodies against a pathogen because it amplifies signal and uses versatile secondary antibodies.
+              </div>
+            </div>
+
+            <!-- Pane: Sandwich ELISA -->
+            <div id="pane-sandwich" class="tab-pane">
+              <div class="assay-spec-grid">
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">What It Detects</div>
+                  <div class="assay-spec-value">Antigen in crude/complex samples (e.g., blood, plasma)</div>
+                </div>
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">Basic Principle</div>
+                  <div class="assay-spec-value">The antigen is caught and held between two specific antibodies: a bottom <span class="glossary-term" data-term="capture antibody">capture antibody</span> and a top <span class="glossary-term" data-term="detection antibody">detection antibody</span>.</div>
+                </div>
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">Why is it called "sandwich"?</div>
+                  <div class="assay-spec-value">Because the antigen is firmly packed between two antibody "slices of bread"! Requires the antigen to have at least two distinct epitopes.</div>
+                </div>
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">Minimal Workflow</div>
+                  <div class="assay-spec-value">Capture Ab coated &rarr; sample antigen &rarr; wash &rarr; detection Ab &rarr; wash &rarr; enzyme reporter &rarr; substrate &rarr; signal</div>
+                </div>
+              </div>
+
+              <div class="figure-container">
+                <div class="figure-media-wrapper">
+                  <img loading="lazy" 
+                       src="https://upload.wikimedia.org/wikipedia/commons/4/4b/ELISA-sandwich.svg" 
+                       alt="Sandwich ELISA diagram showing 1 plate coated with capture antibody 2 antigen added 3 detection antibody added 4 secondary antibody 5 substrate conversion" 
+                       onerror="this.closest('.figure-container').classList.add('img-failed');">
+                  <div class="figure-fallback">
+                    <div class="figure-fallback-icon">🥪</div>
+                    <p><strong>Sandwich ELISA Diagram</strong></p>
+                    <p>The target antigen is immobilized by a solid-phase capture antibody and detected by a second specific antibody, ensuring extraordinary specificity.</p>
+                    <a href="https://commons.wikimedia.org/wiki/File:ELISA-sandwich.svg" target="_blank" rel="noopener">View source on Wikimedia Commons &rarr;</a>
+                  </div>
+                </div>
+                <div class="figure-caption">
+                  <div class="figure-caption-title">Figure 2.5: Sandwich ELISA Assembly</div>
+                  Stepwise sandwich formation: (1) Capture antibody coated; (2) Sample antigen binds; (3) Detecting antibody binds; (4) Enzyme reporter attaches; (5) Substrate is converted to color.
+                  <div class="figure-attribution">
+                    Source: Jeffrey M. Vinocur, <a href="https://commons.wikimedia.org/wiki/File:ELISA-sandwich.svg" target="_blank" rel="noopener">Wikimedia Commons (CC BY 2.5)</a>.
+                  </div>
+                </div>
+              </div>
+
+              <div class="takeaway-box">
+                <strong>One-Sentence Takeaway:</strong> Sandwich ELISA provides the highest specificity because two separate antibodies must both recognize the target for a signal to appear.
+              </div>
+            </div>
+
+            <!-- Pane: Competitive ELISA -->
+            <div id="pane-comp" class="tab-pane">
+              <div class="assay-spec-grid">
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">What It Detects</div>
+                  <div class="assay-spec-value">Small molecules, haptens, hormones, or drugs with only one epitope</div>
+                </div>
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">Basic Principle</div>
+                  <div class="assay-spec-value">Sample (unknown) antigen <em>competes</em> with a known enzyme-labelled antigen for a limited quantity of antibody binding sites.</div>
+                </div>
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">Minimal Workflow</div>
+                  <div class="assay-spec-value">Mix sample Ag + labelled Ag &rarr; add to antibody &rarr; wash unbound &rarr; substrate &rarr; signal</div>
+                </div>
+                <div class="assay-spec-item">
+                  <div class="assay-spec-label">Critical Signal Relationship</div>
+                  <div class="assay-spec-value"><strong>Inverse relationship:</strong> High target concentration in the sample blocks labelled antigen &rarr; LESS enzyme binds &rarr; <em>LOWER absorbance</em>!</div>
+                </div>
+              </div>
+
+              <div class="figure-container">
+                <div class="figure-media-wrapper">
+                  <img loading="lazy" 
+                       src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Competitive-ELISA.jpg" 
+                       alt="Competitive ELISA diagram showing competition between unlabeled target antigen and labeled antigen for antibody binding sites" 
+                       onerror="this.closest('.figure-container').classList.add('img-failed');">
+                  <div class="figure-fallback">
+                    <div class="figure-fallback-icon">⚔️</div>
+                    <p><strong>Competitive ELISA Diagram</strong></p>
+                    <p>Unlabeled sample antigen competes against labeled antigen. More sample antigen means less labeled antigen binds, producing lower color intensity.</p>
+                    <a href="https://commons.wikimedia.org/wiki/File:Competitive-ELISA.jpg" target="_blank" rel="noopener">View source on Wikimedia Commons &rarr;</a>
+                  </div>
+                </div>
+                <div class="figure-caption">
+                  <div class="figure-caption-title">Figure 2.6: Competitive ELISA Mechanism</div>
+                  Competitive binding equilibrium: The higher the concentration of target analyte in the sample, the less enzyme-labeled component can bind, resulting in lower final absorbance.
+                  <div class="figure-attribution">
+                    Source: ZellBio, <a href="https://commons.wikimedia.org/wiki/File:Competitive-ELISA.jpg" target="_blank" rel="noopener">Wikimedia Commons (CC BY-SA 4.0)</a>.
+                  </div>
+                </div>
+              </div>
+
+              <div class="takeaway-box">
+                <strong>One-Sentence Takeaway:</strong> In competitive ELISA, signal is inversely proportional to target concentration: darker color means <em>less</em> target, while lighter color means <em>more</em> target.
+              </div>
+            </div>
+
+            <!-- Checkpoint 2 -->
+            <div class="checkpoint-widget" data-quiz="2">
+              <div class="checkpoint-header">
+                <span class="checkpoint-badge">Concept Check 2</span>
+                <span class="checkpoint-title">ELISA Format Recognition</span>
+              </div>
+              <div class="checkpoint-question">A diagnostic kit measures a small drug molecule that has only one single epitope. Which ELISA format is most suitable?</div>
+              <div class="checkpoint-options">
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, false, 'Incorrect. Sandwich ELISA requires at least two distinct epitopes so two different antibodies can bind at once.')">A. Sandwich ELISA, because it always gives the strongest signal.</button>
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, true, 'Correct! Small antigens with only one epitope cannot be sandwiched, making competitive ELISA the preferred method.')">B. Competitive ELISA, because small molecules with only one epitope cannot bind two antibodies simultaneously.</button>
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, false, 'Incorrect. Indirect ELISA is primarily configured to detect patient antibodies, not small hapten drugs.')">C. Indirect ELISA, because it uses secondary antibodies.</button>
+              </div>
+              <div class="checkpoint-feedback"></div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ==================================================================
+             SECTION 3 — ELISA SIGNAL & INTERPRETATION
+             ================================================================== -->
+        <section id="section-3" class="content-card">
+          <div class="section-header">
+            <div class="section-header-left">
+              <span class="section-number">3</span>
+              <h2 class="section-title">ELISA Signal & Interpretation</h2>
+            </div>
+            <button class="section-toggle-btn" onclick="toggleSection(this)">Collapse</button>
+          </div>
+
+          <div class="section-body">
+            <p>Once incubation and washes are complete, how does molecular binding turn into an actual number on your lab notebook?</p>
+
+            <h3 class="subsection-title">The Enzymatic Chromogenic Reaction</h3>
+            <p>ELISA relies on an enzyme converting a colorless substrate into a colored product:</p>
+
+            <div class="concept-flow">
+              <span class="flow-step">Enzyme Conjugate</span>
+              <span class="flow-arrow">+</span>
+              <span class="flow-step">Colorless Substrate</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Colored Product</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Optical Absorbance (OD) Read at Specific &lambda;</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;">
+              <div style="background: var(--bg-surface-alt); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                <strong>1. <span class="glossary-term" data-term="HRP">Horseradish Peroxidase (HRP)</span></strong>
+                <p style="font-size: 0.88rem; margin: 6px 0 0;">Very common small enzyme. Commonly paired with substrate <em>TMB</em> (tetramethylbenzidine), producing a vivid blue color that turns yellow upon adding sulfuric acid stop solution (read at 450 nm).</p>
+              </div>
+              <div style="background: var(--bg-surface-alt); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                <strong>2. <span class="glossary-term" data-term="alkaline phosphatase">Alkaline Phosphatase (AP)</span></strong>
+                <p style="font-size: 0.88rem; margin: 6px 0 0;">Common alternative enzyme. Commonly paired with substrate <em>pNPP</em> (p-nitrophenyl phosphate), which yields a soluble bright yellow product (read at 405 nm).</p>
+              </div>
+            </div>
+
+            <!-- Visual: Microplate Chromogenic Reaction -->
+            <div class="figure-container">
+              <div class="figure-media-wrapper">
+                <img loading="lazy" 
+                     src="https://upload.wikimedia.org/wikipedia/commons/8/84/ELISA_TMB.jpg" 
+                     alt="ELISA microplate showing blue and yellow colored wells produced by TMB chromogenic substrate reaction" 
+                     onerror="this.closest('.figure-container').classList.add('img-failed');">
+                <div class="figure-fallback">
+                  <div class="figure-fallback-icon">🧪</div>
+                  <p><strong>ELISA Chromogenic Reaction Visual</strong></p>
+                  <p>Substrate cleavage by enzyme generates distinct color changes across wells, whose absorbance is quantified by a microplate spectrophotometer.</p>
+                  <a href="https://commons.wikimedia.org/wiki/File:ELISA_TMB.jpg" target="_blank" rel="noopener">View source on Wikimedia Commons &rarr;</a>
+                </div>
+              </div>
+              <div class="figure-caption">
+                <div class="figure-caption-title">Figure 3.1: Chromogenic Substrate Color Development in Microplate Wells</div>
+                Oxidation of TMB substrate by HRP produces visible color. Stopping the reaction fixes the optical density for spectrophotometric readout.
+                <div class="figure-attribution">
+                  Source: BiotechMichael, <a href="https://commons.wikimedia.org/wiki/File:ELISA_TMB.jpg" target="_blank" rel="noopener">Wikimedia Commons (CC BY 3.0)</a>.
+                </div>
+              </div>
+            </div>
+
+            <h3 class="subsection-title">Essential Assay Controls</h3>
+            <p>Raw absorbance numbers are meaningless without proper internal controls run side-by-side in the same plate:</p>
+
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+              <li><strong><span class="glossary-term" data-term="blank">Blank Well</span>:</strong> Contains buffer and substrate, but no antibody or analyte. Used to subtract baseline instrument optical absorbance.</li>
+              <li><strong><span class="glossary-term" data-term="positive control">Positive Control</span>:</strong> Contains a known standard of the target. Confirms that all reagents, enzymes, and detection steps functioned properly.</li>
+              <li><strong><span class="glossary-term" data-term="negative control">Negative Control</span>:</strong> Contains sample matrix without target. Confirms that there is no non-specific background binding or false-positive signal.</li>
+              <li><strong><span class="glossary-term" data-term="standard">Standards</span>:</strong> A series of known target concentrations used to generate the reference curve.</li>
+              <li><strong>Unknown Sample:</strong> The clinical or experimental specimen whose target concentration is to be calculated.</li>
+            </ul>
+
+            <h3 class="subsection-title">The Standard Curve Concept</h3>
+            <p>To quantify an unknown sample, we plot a <span class="glossary-term" data-term="standard curve">standard curve</span>: known standard concentrations on the X-axis versus measured absorbance on the Y-axis. By measuring the absorbance of the unknown sample, we can interpolate its exact concentration.</p>
+
+            <div class="warning-callout">
+              <strong>Remember the Direction of the Relationship!</strong>
+              <ul style="margin: 6px 0 0 20px;">
+                <li><strong>Direct, Indirect, and Sandwich ELISA:</strong> Higher target concentration &rarr; MORE enzyme bound &rarr; <strong>HIGHER absorbance</strong> (Direct relationship).</li>
+                <li><strong>Competitive ELISA:</strong> Higher target concentration &rarr; LESS enzyme bound &rarr; <strong>LOWER absorbance</strong> (Inverse relationship).</li>
+              </ul>
+            </div>
+
+            <!-- Standard Curve Figure -->
+            <div class="figure-container">
+              <div class="figure-media-wrapper">
+                <img loading="lazy" 
+                     src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Calibration_curve.png" 
+                     alt="Analytical calibration curve showing relationship between analyte concentration and instrument response absorbance" 
+                     onerror="this.closest('.figure-container').classList.add('img-failed');">
+                <div class="figure-fallback">
+                  <div class="figure-fallback-icon">📈</div>
+                  <p><strong>Calibration / Standard Curve Plot</strong></p>
+                  <p>A standard curve maps known concentrations to measured absorbance. The unknown sample absorbance is placed on the Y-axis to read its concentration on the X-axis.</p>
+                  <a href="https://commons.wikimedia.org/wiki/File:Calibration_curve.png" target="_blank" rel="noopener">View source on Wikimedia Commons &rarr;</a>
+                </div>
+              </div>
+              <div class="figure-caption">
+                <div class="figure-caption-title">Figure 3.2: Analytical Calibration Curve Principle</div>
+                Calibration plot relating analyte concentration (X) to detector absorbance response (Y), demonstrating linear range and limits of quantification.
+                <div class="figure-attribution">
+                  Source: Kkmurray, <a href="https://commons.wikimedia.org/wiki/File:Calibration_curve.png" target="_blank" rel="noopener">Wikimedia Commons (CC BY-SA 3.0)</a>.
+                </div>
+              </div>
+            </div>
+
+            <!-- Checkpoint 3 -->
+            <div class="checkpoint-widget" data-quiz="3">
+              <div class="checkpoint-header">
+                <span class="checkpoint-badge">Concept Check 3</span>
+                <span class="checkpoint-title">Interpreting Absorbance Data</span>
+              </div>
+              <div class="checkpoint-question">In a <em>competitive</em> ELISA test for a steroid hormone, Sample A gives an absorbance of 1.45 OD, while Sample B gives an absorbance of 0.32 OD. Which sample contains a higher concentration of hormone?</div>
+              <div class="checkpoint-options">
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, false, 'Incorrect. Remember that competitive assays show an INVERSE relationship: high absorbance means low sample target!')">A. Sample A, because higher absorbance always equals more hormone.</button>
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, true, 'Correct! In competitive ELISA, signal is inversely proportional to target. The low absorbance in Sample B means the hormone was abundant and blocked labeled antigen from binding.')">B. Sample B, because in competitive assays, a higher target concentration displaces labeled antigen, yielding lower absorbance.</button>
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, false, 'Incorrect. The assay results clearly indicate different concentrations.')">C. Both samples contain the exact same concentration.</button>
+              </div>
+              <div class="checkpoint-feedback"></div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ==================================================================
+             SECTION 4 — RADIOIMMUNOASSAY (RIA)
+             ================================================================== -->
+        <section id="section-4" class="content-card">
+          <div class="section-header">
+            <div class="section-header-left">
+              <span class="section-number">4</span>
+              <h2 class="section-title">Radioimmunoassay (RIA)</h2>
+            </div>
+            <button class="section-toggle-btn" onclick="toggleSection(this)">Collapse</button>
+          </div>
+
+          <div class="section-body">
+            
+            <!-- 4.1 What is RIA? -->
+            <h3 class="subsection-title">4.1 What is RIA?</h3>
+            <p><strong>Radioimmunoassay (RIA)</strong> is an in vitro technique developed by Rosalyn Yalow and Solomon Berson (which won the 1977 Nobel Prize) that uses <strong>antigen-antibody specificity</strong> together with a <strong><span class="glossary-term" data-term="radiolabel">radioactive label</span></strong> (typically Iodine-125) to detect or quantify trace amounts of target molecules.</p>
+
+            <!-- 4.2 Basic Principle -->
+            <h3 class="subsection-title">4.2 The Classic Competitive RIA Principle</h3>
+            <p>Classic RIA is fundamentally a <strong>competitive binding assay</strong>. A fixed, limited quantity of antibody is mixed with a fixed amount of known radiolabelled antigen (hot antigen) and the patient's unlabelled sample antigen (cold antigen):</p>
+
+            <div class="concept-flow">
+              <span class="flow-step">Known Radiolabelled Antigen (Ag*)</span>
+              <span class="flow-arrow">+</span>
+              <span class="flow-step">Unlabelled Sample Antigen (Ag)</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Compete for Limited Antibody Sites</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Separate Bound from Free</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">Measure Radioactivity</span>
+            </div>
+
+            <div class="info-callout">
+              <strong>The Core Mathematical Rule of RIA:</strong><br>
+              <strong>More sample antigen &rarr; less radiolabelled antigen can bind &rarr; LOWER measured radioactivity in the <span class="glossary-term" data-term="bound fraction">bound fraction</span>.</strong>
+            </div>
+
+            <!-- RIA Visual -->
+            <div class="figure-container">
+              <div class="figure-media-wrapper">
+                <img loading="lazy" 
+                     src="https://upload.wikimedia.org/wikipedia/commons/d/d6/Radioimmunoassay_process.png" 
+                     alt="Radioimmunoassay process showing competitive binding of labeled and unlabeled antigen to antibodies and radioactivity measurement" 
+                     onerror="this.closest('.figure-container').classList.add('img-failed');">
+                <div class="figure-fallback">
+                  <div class="figure-fallback-icon">☢️</div>
+                  <p><strong>Radioimmunoassay (RIA) Principle Diagram</strong></p>
+                  <p>Competitive binding mechanism: Radiolabeled antigen competes with unlabeled sample analyte for fixed antibody binding sites. Higher patient analyte concentration displaces radiolabeled antigen, reducing bound radioactivity.</p>
+                  <a href="https://commons.wikimedia.org/wiki/File:Radioimmunoassay_process.png" target="_blank" rel="noopener">View source on Wikimedia Commons &rarr;</a>
+                </div>
+              </div>
+              <div class="figure-caption">
+                <div class="figure-caption-title">Figure 4.1: The Radioimmunoassay (RIA) Competitive Process</div>
+                Competitive displacement: Unlabeled antigen from the patient sample competes with a tracer radiolabeled antigen for limited antibody binding sites, followed by phase separation and scintillation counting.
+                <div class="figure-attribution">
+                  Source: Mikael Häggström, M.D., <a href="https://commons.wikimedia.org/wiki/File:Radioimmunoassay_process.png" target="_blank" rel="noopener">Wikimedia Commons (CC0 Public Domain)</a>.
+                </div>
+              </div>
+            </div>
+
+            <!-- 4.3 RIA Workflow -->
+            <h3 class="subsection-title">4.3 RIA Conceptual Workflow</h3>
+            <p>Conceptually, RIA proceeds in distinct stages:</p>
+            <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted);">
+              <li><strong>Competitive Incubation:</strong> Sample antigen and known radiolabelled tracer antigen are added together to tubes containing a fixed, limited amount of specific antibody.</li>
+              <li><strong>Equilibrium Binding:</strong> Both labelled and unlabelled antigens compete to bind the limited antibody sites until chemical equilibrium is reached.</li>
+              <li><strong>Physical Separation:</strong> The antibody-antigen complexes (<span class="glossary-term" data-term="bound fraction">bound fraction</span>) are physically separated from the remaining unattached molecules (<span class="glossary-term" data-term="free fraction">free fraction</span>) using chemical precipitation or solid-phase beads.</li>
+              <li><strong>Radioactivity Counting:</strong> Radioactivity of the bound fraction (or free fraction) is counted using a gamma counter or scintillation detector.</li>
+              <li><strong>Concentration Determination:</strong> The counts per minute (CPM) are compared against a standard calibration curve of known reference standards to interpolate sample concentration.</li>
+            </ol>
+
+            <!-- 4.4 Why RIA Was Important -->
+            <h3 class="subsection-title">4.4 Why Was RIA So Important?</h3>
+            <p>Prior to RIA, measuring minute physiological concentrations of hormones (like insulin, thyroxine, or growth hormone) in blood was virtually impossible. RIA revolutionized endocrinology and clinical biochemistry because it achieved <strong>phenomenal picogram-to-femtogram sensitivity</strong>, allowing scientists to detect ultra-trace biomolecules for the first time.</p>
+
+            <!-- 4.5 Limitations -->
+            <h3 class="subsection-title">4.5 Practical Limitations</h3>
+            <p>Despite its extraordinary historical sensitivity, RIA has largely been replaced by ELISA in routine clinical settings due to specific operational drawbacks:</p>
+            <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px; color: var(--text-muted);">
+              <li><strong>Radioactive Hazard:</strong> Requires personnel exposure monitoring and radiation safety protocols.</li>
+              <li><strong>Short Reagent Shelf-Life:</strong> Radioisotopes decay spontaneously (e.g., Iodine-125 has a half-life of only ~60 days), meaning reagents degrade rapidly.</li>
+              <li><strong>Costly Waste Disposal:</strong> Strict regulatory laws govern the handling, containment, and disposal of radioactive waste.</li>
+              <li><strong>Specialized Equipment:</strong> Requires expensive lead-shielded gamma counters or liquid scintillation counters rather than standard microplate readers.</li>
+            </ul>
+
+            <div class="takeaway-box">
+              <strong>One-Sentence Takeaway:</strong> RIA uses competitive binding between radioactive tracer and sample antigen to achieve ultra-high sensitivity, but radiation hazards and isotope decay make ELISA far more practical for everyday laboratory use.
+            </div>
+
+            <!-- Checkpoint 4 -->
+            <div class="checkpoint-widget" data-quiz="4">
+              <div class="checkpoint-header">
+                <span class="checkpoint-badge">Concept Check 4</span>
+                <span class="checkpoint-title">RIA Mechanism Check</span>
+              </div>
+              <div class="checkpoint-question">In a standard competitive RIA, if a patient sample contains an extremely high concentration of thyroid hormone, what will happen to the radioactivity measured in the antibody-bound fraction?</div>
+              <div class="checkpoint-options">
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, true, 'Correct! Abundant patient hormone outcompetes the radiolabelled hormone for limited antibody sites, leaving very little radioactivity bound.')">A. The radioactivity in the bound fraction will be very LOW.</button>
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, false, 'Incorrect. More patient hormone displaces radiolabelled hormone away from the antibody.')">B. The radioactivity in the bound fraction will be very HIGH.</button>
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, false, 'Incorrect. The patient hormone actively participates in the competition for antibody binding sites.')">C. The radioactivity will remain completely unchanged because patient hormone does not compete.')</button>
+              </div>
+              <div class="checkpoint-feedback"></div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ==================================================================
+             SECTION 5 — ELISA vs RIA
+             ================================================================== -->
+        <section id="section-5" class="content-card">
+          <div class="section-header">
+            <div class="section-header-left">
+              <span class="section-number">5</span>
+              <h2 class="section-title">ELISA vs Radioimmunoassay (RIA)</h2>
+            </div>
+            <button class="section-toggle-btn" onclick="toggleSection(this)">Collapse</button>
+          </div>
+
+          <div class="section-body">
+            <p>Neither ELISA nor RIA is universally "better" in every context. Rather, scientists choose the appropriate immunoassay based on required sensitivity, laboratory safety infrastructure, reagent stability, and regulatory convenience.</p>
+
+            <!-- Head-to-Head Comparison Table -->
+            <div class="table-responsive">
+              <table class="scientific-table">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>ELISA (Enzyme-Linked)</th>
+                    <th>RIA (Radioimmunoassay)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="table-feature-tag">Detection Label</span></td>
+                    <td>Enzyme (e.g., HRP, Alkaline Phosphatase)</td>
+                    <td>Radioactive isotope (e.g., Iodine-125, Tritium)</td>
+                  </tr>
+                  <tr>
+                    <td><span class="table-feature-tag">Signal Output</span></td>
+                    <td>Color change / Optical absorbance (OD)</td>
+                    <td>Ionizing radiation emissions (counts per minute, CPM)</td>
+                  </tr>
+                  <tr>
+                    <td><span class="table-feature-tag">Safety Considerations</span></td>
+                    <td>Safe; standard bio-safety level 1 or 2 rules</td>
+                    <td>Radiation hazard; requires shielding, dosimeters, licensing</td>
+                  </tr>
+                  <tr>
+                    <td><span class="table-feature-tag">Sensitivity</span></td>
+                    <td>High (picogram to nanogram range)</td>
+                    <td>Extremely high (picogram to femtogram range)</td>
+                  </tr>
+                  <tr>
+                    <td><span class="table-feature-tag">Primary Equipment</span></td>
+                    <td>Microplate spectrophotometer / reader</td>
+                    <td>Gamma counter or liquid scintillation counter</td>
+                  </tr>
+                  <tr>
+                    <td><span class="table-feature-tag">Waste Management</span></td>
+                    <td>Standard biochemical / laboratory waste</td>
+                    <td>Regulated, expensive radioactive waste disposal</td>
+                  </tr>
+                  <tr>
+                    <td><span class="table-feature-tag">Reagent Stability</span></td>
+                    <td>High shelf-life (stable enzyme conjugates for months/years)</td>
+                    <td>Short shelf-life (limited by isotope radioactive half-life)</td>
+                  </tr>
+                  <tr>
+                    <td><span class="table-feature-tag">Practical Convenience</span></td>
+                    <td>Very high; automated, 96-well parallel throughput</td>
+                    <td>Lower; requires dedicated radiation facility and precautions</td>
+                  </tr>
+                  <tr>
+                    <td><span class="table-feature-tag">Typical Conceptual Use</span></td>
+                    <td>Routine clinical diagnostics, viral antibodies, food toxins</td>
+                    <td>Ultra-trace peptide hormones, reference standard validation</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="info-callout">
+              <strong>How Method Choice is Made:</strong><br>
+              In modern hospital and academic laboratories, ELISA and its luminescent variants are chosen for >95% of routine testing due to safety, automated multi-well plate handling, and stable shelf-life. RIA remains respected as a gold-standard reference method when ultra-sensitive trace hormone quantification is essential and radiation infrastructure exists.
+            </div>
+
+            <!-- Checkpoint 5 -->
+            <div class="checkpoint-widget" data-quiz="5">
+              <div class="checkpoint-header">
+                <span class="checkpoint-badge">Concept Check 5</span>
+                <span class="checkpoint-title">Comparing ELISA and RIA</span>
+              </div>
+              <div class="checkpoint-question">What is the single most fundamental difference between ELISA and RIA?</div>
+              <div class="checkpoint-options">
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, false, 'Incorrect. Both methods rely on specific antibody-antigen recognition.')">A. ELISA uses antibodies, while RIA does not use antibodies at all.</button>
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, true, 'Correct! ELISA uses an enzyme that generates optical color, whereas RIA uses a radioisotope that emits radiation.')">B. ELISA uses an enzyme label that produces an optical color signal, whereas RIA uses a radioactive isotope label that emits ionizing radiation.</button>
+                <button class="checkpoint-opt-btn" onclick="checkAnswer(this, false, 'Incorrect. Both can be configured quantitatively with standard curves.')">C. RIA can measure quantities, but ELISA can only give a yes/no answer.</button>
+              </div>
+              <div class="checkpoint-feedback"></div>
+            </div>
+
+          </div>
+        </section>
+
+
+        <!-- ==================================================================
+             SECTION 6 — THE BIG PICTURE & KEY TAKEAWAYS
+             ================================================================== -->
+        <section id="section-6" class="content-card">
+          <div class="section-header">
+            <div class="section-header-left">
+              <span class="section-number">6</span>
+              <h2 class="section-title">The Big Picture</h2>
+            </div>
+            <button class="section-toggle-btn" onclick="toggleSection(this)">Collapse</button>
+          </div>
+
+          <div class="section-body">
+            
+            <p>Every immunoassay in biochemistry and microbiology boils down to one unifying roadmap:</p>
+
+            <!-- Compact Conceptual Map -->
+            <div class="big-picture-map">
+              <div class="map-row">
+                <span class="map-badge root">ANTIGEN + ANTIBODY SPECIFICITY</span>
+                <span class="map-arrow">&rarr;</span>
+                <span class="map-badge root">IMMUNOASSAY</span>
+                <span class="map-arrow">&rarr;</span>
+                <span class="map-badge root">MEASURABLE SIGNAL</span>
+              </div>
+
+              <div style="height: 1px; background: rgba(255,255,255,0.15); margin: 6px 0;"></div>
+
+              <div class="map-row">
+                <span class="map-badge elisa">ELISA</span>
+                <span class="map-arrow">&rarr;</span>
+                <span class="map-badge elisa">ENZYME LABEL</span>
+                <span class="map-arrow">&rarr;</span>
+                <span class="map-badge elisa">COLOR / ABSORBANCE</span>
+                <span style="font-size: 0.85rem; color: #5eead4; margin-left: 8px;">(Non-radioactive, enzyme-based detection)</span>
+              </div>
+
+              <div class="map-row">
+                <span class="map-badge ria">RIA</span>
+                <span class="map-arrow">&rarr;</span>
+                <span class="map-badge ria">RADIOACTIVE LABEL</span>
+                <span class="map-arrow">&rarr;</span>
+                <span class="map-badge ria">RADIOACTIVITY (CPM)</span>
+                <span style="font-size: 0.85rem; color: #c4b5fd; margin-left: 8px;">(Radioactive-label-based detection)</span>
+              </div>
+            </div>
+
+            <h3 class="subsection-title" style="margin-top: 28px;">If You Remember Only Five Things</h3>
+            <ul class="five-things-list">
+              <li><strong>Antibodies recognize specific targets:</strong> High-affinity, lock-and-key recognition between paratopes and epitopes allows selective detection of target molecules within complex biological samples.</li>
+              <li><strong>ELISA converts recognition into an enzyme-generated measurable signal:</strong> An immobilized antibody or antigen captures the target, and an attached enzyme converts substrate into a quantifiable color change (absorbance).</li>
+              <li><strong>Direct, indirect, sandwich, and competitive ELISA differ mainly in arrangement:</strong> The four major formats vary by how antigens, primary antibodies, secondary antibodies, and enzyme labels are assembled on the well surface.</li>
+              <li><strong>RIA uses a radioactive label, commonly through competitive binding:</strong> Unlabelled patient antigen competes with known radiolabelled tracer antigen for limited antibody binding sites.</li>
+              <li><strong>Measured signal interpretation depends on assay design:</strong> More signal does NOT universally mean more target. Direct/sandwich ELISAs show a direct relationship, whereas competitive ELISA and competitive RIA show an inverse relationship.</li>
+            </ul>
+
+          </div>
+        </section>
+
+
+        <!-- ==================================================================
+             SECTION 7 — SEARCHABLE GLOSSARY
+             ================================================================== -->
+        <section id="glossary-section" class="content-card">
+          <div class="section-header">
+            <div class="section-header-left">
+              <span class="section-number">7</span>
+              <h2 class="section-title">Searchable Technical Glossary</h2>
+            </div>
+            <button class="section-toggle-btn" onclick="toggleSection(this)">Collapse</button>
+          </div>
+
+          <div class="section-body">
+            <p>Need a quick 1–2 sentence refresher on any technical immunoassay term? Type in the search box below:</p>
+
+            <div class="glossary-search-bar">
+              <input type="text" id="glossary-search" class="glossary-input" placeholder="Search glossary terms (e.g., epitope, HRP, competitive, bound fraction)..." oninput="filterGlossary()">
+            </div>
+
+            <div class="glossary-grid" id="glossary-grid">
+              <!-- Dynamically populated from JS array -->
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       VANILLA JAVASCRIPT
+       Interactive features: Glossary data, tooltips, tabs, checkpoints, collapse
+       ========================================================================== -->
+  <script>
+    // 1. Comprehensive Glossary Database (1-2 sentence beginner-friendly definitions)
+    const glossaryData = [
+      { term: "Antigen", def: "Any molecule, pathogen surface protein, or substance that can be specifically recognized and bound by an antibody." },
+      { term: "Antibody", def: "A Y-shaped protective immunoglobulin protein produced by the immune system that specifically recognizes and binds a designated target antigen." },
+      { term: "Epitope", def: "The specific localized structural surface region or amino acid sequence on an antigen that is directly contacted by an antibody's binding site." },
+      { term: "Immunoassay", def: "A biochemical test that uses the specific binding between an antigen and an antibody to detect or measure a target molecule in a sample." },
+      { term: "Specificity", def: "The ability of an antibody to bind exclusively to its designated target epitope without cross-reacting with unrelated molecules." },
+      { term: "ELISA", def: "Enzyme-Linked Immunosorbent Assay; a method where antibodies or antigens are bound to a solid plate and an enzyme generates a measurable optical color signal." },
+      { term: "Enzyme-linked", def: "Covalently attaching a reporter enzyme (such as peroxidase) directly to an antibody or antigen to enable optical signal generation." },
+      { term: "Primary antibody", def: "An antibody that binds directly and specifically to the target antigen of interest in the sample." },
+      { term: "Secondary antibody", def: "An antibody that binds specifically to the constant (Fc) region of a primary antibody, typically carrying an enzyme or tracer label for signal amplification." },
+      { term: "Capture antibody", def: "An immobilized antibody coated onto the solid microplate well in a sandwich ELISA to grab and hold the target antigen from a solution." },
+      { term: "Detection antibody", def: "A second antibody added in a sandwich ELISA that binds to a different epitope on the captured antigen to complete the sandwich complex." },
+      { term: "Substrate", def: "A specialized chemical reagent added to the well that the conjugated enzyme converts into a colored, fluorescent, or luminescent product." },
+      { term: "Chromogenic", def: "A chemical reaction that produces a visible color change in solution upon enzyme catalysis." },
+      { term: "Absorbance", def: "A numerical measure of the amount of light of a specific wavelength absorbed by the colored product in the microplate well, proportional to optical density." },
+      { term: "Standard", def: "A calibrated reference sample containing a known concentration of the target molecule, run alongside samples to build a standard curve." },
+      { term: "Standard curve", def: "A mathematical plot relating known concentrations of standards to their measured signal, used to interpolate unknown sample concentrations." },
+      { term: "Positive control", def: "A sample known to contain the target analyte, used to confirm that all assay reagents, incubations, and detection steps performed properly." },
+      { term: "Negative control", def: "A sample devoid of the target analyte, used to verify the absence of non-specific binding, contamination, or false-positive signals." },
+      { term: "Blank", def: "A well containing only assay buffer and substrate, used to subtract background instrument noise and baseline absorbance." },
+      { term: "Direct ELISA", def: "An ELISA format where target antigen is immobilized on the well and detected directly by an enzyme-labeled primary antibody." },
+      { term: "Indirect ELISA", def: "An ELISA format where an unlabelled primary antibody binds the antigen, followed by an enzyme-labelled secondary antibody that amplifies the signal." },
+      { term: "Sandwich assay", def: "An immunoassay format where the target antigen is held between two distinct antibodies—a capture antibody below and a detection antibody above." },
+      { term: "Competitive assay", def: "An assay format where sample antigen competes with labelled reference antigen for limited antibody binding sites, yielding an inverse signal relationship." },
+      { term: "Radioimmunoassay", def: "RIA; a highly sensitive competitive immunoassay that uses radioactive isotope labels and radiation counters to quantify trace analytes." },
+      { term: "Radiolabel", def: "A radioactive isotope (such as Iodine-125) chemically tagged onto an antigen or antibody to allow detection via radiation counting." },
+      { term: "Bound fraction", def: "The portion of radiolabeled antigen that successfully binds to the specific antibody during a radioimmunoassay incubation." },
+      { term: "Free fraction", def: "The portion of unbound, excess radiolabeled antigen remaining in solution after antibody-binding equilibrium is reached." },
+      { term: "HRP", def: "Horseradish Peroxidase; a widely used, stable enzyme that oxidizes chromogenic substrates like TMB into an intense colored product." },
+      { term: "Alkaline phosphatase", def: "AP; a popular reporter enzyme that hydrolyzes phosphate substrates (such as pNPP) to produce a distinct yellow product." }
+    ];
+
+    // 2. Populate Glossary Cards
+    function renderGlossary(filterText = "") {
+      const grid = document.getElementById("glossary-grid");
+      grid.innerHTML = "";
+      const search = filterText.toLowerCase().trim();
+
+      const filtered = glossaryData.filter(item => 
+        item.term.toLowerCase().includes(search) || 
+        item.def.toLowerCase().includes(search)
+      );
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 24px; color: var(--text-light);">No glossary terms found matching "${filterText}".</div>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "glossary-card";
+        card.innerHTML = `
+          <div class="glossary-card-title">
+            <span>${item.term}</span>
+          </div>
+          <div class="glossary-card-def">${item.def}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterGlossary() {
+      const input = document.getElementById("glossary-search");
+      renderGlossary(input.value);
+    }
+
+    // 3. Interactive Floating Tooltips for Terms
+    const tooltipElem = document.getElementById("global-tooltip");
+
+    function findDefinition(termKey) {
+      const normalized = termKey.toLowerCase().trim();
+      const match = glossaryData.find(g => g.term.toLowerCase() === normalized);
+      return match ? match.def : "Technical immunoassay term.";
+    }
+
+    document.querySelectorAll(".glossary-term").forEach(el => {
+      const termName = el.getAttribute("data-term") || el.textContent;
+      const definition = findDefinition(termName);
+
+      // Mouse hover events
+      el.addEventListener("mouseenter", (e) => {
+        tooltipElem.innerHTML = `<strong>${termName.toUpperCase()}</strong>${definition}`;
+        tooltipElem.classList.add("active");
+        positionTooltip(e);
+      });
+
+      el.addEventListener("mousemove", (e) => {
+        positionTooltip(e);
+      });
+
+      el.addEventListener("mouseleave", () => {
+        tooltipElem.classList.remove("active");
+      });
+
+      // Accessibility / Keyboard Focus / Touch
+      el.addEventListener("focus", (e) => {
+        tooltipElem.innerHTML = `<strong>${termName.toUpperCase()}</strong>${definition}`;
+        tooltipElem.classList.add("active");
+        const rect = el.getBoundingClientRect();
+        tooltipElem.style.left = `${Math.min(window.innerWidth - 300, Math.max(10, rect.left))}px`;
+        tooltipElem.style.top = `${rect.bottom + 8}px`;
+      });
+
+      el.addEventListener("blur", () => {
+        tooltipElem.classList.remove("active");
+      });
+
+      el.addEventListener("click", (e) => {
+        // Jump to glossary or toggle
+        e.preventDefault();
+      });
+    });
+
+    function positionTooltip(e) {
+      const tooltipWidth = 280;
+      let left = e.clientX + 14;
+      let top = e.clientY + 14;
+
+      if (left + tooltipWidth > window.innerWidth) {
+        left = e.clientX - tooltipWidth - 14;
+      }
+      if (top + 100 > window.innerHeight) {
+        top = e.clientY - 90;
+      }
+
+      tooltipElem.style.left = `${left}px`;
+      tooltipElem.style.top = `${top}px`;
+    }
+
+    // 4. ELISA Format Tab Switching
+    function switchTab(btn, paneId) {
+      const parent = btn.closest(".content-card");
+      parent.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      parent.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+
+      btn.classList.add("active");
+      const targetPane = document.getElementById(paneId);
+      if (targetPane) targetPane.classList.add("active");
+    }
+
+    // 5. Expand / Collapse Section Toggle
+    function toggleSection(btn) {
+      const card = btn.closest(".content-card");
+      const body = card.querySelector(".section-body");
+      if (body.style.display === "none") {
+        body.style.display = "block";
+        btn.textContent = "Collapse";
+      } else {
+        body.style.display = "none";
+        btn.textContent = "Expand";
+      }
+    }
+
+    // 6. Interactive Knowledge Checkpoint Handler
+    function checkAnswer(btn, isCorrect, explanation) {
+      const widget = btn.closest(".checkpoint-widget");
+      const feedback = widget.querySelector(".checkpoint-feedback");
+      const allBtns = widget.querySelectorAll(".checkpoint-opt-btn");
+
+      // Reset options
+      allBtns.forEach(b => {
+        b.classList.remove("correct", "wrong");
+        b.disabled = false;
+      });
+
+      feedback.className = "checkpoint-feedback visible " + (isCorrect ? "success" : "error");
+      feedback.innerHTML = `<strong>${isCorrect ? "✓ Well Done!" : "✗ Review Needed:"}</strong> ${explanation}`;
+
+      if (isCorrect) {
+        btn.classList.add("correct");
+      } else {
+        btn.classList.add("wrong");
+      }
+    }
+
+    // 7. Active Table of Contents Highlighting on Scroll
+    window.addEventListener("scroll", () => {
+      const sections = document.querySelectorAll("main section");
+      const scrollPos = window.scrollY + 140;
+
+      sections.forEach(section => {
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+        const id = section.getAttribute("id");
+        const link = document.querySelector(`.nav-list a[href="#${id}"]`);
+
+        if (scrollPos >= top && scrollPos < top + height) {
+          document.querySelectorAll(".nav-list a").forEach(a => a.classList.remove("active"));
+          if (link) link.classList.add("active");
+        }
+      });
+    });
+
+    // Initial render
+    document.addEventListener("DOMContentLoaded", () => {
+      renderGlossary();
+    });
+  </script>
+</body>
+</html>
